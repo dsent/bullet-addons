@@ -9,6 +9,9 @@ You can register for Bullet using my referral link to support my work on these a
 
 ## List of Addons
 
+- [Global Style Tweaks](src/style-tweaks)  
+  Contains small, site-wide CSS improvements I use for my site, [dsent.me](https://dsent.me).  
+  Features include fixing branding focus outline and navbar spacing, making the site's navbar look consistent, Notion-like CTA buttons, embedded SVG icons for Telegram and WhatsApp, and a trigger (`.dsbullet-hide-title`) to hide the page title on any page.
 - [Fading Scroll Effect for the Viewport](src/fading-scroll)  
   Adds a subtle fading effect at the top and bottom of the viewport when scrolling long pages, eliminating the abrupt cut-off.
   This minimalistic script has no configuration options, but you can modify the CSS file to adjust the styling.
