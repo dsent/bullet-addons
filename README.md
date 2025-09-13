@@ -27,6 +27,8 @@ You can register for Bullet using my referral link to support my work on these a
   This script enhances the user experience with multi-level Notion lists (lists with sub-items), enabling using them as navigation menus or for other purposes. It provides two main features:
   - **Unwrap**: Removes a top-level item, promoting its sub-items to the top level.
   - **Expand**: Expands all or some items in a list so their sub-items are visible without clicking on the parent item's handle.
+- [Miscellaneous Tools](src/tools/)
+  This folder contains small, self-contained scripts I use to debug stuff. They are not intended for general or production use. I do not provide support or documentation for them, but they might be useful for some people.
 
 ## Compatibility Notes
 
