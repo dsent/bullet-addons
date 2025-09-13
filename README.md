@@ -5,9 +5,7 @@ This repository holds the extra addons for Bullet that I created and maintain.
 Bullet is a publishing platform built on top of Notion, greatly enhancing the default Notion web experience
 with custom styles, SEO improvements, basic multilingual support, control over the publishing process, and a lot more.
 
-You can register for Bullet using my referral link to support my work on these addons:
-
-[bullet.so](https://bullet.so/?ref=dsent)
+You can register for Bullet using my referral link to support my work on these addons: [bullet.so](https://bullet.so/?ref=dsent)
 
 ## The existing addons
 
