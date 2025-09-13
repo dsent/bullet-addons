@@ -17,6 +17,8 @@ You can register for Bullet using my referral link to support my work on these a
 - [Fading Scroll Effect for the Viewport](src/fading-scroll/)
   Adds a subtle fading effect at the top and bottom of the viewport when scrolling long pages, eliminating the abrupt cut-off.
   This minimalistic script has no configuration options, but you can modify the CSS file to adjust the styling.
+- [Notion-like Floating Outline](src/outline-popup/outline-popup-readme.md)
+  This script builds a Notion-style outline for headings on Bullet-rendered pages: a compact right rail shows section bars revealing a clickable table of contents on hover/click/touch. Pretty awesome stuff.
 - [Language Selector Links and Link Outlines](src/lang-link/lang-link-readme.md)
   This script improves the user experience for a multilingual site built on Notion and Bullet.
 
