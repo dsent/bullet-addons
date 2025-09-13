@@ -7,9 +7,19 @@ with custom styles, SEO improvements, basic multilingual support, control over t
 
 You can register for Bullet using my referral link to support my work on these addons: [bullet.so](https://bullet.so/?ref=dsent)
 
-## The Existing Addons
+## List of Addons
 
 - To be documented
+
+## Compatibility Note
+
+- These addons are designed to work with the default Bullet template to provide a consistent Notion-like experience.
+  If you are using a custom Bullet template, some addons may not work as intended.
+- My addons are tested with the latest browsers only. I don't use features that are not fully supported by all major browsers,
+  but I don't test or support legacy browsers and older versions (more than 2 years old). This is a deliberate choice to keep
+  the codebase simple, modern, and maintainable. I may consider making minor adjustments to support some specific older browsers
+  if there's a compelling use case, but generally, most bug reports or feature requests related to legacy browsers will be WONTFIX.
+  You're welcome to fork the repo and make your own, more compatible, version if you need to.
 
 ## Usage
 
