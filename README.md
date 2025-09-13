@@ -1,39 +1,37 @@
 # Bullet Addons by dsent.me
 
-This repository holds the extra addons for Bullet that I created and maintain.
+This repository contains custom addons for Bullet that I created and maintain.
 
-Bullet is a publishing platform built on top of Notion, greatly enhancing the default Notion web experience
-with custom styles, SEO improvements, basic multilingual support, control over the publishing process, and a lot more.
+Bullet is a publishing platform built on top of Notion that greatly enhances the default Notion web experience
+with custom styles, SEO improvements, multilingual support, publishing controls, and more.
 
 You can register for Bullet using my referral link to support my work on these addons: [bullet.so](https://bullet.so/?ref=dsent)
 
 ## List of Addons
 
-- [Fading Scroll Effect for the Viewport](src/fading-scroll)
-  I don't like the abrupt cut-off at the top and the bottom of the viewport when scrolling a long page. Thus, this addon.
-  It adds a subtle fading effect at the top and bottom of the viewport, making the transition smoother.
-  This script is very minimalistic, so no configuration is exposed, but you can tweak the styles in the CSS file.
+- [Fading Scroll Effect for the Viewport](src/fading-scroll)  
+  Adds a subtle fading effect at the top and bottom of the viewport when scrolling long pages, eliminating the abrupt cut-off.
+  This minimalistic script has no configuration options, but you can modify the CSS file to adjust the styling.
 
 ## Compatibility Notes
 
-- These addons are designed to work with the default Bullet template to provide a consistent Notion-like experience.
-  If you are using a custom Bullet template, some addons may not work as intended.
-- My addons are tested with the latest browsers only. I don't use features that are not fully supported by all major browsers,
-  but I don't test or support legacy browsers and older versions (more than 2 years old). This is a deliberate choice to keep
-  the codebase simple, modern, and maintainable. I may consider making minor adjustments to support some specific older browsers
-  if there's a compelling use case, but generally, most bug reports or feature requests related to legacy browsers will be WONTFIX.
-  You're welcome to fork the repo and make your own, more compatible, version if you need to.
+- These addons are designed for the default Bullet template to provide a consistent Notion-like experience.
+  Custom Bullet templates may cause some addons to work incorrectly.
+- Addons are tested with modern browsers only. While I avoid unsupported features, I don't test or support
+  legacy browsers or versions older than 2 years. This keeps the codebase simple, modern, and maintainable.
+  I may consider adjustments for specific older browsers if there's a compelling use case, but most legacy browser
+  issues will be marked WONTFIX. Feel free to fork the repository for broader compatibility if needed.
 
 ## Usage
 
-Most addons consist of a CSS file and a JavaScript (JS) file. Some addons may have only CSS or only JS.
+Most addons include both CSS and JavaScript files. Some may contain only CSS or only JavaScript.
 
-To use one of the addons, follow these steps:
+To install an addon:
 
 1. Open your [Bullet dashboard](https://app.bullet.so/dashboard), find your site, and click "Edit."
 2. Go to the "Code" tab in the left sidebar.
-3. Copy the contents of the CSS files of the addon into the "CSS" area.
-4. Copy the contents of the JS files you want to use into the "Body" area, wrapping them in `<script>...</script>` tags. The text area should look like this:
+3. Copy the CSS file contents into the "CSS" area.
+4. Copy the JavaScript file contents into the "Body" area, wrapped in `<script>...</script>` tags:
 
    ```html
    <script type="text/javascript" defer>
@@ -50,44 +48,41 @@ To use one of the addons, follow these steps:
 5. Save your changes (click "Save" at the top of the custom code area).
 6. Publish your site (click "Publish" at the top right of the dashboard).
 
-If you want to use multiple addons, just paste them one after another in the same CSS and JS areas. They have large header and footer comments to make it easier to find where each addon starts and ends in order to update or remove them later.
+To use multiple addons, paste them one after another in the same CSS and JavaScript areas. Large header and footer comments make it easy to identify where each addon begins and ends for future updates or removal.
 
-Each script is designed to be self-contained. If a script depends on another, this will be noted in its comments and readme. In this case, it's recommended, but not strictly required, to paste the dependencies first.
+Each script is self-contained. Dependencies, if any, are noted in the script's comments and README. When present, put dependencies first (this is not a strict requirement as the scripts will try to wait for the requirements to become available, but I still recommend it for clarity).
 
 ## Configuration and Customization
 
-Some scripts have configuration options. These are usually grouped at the top of the file, or, in some cases, a particular section within the file. You can just edit these values in the script to change the default behavior for the entire site.
+Some scripts include configuration options, typically grouped at the top of the file. Edit these values to change the default behavior for your entire site.
 
-You can also add some scripts to specific pages instead of globally, if you want. To do that, you can add CSS and JS to the page's own custom code areas ("Pages" in the left sidebar → select the page → "Code" at the top of the left sidebar → select "Current Page"). This way, a script and styles will only apply to that page.
+You can also apply scripts to specific pages instead of globally by adding CSS and JavaScript to individual page code areas ("Pages" in the left sidebar → select page → "Code" → "Current Page").
 
-However, maintaining page-specific scripts is a chore. That's why most of my scripts allow per-page configuration using special HTML markers. This is **the recommended way** to configure the scripts.
+However, maintaining page-specific scripts is cumbersome. That's why most scripts support per-page configuration using special HTML markers, which is **the recommended approach**. You can add the script to your site globally and then add specific blocks to your source Notion pages to enable or disable features or change settings.
 
-These markers are added using a code block with a special caption `bullet:HTML` (see [Embed HTML inside Notion](https://bullet.so/docs/embed-html-inside-notion/) in Bullet documentation for details).
+Add these markers using a code block with the caption `bullet:HTML` (see [Embed HTML inside Notion](https://bullet.so/docs/embed-html-inside-notion/) in Bullet documentation). For details, refer to each script's readme file and comments.
 
-**Tip:** You can simplify marker usage by creating a synced block in Notion (e.g. in a template page of your master pages database), and then copy-syncing it wherever you need it. Note that if you edit a synced block, it changes all copies of it, so if you want different configurations, create separate synced blocks for each of them.
+**Tip:** Create synced blocks in Notion (e.g., in a template page) and copy-sync them where needed. Remember that editing a synced block changes all copies, so this only works for **identical** configurations. If you need a few different configurations, create separate synced blocks for each.
 
-Most marker blocks can be empty and will be invisible on the page, so you can place them anywhere.
-  
-Some markers affect the blocks coming after them, or the parent block they are in, so read the documentation for each script.
+Most marker blocks can be empty and invisible, so it's safe to place them anywhere on the page.
+
+Some markers affect subsequent blocks or their parent block—check each script's documentation for details.
 
 An example of a marker block on a Notion page:
 
 ![A screenshot of a Notion page with custom HTML marker before a list](img/sample-html-marker.png)
 
-The above marker prevents the list below it from rendering its list of views as tabs and forces it to render as a default dropdown list.
+This marker prevents the list below it from rendering as tabs and forces it to display as a default dropdown list. The marker doesn't affect other lists or other database views on the page.
 
 ## Licensing and Contributions
 
-- The repo is licensed under a [MIT license](LICENSE).
-- If you want a different license, you can [contact me](#author-and-contact).
-
-- Contributions are welcome. Please open issues or PRs against the public package; sensitive site-specific
-  bits will not be accepted into the published package.
+- This repository is licensed under the [MIT license](LICENSE).
+- For different licensing options, please [contact me](#author-and-contact).
+- Contributions are welcome. Open issues or submit pull requests to the public repository. Site-specific or sensitive content will not be accepted.
 
 ## Security & Privacy
 
-- Do not commit secrets or site-specific credentials. The public package will contain only static CSS and
-  small client-side scripts that do not require server credentials.
+- Do not commit secrets or site-specific credentials. This repository contains only static CSS and client-side scripts that require no server credentials.
 
 ## Roadmap / Next Steps
 
@@ -95,5 +90,5 @@ The above marker prevents the list below it from rendering its list of views as 
 
 ## Author and Contact
 
-- You can find more about me and my work at [dsent.me](https://dsent.me).
-- For questions or sponsorship: Reach out via [Telegram](https://t.me/dsent_zen) or [email](mailto:info@dsent.me).
+- Learn more about my work at [dsent.me](https://dsent.me).
+- For questions or sponsorship opportunities: [Telegram](https://t.me/dsent_zen) or [email](mailto:info@dsent.me).
