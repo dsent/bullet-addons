@@ -1,0 +1,248 @@
+/* -------------------------- */
+/* **** Database Display **** */
+/* -------------------------- */
+/* See database-display-readme.md for documentation */
+
+/* SECTION: Miscellaneous Tweaks */
+/* Never display database names */
+.notion-collection-header-title {
+    display: none;
+}
+
+/* If there's only one view, show its name as a title */
+.notion-collection-single-view {
+    display: inline-flex;
+    font-size: 1.25em;
+    font-weight: 600;
+    white-space: nowrap;
+
+    /* Undo the font size reduction */
+    .notion-collection-view-type {
+        font-size: unset;
+
+        .notion-view-type>svg {
+            display: none; /* hide the icon */
+        }
+    }
+}
+/* END OF: Miscellaneous Tweaks */
+
+/* SECTION: Database Views as Tabs */
+
+/*  There's a much simpler implementation in the Bullet's documentation:
+    https://bullet.so/docs/tabs-for-database-views/
+    It's not as fully featured or configurable as this one, but might be enough for most use cases.
+*/
+
+:root {
+    /* Shared custom properties (reduce repetition) */
+    --tabs-gap: 8px;
+    --tab-height: 34px;
+    --tab-pad-x: 12px;
+    --tab-radius: 8px;
+    --tab-border-color: #000;
+    --tab-bg: #fff;
+    --tab-fg: #111;
+    --tab-bg-active: #000;
+    --tab-fg-active: #fff;
+    --search-width: 260px;
+    --search-height: 34px;
+    --search-gap: 6px;
+}
+
+/* Mark collections that should have tabs */
+:is(
+.notion-collection:first-child, /* the first collection on the page */
+:not( /* or one that has a preceding block that's not: */
+    :is(div.notion-sync-block, details.notion-toggle, div.notion-custom-code  /* one of the blocks that can contain a disable trigger */
+    ):has(.dsbullet-disable-tabs)  /* and actually contain it */
+) + .notion-collection /* a collection that directly follows such a block */
+):has(.notion-collection-header>.dropdown) /* and actually has multiple views */
+{
+    /*  The best way would be to set a custom property on the container (e.g. --dsbullet-tabs: 1), and then
+        target it with @container style query, like this:
+        @container style(--dsbullet-tabs) {
+            .notion-collection-header { ... }
+        }
+        However, sadly, Firefox doesn't support container queries yet (as of September 2025), so we have to
+        do it in a messy way, putting all the styles inside this selector with an insane specificity that
+        is hard to override. Another way would be using @scope, but it's also not supported in Firefox!
+        Shame on you, Mozilla!
+    */
+    --dsbullet-tabs: 1; /* setting this for the future */
+    /* It's not possible to target the container itself with @container queries,
+       so all styles that should be applied to the container element go right here. */
+    position: relative; /* Make collection container a positioning context */
+
+    /* Then all the styles for the container's scope.
+       Hopefully, to be moved to @container query later, when Firefox finally supports it by default:
+       https://bugzilla.mozilla.org/show_bug.cgi?id=1795622
+    */
+
+    /* Header row: tabs on the left, leave room for search on the right */
+    .notion-collection-header{
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding-left: 0;
+        padding-right: calc(var(--search-width) + 60px); /* reserve space for search */
+        margin: 16px 0 12px 0;
+        gap: var(--tabs-gap);
+    }
+
+    /* Dropdown rendered as tabs */
+    .dropdown { display: block; }
+    .dropdown-trigger { display: none; }
+    .dropdown-menu { display: block; position: unset; z-index: 99; }
+    .dropdown-content { background: unset; }
+
+    /* Tabs container (single definition) */
+    .notion-collection-view-dropdown-content{
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: var(--tabs-gap);
+        flex-wrap: wrap;
+        padding: 6px 0;
+        margin: 0;
+        box-shadow: none;
+    }
+
+    /* Hide icons inside tabs for a cleaner look */
+    .notion-collection-view-dropdown-content-item-active-icon>svg,
+    .notion-view-type>svg{
+        display: none !important;
+    }
+
+    .notion-collection-view-type-title{
+        overflow: unset;
+        color: inherit !important; /* inherit from tab, no separate active override needed */
+    }
+
+    /* Compact tab styles */
+    .notion-collection-view-dropdown-content-item {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--tabs-gap);
+        height: var(--tab-height);
+        padding: 0 var(--tab-pad-x);
+        border-radius: var(--tab-radius);
+        border: 1px solid var(--tab-border-color);
+        box-shadow: none;
+        background: var(--tab-bg);
+        color: var(--tab-fg) !important;
+        line-height: 1;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+    }
+
+    /* Active/focus state */
+    .notion-collection-view-dropdown-content-item:focus,
+    .notion-collection-view-dropdown-content-item-active {
+        background-color: var(--tab-bg-active);
+        color: var(--tab-fg-active) !important;
+        border-color: var(--tab-bg-active);
+        outline: none;
+    }
+
+    /* Search box aligned right, styled as a complete unit */
+    .notion-collection-header + .notion-collection-search {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: var(--search-width);
+        height: var(--search-height);
+        display: flex;
+        align-items: center;
+        gap: var(--search-gap);
+        background: #fff;
+        border: 1px solid lightgray;
+        border-radius: 8px;
+        padding: 0 8px;
+        margin: 10px 0 0 0;
+    }
+
+    /* Restore and style the search icon */
+    .notion-collection-search .search-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #777;
+    }
+    .notion-collection-search .search-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* Style the input to be borderless within the container */
+    .notion-collection-search input[type="search"] {
+        display: block !important;
+        flex-grow: 1;
+        height: 100%;
+        border: none;
+        background: transparent;
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+        outline: none;
+        color: #111;
+    }
+}
+/* END OF: Database Views as Tabs */
+
+/* SECTION: List Views Fixes */
+.notion-list-sub-item-toggle {
+
+    display: list-item;
+    white-space: nowrap;
+
+    > * {
+        vertical-align: middle;
+        display: inline-flex;
+    }
+
+    &::marker {
+        content: initial;
+    }
+
+    &:before {
+        display: none;
+    }
+
+    &.notion-list-no-toggle {
+        list-style: none;
+        padding-left: 2rem; /* Account for the missing toggle marker */
+    }
+
+}
+
+/* Prevent inline icons in list views from being clipped */
+.notion-page-icon-inline {
+    flex-shrink: 0;
+}
+/* END OF: List Views */
+
+/* SECTION: Miscellaneous Configurable Options */
+/* Mark collections that should hide headers */
+:is(div.notion-sync-block, details.notion-toggle, div.notion-custom-code  /* one of the blocks that can contain a disable trigger */
+):has(.dsbullet-hide-header)  /* and actually contain it */
+ + .notion-collection /* a collection that directly follows such a block */
+{
+
+    /* Hide header w/search button */
+    .notion-collection-header {
+        display: none !important; /* We have to deal with insane specificity of the views as tabs selector above */
+    }
+
+    /* And the separator line above it */
+    .notion-list-body {
+        border-top: none;
+    }
+
+}
+/* END OF: Miscellaneous Configurable Options */
+
+/* ---------------------------------- */
+/* **** END OF: Database Display **** */
+/* ---------------------------------- */
