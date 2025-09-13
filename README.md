@@ -9,9 +9,12 @@ You can register for Bullet using my referral link to support my work on these a
 
 ## List of Addons
 
-- To be documented
+- [Fading Scroll Effect for the Viewport](src/fading-scroll)
+  I don't like the abrupt cut-off at the top and the bottom of the viewport when scrolling a long page. Thus, this addon.
+  It adds a subtle fading effect at the top and bottom of the viewport, making the transition smoother.
+  This script is very minimalistic, so no configuration is exposed, but you can tweak the styles in the CSS file.
 
-## Compatibility Note
+## Compatibility Notes
 
 - These addons are designed to work with the default Bullet template to provide a consistent Notion-like experience.
   If you are using a custom Bullet template, some addons may not work as intended.
@@ -47,7 +50,9 @@ To use one of the addons, follow these steps:
 5. Save your changes (click "Save" at the top of the custom code area).
 6. Publish your site (click "Publish" at the top right of the dashboard).
 
-If you want to use multiple addons, just paste them one after another in the same CSS and JS areas. Each script is designed to be self-contained. If a script depends on another, this will be noted in its comments and readme. In this case, it's recommended, but not strictly required, to paste the dependencies first.
+If you want to use multiple addons, just paste them one after another in the same CSS and JS areas. They have large header and footer comments to make it easier to find where each addon starts and ends in order to update or remove them later.
+
+Each script is designed to be self-contained. If a script depends on another, this will be noted in its comments and readme. In this case, it's recommended, but not strictly required, to paste the dependencies first.
 
 ## Configuration and Customization
 
