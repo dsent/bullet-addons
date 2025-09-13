@@ -9,13 +9,21 @@ You can register for Bullet using my referral link to support my work on these a
 
 ## List of Addons
 
-- [Global Style Tweaks](src/style-tweaks/)
+- [Global Style Tweaks](src/style-tweaks/style-tweaks-readme.md)
   Contains small, site-wide CSS improvements I use for my site, [dsent.me](https://dsent.me).  
   Features include fixing branding focus outline and navbar spacing, making the site's navbar look consistent, Notion-like CTA buttons, embedded SVG icons for Telegram and WhatsApp, and a trigger (`.dsbullet-hide-title`) to hide the page title on any page.
 - [Fading Scroll Effect for the Viewport](src/fading-scroll/)
   Adds a subtle fading effect at the top and bottom of the viewport when scrolling long pages, eliminating the abrupt cut-off.
   This minimalistic script has no configuration options, but you can modify the CSS file to adjust the styling.
-- [Unwrap Views](src/unwrap-views/)
+- [Language Selector Links and Link Outlines](src/lang-link/lang-link-readme.md)
+  This script improves the user experience for a multilingual site built on Notion and Bullet.
+
+  You designate some pages as translations of each other, and the system automatically generates a helpful outline, linking all translations of the current page on each page. Moreover, the standard Bullet language switcher in the header links to the correct localized version of each page instead of just linking to the home page of the selected language.
+
+  You can see how it looks and works on my site: [dsent.me](https://dsent.me).
+
+  The styles included with this script are also useful for other applications. For example, I reuse them to display a list of links to the current page's content posted on other platforms (e.g. Facebook, Twitter etc.). The same setup can be used for other purposes, such as linking to different versions of the same content (e.g. PDF, text, audio, video etc.).
+- [Unwrap Views](src/unwrap-views/unwrap-views-readme.md)
   This script enhances the user experience with multi-level Notion lists (lists with sub-items), enabling using them as navigation menus or for other purposes. It provides two main features:
   - **Unwrap**: Removes a top-level item, promoting its sub-items to the top level.
   - **Expand**: Expands all or some items in a list so their sub-items are visible without clicking on the parent item's handle.
