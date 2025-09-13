@@ -5,11 +5,9 @@ This repository holds the extra addons for Bullet that I created and maintain.
 Bullet is a publishing platform built on top of Notion, greatly enhancing the default Notion web experience
 with custom styles, SEO improvements, basic multilingual support, control over the publishing process, and a lot more.
 
-You can register for Bullet using my referral link to support my work on these addons:
+You can register for Bullet using my referral link to support my work on these addons: [bullet.so](https://bullet.so/?ref=dsent)
 
-[bullet.so](https://bullet.so/?ref=dsent)
-
-## The existing addons
+## The Existing Addons
 
 - To be documented
 
@@ -41,7 +39,7 @@ To use one of the addons, follow these steps:
 
 If you want to use multiple addons, just paste them one after another in the same CSS and JS areas. Each script is designed to be self-contained. If a script depends on another, this will be noted in its comments and readme. In this case, it's recommended, but not strictly required, to paste the dependencies first.
 
-## Configuration and customization
+## Configuration and Customization
 
 Some scripts have configuration options. These are usually grouped at the top of the file, or, in some cases, a particular section within the file. You can just edit these values in the script to change the default behavior for the entire site.
 
@@ -63,7 +61,7 @@ An example of a marker block on a Notion page:
 
 The above marker prevents the list below it from rendering its list of views as tabs and forces it to render as a default dropdown list.
 
-## Licensing and contributions
+## Licensing and Contributions
 
 - The repo is licensed under a [MIT license](LICENSE).
 - If you want a different license, you can [contact me](#author-and-contact).
@@ -71,16 +69,16 @@ The above marker prevents the list below it from rendering its list of views as 
 - Contributions are welcome. Please open issues or PRs against the public package; sensitive site-specific
   bits will not be accepted into the published package.
 
-## Security & privacy
+## Security & Privacy
 
 - Do not commit secrets or site-specific credentials. The public package will contain only static CSS and
   small client-side scripts that do not require server credentials.
 
-## Roadmap / next steps
+## Roadmap / Next Steps
 
 - None published yet.
 
-## Author and contact
+## Author and Contact
 
 - You can find more about me and my work at [dsent.me](https://dsent.me).
 - For questions or sponsorship: Reach out via [Telegram](https://t.me/dsent_zen) or [email](mailto:info@dsent.me).
