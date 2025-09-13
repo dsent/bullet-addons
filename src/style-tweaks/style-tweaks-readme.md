@@ -1,4 +1,4 @@
-# Global Style Tweaks
+# General Style Tweaks
 
 `style-tweaks.css` contains small, site-wide CSS improvements I use for my site, [dsent.me](https://dsent.me).
 
