@@ -53,11 +53,16 @@ Use `data-expand-filter` to expand only matching elements. This opens the matche
 
 ## Target Lists by Position
 
-Target specific list views without knowing their IDs. The example below expands the second list view in a database view right below the marker span:
+Target specific list views without knowing their IDs (rely on their position relative to the marker):
 
 ```html
+<!-- Target all list views in the database next to this marker -->
+<span id="list-marker-861624665"
+  data-expand-view=".notion-custom-code:has(> #list-marker-861624665) + .notion-collection > .notion-collection-view .notion-list-body"
+></span>
+<!-- Advanced: target the *second* list view in the following database view -->
 <span id="list-marker-650184903"
-    data-expand-view=".notion-custom-code:has(> #list-marker-650184903) + .notion-collection > :nth-child(2 of .notion-collection-view) .notion-list-body"
+  data-expand-view=".notion-custom-code:has(> #list-marker-650184903) + .notion-collection > :nth-child(1 of .notion-collection-view) .notion-list-body"
 ></span>
 ```
 
