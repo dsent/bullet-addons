@@ -10,11 +10,11 @@
             "bullet-addons/src/unwrap-views/unwrap-views.js",
             "bullet-addons/src/outline-popup/outline-popup.js"
         ],
-        "outFile": "bullet-custom.js",
+    "outFile": "bullet-custom-body.html",
         "transpile": true,
         "minify": false,
         "target": "es2018",
-        "banner": "/* dsent.me Bullet custom JS build */"
+    "banner": "/* dsent.me Custom BODY build for Bullet */"
     },
     "css": {
         "sources": [
@@ -32,6 +32,6 @@
             "not ie <= 11",
             "not op_mini all"
         ],
-        "banner": "/* dsent.me Bullet custom CSS build */"
+        "banner": "/* Custom CSS build for Bullet */"
     }
 }

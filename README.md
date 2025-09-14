@@ -52,7 +52,7 @@ To install an addon:
 1. Open your [Bullet dashboard](https://app.bullet.so/dashboard), find your site, and click "Edit."
 2. Go to the "Code" tab in the left sidebar.
 3. Copy the CSS file contents into the "CSS" area.
-4. Copy the JavaScript file contents into the "Body" area, wrapped in `<script>...</script>` tags:
+4. Copy the JavaScript output (Body HTML file) into the "Body" area. If you paste scripts manually, wrap them in `<script>...</script>` tags (the build output already includes this wrapper):
 
    ```html
    <script type="text/javascript" defer>
@@ -97,7 +97,7 @@ This marker prevents the list below it from rendering as tabs and forces it to d
 
 ## Build
 
-To simplify updates, I use a [PowerShell build script](build/) that combines individual CSS and JS files into two outputs you can paste into Bullet's custom code areas. The script also optionally transpiles the scripts and stylesheets for better compatibility with older browsers and minifies them for production use.
+To simplify updates, I use a [PowerShell build script](build/) that combines individual CSS and JS files into two outputs you can paste into Bullet's custom code areas: an HTML file for the Body area (with `<script>` wrapper) and a CSS file for the CSS area. The script also optionally transpiles the scripts and stylesheets for better compatibility with older browsers and minifies them for production use.
 
 The script reads configuration from `build.config.json`, which lists the source files and options. A sample configuration is included in this repo.
 

@@ -1,8 +1,8 @@
 param(
   [string]$ConfigPath = "$(Join-Path $PSScriptRoot 'build.config.json')",
   [switch]$Dev,          # dev: combine only (no minify, keep modern targets)
-  [switch]$Minify,       # force minification
-  [switch]$Transpile,    # force transpile/compat
+  [string]$Minify,       # values: js | css | js,css (force these; overrides config)
+  [string]$Transpile,    # values: js | css | js,css (force these; overrides config)
   [switch]$NoNode,       # disable Node tool usage even if available
   [switch]$VerboseLog
 )
@@ -41,14 +41,53 @@ if ($useNode) {
   }
 }
 
-# Effective flags
-$doTranspile = $Transpile -or ($jsCfg.transpile -or $cssCfg.transpile)
-$doMinify = $Minify -or ($jsCfg.minify -or $cssCfg.minify)
-if ($Dev) { $doTranspile = $false; $doMinify = $false }
+# Parsing helpers for selector arguments like "js", "css", or "js,css"
+function Parse-Selector($value) {
+  $result = @{ js = $false; css = $false }
+  if (-not $value) { return $result }
+  $tokens = ($value -split '[,\s]+' | Where-Object { $_ -and $_.Trim().Length -gt 0 })
+  foreach ($tok in $tokens) {
+    $t = $tok.Trim().ToLowerInvariant()
+    switch ($t) {
+      'js' { $result.js = $true }
+      'css' { $result.css = $true }
+      'both' { $result.js = $true; $result.css = $true }
+      'all' { $result.js = $true; $result.css = $true }
+      default { Write-Warn "Unknown selector '$tok' in argument '$value' (allowed: js, css, js,css)" }
+    }
+  }
+  return $result
+}
+
+# Determine effective flags PER PIPELINE (JS vs CSS)
+# If CLI selector provided, it forces the chosen pipelines; otherwise fall back to config
+$jsTranspile = $false; $cssTranspile = $false
+if ($Transpile) {
+  $sel = Parse-Selector $Transpile
+  $jsTranspile = $sel.js; $cssTranspile = $sel.css
+}
+else {
+  $jsTranspile = ($jsCfg -and $jsCfg.transpile)
+  $cssTranspile = ($cssCfg -and $cssCfg.transpile)
+}
+
+$jsMinify = $false; $cssMinify = $false
+if ($Minify) {
+  $sel = Parse-Selector $Minify
+  $jsMinify = $sel.js; $cssMinify = $sel.css
+}
+else {
+  $jsMinify = ($jsCfg -and $jsCfg.minify)
+  $cssMinify = ($cssCfg -and $cssCfg.minify)
+}
+
+if ($Dev) { $jsTranspile = $false; $cssTranspile = $false; $jsMinify = $false; $cssMinify = $false }
 
 Write-Info "BaseDir: $baseDir"
 Write-Info "OutDir:  $outDir"
-Write-Info "Transpile: $doTranspile; Minify: $doMinify; UseNode: $useNode"
+Write-Info "UseNode: $useNode"
+Write-Info "JS  -> Transpile: $jsTranspile; Minify: $jsMinify"
+Write-Info "CSS -> Transpile: $cssTranspile; Minify: $cssMinify"
 
 function Resolve-Sources([object]$arr) {
   $files = @()
@@ -81,11 +120,11 @@ if ($jsCfg) {
     Set-Content -Path $jsTemp -Value ($b + $content) -Encoding UTF8
   }
 
-  if ($useNode -and ($doTranspile -or $doMinify)) {
+  if ($useNode -and ($jsTranspile -or $jsMinify)) {
     $target = $jsCfg.target
     $npxJsArgs = @('--yes', '-p', 'esbuild', 'esbuild', $jsTemp, '--bundle', '--legal-comments=none', "--outfile=$jsOut")
-    if ($doMinify) { $npxJsArgs += '--minify' }
-    if ($doTranspile -and $target) { $npxJsArgs += "--target=$target" }
+    if ($jsMinify) { $npxJsArgs += '--minify' }
+    if ($jsTranspile -and $target) { $npxJsArgs += "--target=$target" }
     Write-Info ("esbuild: npx " + ($npxJsArgs -join ' '))
     $exit = 0
     try { & npx @npxJsArgs } catch { $exit = 1 }
@@ -100,6 +139,28 @@ if ($jsCfg) {
 
   Remove-Item -Force $jsTemp -ErrorAction SilentlyContinue
   Write-Info "Wrote JS: $([IO.Path]::GetFileName($jsOut))"
+
+  # Wrap JS output in <script> tag and emit HTML alongside JS (no other behavior changed)
+  try {
+    $jsContent = Get-Content -Raw -Path $jsOut
+    $wrapped = @"
+<script type="text/javascript" defer>
+$jsContent
+</script>
+"@
+    $jsOutHtml = if ([IO.Path]::GetExtension($jsOut).ToLowerInvariant() -eq '.html') { $jsOut } else { [IO.Path]::ChangeExtension($jsOut, 'html') }
+    Set-Content -Path $jsOutHtml -Value $wrapped -Encoding UTF8
+    Write-Info "Wrote JS (HTML wrapper): $([IO.Path]::GetFileName($jsOutHtml))"
+
+    # If the raw bundle was a .js file, remove it so the output is HTML-only per request
+    if ([IO.Path]::GetExtension($jsOut).ToLowerInvariant() -eq '.js') {
+      Remove-Item -Force -Path $jsOut -ErrorAction SilentlyContinue
+      Write-Info "Removed raw JS bundle (HTML output requested)"
+    }
+  }
+  catch {
+    Write-Warn "Failed to produce HTML-wrapped JS output: $($_.Exception.Message)"
+  }
 }
 
 # CSS pipeline
@@ -122,23 +183,23 @@ if ($cssCfg) {
     Set-Content -Path $cssTemp -Value ($b + $content) -Encoding UTF8
   }
 
-  if ($useNode -and ($doTranspile -or $doMinify)) {
-    # NOTE: lightningcss parses the --targets value by splitting on commas to allow multiple target groups.
-    if ($cssCfg.browserslist -is [array]) {
-      $browsers = ($cssCfg.browserslist -join ", ")
-    }
-    else {
-      $browsers = $cssCfg.browserslist ? $cssCfg.browserslist : "defaults"
+  if ($useNode -and ($cssTranspile -or $cssMinify)) {
+    # Build lightningcss args safely for PowerShell; force package with -p for stable CLI resolution
+    $npxCssArgs = @('--yes', '-p', 'lightningcss-cli', 'lightningcss', $cssTemp)
+
+    # Only set targets when transpiling CSS for compatibility
+    if ($cssTranspile) {
+      # NOTE: lightningcss parses the --targets value by splitting on commas to allow multiple target groups.
+      if ($cssCfg.browserslist -is [array]) { $browsers = ($cssCfg.browserslist -join ", ") }
+      else { $browsers = ($cssCfg.browserslist ? $cssCfg.browserslist : "defaults") }
+      $npxCssArgs += @('--targets', $browsers)
     }
 
-    # Build lightningcss args safely for PowerShell; force package with -p for stable CLI resolution
-    $npxCssArgs = @(
-      '--yes', '-p', 'lightningcss-cli', 'lightningcss', $cssTemp,
-      '--targets', $browsers,            # no browserslist: prefix needed
-      '--bundle', '--output-file', $cssOut
-    )
-    if ($doMinify) { $npxCssArgs += '--minify' }
+    # Bundle and emit the file
     $npxCssArgs += @('--bundle', '--output-file', $cssOut)
+
+    if ($cssMinify) { $npxCssArgs += '--minify' }
+
     Write-Info ("lightningcss: npx " + ($npxCssArgs -join ' '))
     $exit = 0
     try { & npx @npxCssArgs } catch { $exit = 1 }
