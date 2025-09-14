@@ -1,0 +1,37 @@
+{
+    "name": "Bullet custom code build config",
+    "description": "Define the JS/CSS source files to combine, with optional transpile and minify settings.",
+    "baseDir": "..",
+    "outDir": "dist",
+    "js": {
+        "sources": [
+            "bullet-addons/src/fading-scroll/fading-scroll.js",
+            "bullet-addons/src/lang-link/lang-link.js",
+            "bullet-addons/src/unwrap-views/unwrap-views.js",
+            "bullet-addons/src/outline-popup/outline-popup.js"
+        ],
+        "outFile": "bullet-custom.js",
+        "transpile": true,
+        "minify": false,
+        "target": "es2018",
+        "banner": "/* dsent.me Bullet custom JS build */"
+    },
+    "css": {
+        "sources": [
+            "bullet-addons/src/style-tweaks/style-tweaks.css",
+            "bullet-addons/src/database-display/database-display.css",
+            "bullet-addons/src/fading-scroll/fading-scroll.css",
+            "bullet-addons/src/lang-link/link-callouts.css",
+            "bullet-addons/src/outline-popup/outline-popup.css"
+        ],
+        "outFile": "bullet-custom.css",
+        "transpile": true,
+        "minify": false,
+        "browserslist": [
+            "defaults",
+            "not ie <= 11",
+            "not op_mini all"
+        ],
+        "banner": "/* dsent.me Bullet custom CSS build */"
+    }
+}

@@ -40,8 +40,8 @@ You can register for Bullet using my referral link to support my work on these a
   Custom Bullet templates may cause some addons to work incorrectly.
 - Addons are tested with modern browsers only. While I avoid unsupported features, I don't test or support
   legacy browsers or versions older than 2 years. This keeps the codebase simple, modern, and maintainable.
-  I may consider adjustments for specific older browsers if there's a compelling use case, but most legacy browser
-  issues will be marked WONTFIX. Feel free to fork the repository for broader compatibility if needed.
+  I use [esbuild](https://esbuild.github.io/) and [lightningcss](https://lightningcss.com/) to transpile and
+  minify the code for better compatibility so that should improve things a bit (see [Build section](#build) below).
 
 ## Usage
 
@@ -94,6 +94,16 @@ An example of a marker block on a Notion page:
 ![A screenshot of a Notion page with custom HTML marker before a list](img/sample-html-marker.png)
 
 This marker prevents the list below it from rendering as tabs and forces it to display as a default dropdown list. The marker doesn't affect other lists or other database views on the page.
+
+## Build
+
+To simplify updates, I use a [PowerShell build script](build/) that combines individual CSS and JS files into two outputs you can paste into Bullet's custom code areas. The script also optionally transpiles the scripts and stylesheets for better compatibility with older browsers and minifies them for production use.
+
+The script reads configuration from `build.config.json`, which lists the source files and options. A sample configuration is included in this repo.
+
+A detailed readme for the build script is in [build/build-readme.md](build/build-readme.md).
+
+Note that Bullet itself minifies the code you paste into the custom code areas, so minification is not strictly necessary.
 
 ## Licensing and Contributions
 
