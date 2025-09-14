@@ -451,18 +451,21 @@
   }
 
   // Compute and apply the vertical position of the mini-outline to emulate Notion behavior:
-  // - Follows the title (h1.notion-title) staying dynamicTitleOffset below its top
+  // - Follows the top of the .notion-page (actual content below the cover image and header),
+  //   staying dynamicTitleOffset below its top
+  //   NB: we can't use the title element because some pages hide it (display:none)
   // - Stops at cfg.stickyTop and stays there while scrolling further
   function updateTopPosition() {
     try {
-      const title = $('h1.notion-title') || null;
       let topPx = cfg.stickyTop;
 
-      if (title && title.getBoundingClientRect) {
-        const rect = title.getBoundingClientRect();
-        const candidate = Math.round(rect.top) + cfg.dynamicTitleOffset;
-        if (candidate > topPx) topPx = candidate;
-      }
+      const page = $('.notion-page');
+      const prect = page.getBoundingClientRect();
+      let padTop = 0;
+      const cs = getComputedStyle(page);
+      padTop = parseFloat(cs.paddingTop) || 0;
+      const candidate = Math.round(prect.top + padTop) + cfg.dynamicTitleOffset;
+      if (candidate > topPx) topPx = candidate;
 
       // Apply via CSS var so both rail and popup are kept in sync
       document.documentElement.style.setProperty('--outline-top', `${topPx}px`);
