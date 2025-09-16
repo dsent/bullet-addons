@@ -5,9 +5,9 @@
 /* Theme tokens */
 :root {
   --outline-bg: #ffffff;
-  --outline-fg: #73726e;               /* item text (inactive) */
-  --outline-fg-strong: #32302c;        /* item text (active) */
-  --outline-accent: #2383e2;           /* link/active accent */
+  --outline-fg: #73726e; /* item text (inactive) */
+  --outline-fg-strong: #32302c; /* item text (active) */
+  --outline-accent: #2383e2; /* link/active accent */
   --outline-border: rgba(84, 72, 49, 0.08);
   --outline-rail-muted: rgba(84, 72, 49, 0.15);
   --outline-rail-active: rgb(50, 48, 44);
@@ -23,15 +23,43 @@
   --outline-popup-pad-x: 12px;
   --outline-popup-pad-top: 12px;
   --outline-popup-max-h: min(80vh, 765px);
-  --outline-popup-right-offset: 8px;   /* nudge left so right border/shadow remain visible */
+  --outline-popup-right-offset: 8px; /* nudge left so right border/shadow remain visible */
 
   --outline-hover-bg: rgba(55, 53, 47, 0.08);
   --outline-scrollbar-thumb: rgba(0, 0, 0, 0.2);
   --outline-scrollbar-thumb-hover: rgba(0, 0, 0, 0.28);
 
+  /* Right-rail launcher visual tokens (mirror left nav launcher) */
+  --outline-rail-visible: 44px;
+
+  /* how much is visible when at rest */
+  --outline-rail-pull: calc(
+    var(--outline-rail-width) - var(--outline-rail-visible)
+  );
+  --outline-rail-tab-radius: 4px;
+
+  /* match navigation launcher curvature */
+  --outline-rail-border-w: 2px;
+  --outline-rail-paper-fill: color-mix(in oklab, currentColor 6%, transparent);
+  --outline-rail-paper-fill-hover: color-mix(
+    in oklab,
+    currentColor 9%,
+    transparent
+  );
+  --outline-rail-border-color: color-mix(
+    in oklab,
+    currentColor 22%,
+    transparent
+  );
+  --outline-rail-border-color-hover: color-mix(
+    in oklab,
+    currentColor 28%,
+    transparent
+  );
+
   /* Vertical positioning defaults; JS sets --outline-top dynamically to follow title until sticky baseline */
-  --outline-sticky-top: 151px; /* site-specific sticky baseline (nav 60 + margin 48 + title 48) */
   /* --outline-top is set dynamically at runtime; if absent, fall back to sticky top */
+  --outline-sticky-top: 151px; /* site-specific sticky baseline (nav 60 + margin 48 + title 48) */
 }
 
 .dark-mode {
@@ -63,29 +91,73 @@
   pointer-events: auto; /* interactive */
 }
 
+/* Remove any default focus ring around the rail container itself */
+.bullet-outline-rail:focus,
+.bullet-outline-rail:focus-visible,
+.bullet-outline-rail:focus-within {
+  outline: none;
+  box-shadow: none;
+}
+
 .bullet-outline-rail-bars {
   display: flex;
   flex-direction: column;
   gap: var(--outline-rail-gap);
   padding-inline-end: var(--outline-rail-pad-right);
   padding-bottom: 12px;
+  /* Pre-allocate space to avoid layout shift on hover and focus */
+  padding-top: 12px;
+  /* match bottom */
+  padding-inline-start: 12px;
+  /* left padding in default state */
+  border-top: var(--outline-rail-border-w) solid transparent;
+  border-left: var(--outline-rail-border-w) solid transparent;
+  border-bottom: var(--outline-rail-border-w) solid transparent;
+  border-right: 0;
+  border-top-left-radius: var(--outline-rail-tab-radius);
+  border-bottom-left-radius: var(--outline-rail-tab-radius);
+  transition: background-color 0.18s ease, border-color 0.18s ease;
+}
+
+/* Apply highlight, border and extra paddings only to the inner bars container on hover and focus */
+.bullet-outline-rail:hover .bullet-outline-rail-bars,
+.bullet-outline-rail:focus-within .bullet-outline-rail-bars {
+  background-color: var(--outline-rail-paper-fill-hover);
+  border-color: var(--outline-rail-border-color-hover);
 }
 
 .bullet-outline-bar {
   height: var(--outline-rail-bar-height);
   background-color: var(--outline-rail-muted);
   border-radius: 2px;
-  transition: background 0.2s ease, box-shadow 0.2s ease;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  transform-origin: right center;
+  /* stretch outward from viewport edge */
 }
 
 /* Width + indent by level (approximate Notion look) */
-.bullet-outline-bar.level-1 { width: 16px; margin-inline-start: 0; }
-.bullet-outline-bar.level-2 { width: 12px; margin-inline-start: 4px; }
-.bullet-outline-bar.level-3 { width: 8px;  margin-inline-start: 8px; }
+.bullet-outline-bar.level-1 {
+  width: 16px;
+  margin-inline-start: 0;
+}
+.bullet-outline-bar.level-2 {
+  width: 12px;
+  margin-inline-start: 4px;
+}
+.bullet-outline-bar.level-3 {
+  width: 8px;
+  margin-inline-start: 8px;
+}
 
 /* Active bar emphasizes current section */
 .bullet-outline-bar.active {
   background-color: var(--outline-rail-active);
+}
+
+/* On focus/hover of the rail, subtly lengthen bars to suggest “pull-out” */
+.bullet-outline-rail:hover .bullet-outline-bar,
+.bullet-outline-rail:focus-within .bullet-outline-bar {
+  transform: scaleX(1.25);
 }
 
 /* Popup container (hidden by default; shown via .open class) */
@@ -103,7 +175,8 @@
   background-color: var(--outline-bg);
   color: var(--outline-fg);
   border-radius: var(--outline-card-radius);
-  box-shadow: var(--outline-shadow-1), var(--outline-shadow-2), var(--outline-border) 0 0 0 1px;
+  box-shadow: var(--outline-shadow-1), var(--outline-shadow-2),
+    var(--outline-border) 0 0 0 1px;
   overflow: auto;
   /* Prevent scroll chaining to page when reaching top/bottom */
   overscroll-behavior: contain;
@@ -156,6 +229,7 @@ body.dsbullet-mobile-popup {
     border-radius: 8px;
     cursor: pointer;
   }
+
   .bullet-outline-close:focus-visible {
     outline: 2px solid var(--outline-accent);
   }
@@ -179,7 +253,7 @@ body.dsbullet-mobile-popup {
   /* Larger, accessible tap targets in fullscreen */
   .bullet-outline-item {
     padding: 10px 12px; /* ~44px target with title line-height below */
-    min-height: 44px;   /* iOS HIG minimum */
+    min-height: 44px; /* iOS HIG minimum */
   }
 
   /* Larger, more legible titles on mobile */
@@ -213,7 +287,6 @@ body.dsbullet-mobile-popup:has(.bullet-outline-popup.open) {
   touch-action: pinch-zoom;
 }
 
-
 /* When popup is open, fade the rail out (Notion-like) */
 .bullet-outline-rail:has(+ .bullet-outline-popup.open) {
   opacity: 0;
@@ -221,7 +294,8 @@ body.dsbullet-mobile-popup:has(.bullet-outline-popup.open) {
 
 /* Inner list */
 .bullet-outline-list {
-  padding: var(--outline-popup-pad-top) var(--outline-popup-pad-x) 6px var(--outline-popup-pad-x);
+  padding: var(--outline-popup-pad-top) var(--outline-popup-pad-x) 6px
+    var(--outline-popup-pad-x);
   display: flex;
   flex-direction: column;
   gap: 1px;
@@ -251,9 +325,15 @@ body.dsbullet-mobile-popup:has(.bullet-outline-popup.open) {
 }
 
 /* Indentation by level */
-.bullet-outline-item.level-1 { margin-inline-start: 0;    }
-.bullet-outline-item.level-2 { margin-inline-start: 12px; }
-.bullet-outline-item.level-3 { margin-inline-start: 24px; }
+.bullet-outline-item.level-1 {
+  margin-inline-start: 0;
+}
+.bullet-outline-item.level-2 {
+  margin-inline-start: 12px;
+}
+.bullet-outline-item.level-3 {
+  margin-inline-start: 24px;
+}
 
 /* Active/current section in popup */
 .bullet-outline-item.active {
@@ -282,6 +362,9 @@ body.dsbullet-mobile-popup:has(.bullet-outline-popup.open) {
   .bullet-outline-bar,
   .bullet-outline-item {
     transition: none;
+  }
+  .bullet-outline-rail:is(:hover, :focus-within) .bullet-outline-bar {
+    transform: none;
   }
 }
 
