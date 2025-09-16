@@ -113,8 +113,8 @@
     launcher.setAttribute('aria-controls', 'bullet-nav-popup-left');
     launcher.setAttribute('aria-expanded', 'false');
 
-    // Side launcher icon
-    launcher.innerHTML = '<svg width="20" height="48" aria-hidden="true" class="nav-handle"><path fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.4" d="M.7.7h15.6q3 0 3 3v40.6q0 3-3 3h-5.2l-1.1-4-1.1 4H.7Z"></path><g stroke="currentColor" stroke-linecap="round" stroke-width="2" opacity=".9"><path d="M6.5 18h7M6.5 24h7M6.5 30h7"></path></g></svg>';
+    // Visuals for the launcher are handled entirely in CSS via ::before/::after with masks
+    // The element remains empty for accessibility and styling hooks only
 
     const popup = document.createElement('div');
     popup.className = 'bullet-nav-popup-left';
