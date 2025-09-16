@@ -9,17 +9,17 @@
   // #region Constants and State
   const P = 'outline-popup';
 
-  // Centralized selectors/constants
-  const SEL = {
-    contentRoot: '.notion-page-content-inner',
-    configEl: '#dsbullet-outline-config' // configurable selector for data-* config
-  };
-
   // DOM guard to prevent double injection on the same page
   const ROOT = document.documentElement;
   const GUARD_ATTR = `data-${P}-init`;
   if (ROOT.hasAttribute(GUARD_ATTR)) return;
   ROOT.setAttribute(GUARD_ATTR, '1');
+
+  // Centralized selectors/constants
+  const SEL = {
+    contentRoot: '.notion-page-content-inner',
+    configEl: '#dsbullet-outline-config' // configurable selector for data-* config
+  };
 
   // Config state with defaults (some can be overridden by optional config element after DOM ready)
   const cfg = {
@@ -51,7 +51,7 @@
     timeoutMs: 2000,      // hard timeout to finalize even if not within settleDist (bottom edge quirks)
   };
 
-  const state = {
+  const S = {
     headings: [],        // [{ el, id, title, titleHTML, level }]
     activeIndex: -1,
     rail: null,
@@ -88,13 +88,18 @@
     return Math.min(max, Math.max(min, n));
   }
 
-  function $(sel, root = document) {
-    return root.querySelector(sel);
+  function clampBool(v, fallback) {
+    if (typeof v === 'boolean') return v;
+    if (typeof v === 'string') {
+      const s = v.trim().toLowerCase();
+      if (['1', 'true', 'yes', 'on'].includes(s)) return true;
+      if (['0', 'false', 'no', 'off'].includes(s)) return false;
+    }
+    return !!fallback;
   }
 
-  function $all(sel, root = document) {
-    return Array.from(root.querySelectorAll(sel));
-  }
+  function $(sel, root = document) { try { return root.querySelector(sel); } catch { return null; } }
+  function $all(sel, root = document) { try { return Array.from(root.querySelectorAll(sel)); } catch { return []; } }
   // #endregion Helper Functions
 
   // #region Initialization
@@ -111,7 +116,7 @@
 
   function readConfig() {
     let el;
-    try { el = document.querySelector(SEL.configEl); } catch { el = null; }
+    el = $(SEL.configEl);
     if (!el) return; // keep defaults
     // Read data-* and apply with clamping
     cfg.maxLevel = clampInt(parseInt(el.getAttribute('data-max-level')), 1, 3, cfg.maxLevel);
@@ -123,16 +128,8 @@
     // Optional override for mobilePopup
     cfg.mobileMediaQuery = el.getAttribute('data-mobile-media-query') || cfg.mobileMediaQuery;
     const mediaMatches = window.matchMedia(cfg.mobileMediaQuery).matches;
-    const paAttr = el.getAttribute('data-mobile-popup');
-    if (typeof paAttr === 'string') {
-      const v = paAttr.trim().toLowerCase();
-      // treat everything except recognized values as 'auto' (determined by media query)
-      cfg.mobilePopup = ['1', 'true', 'yes', 'on'].includes(v) ? true :
-        ['0', 'false', 'no', 'off'].includes(v) ? false :
-          mediaMatches;
-    } else {
-      cfg.mobilePopup = mediaMatches;
-    }
+    // treat everything except recognized values as 'auto' (determined by media query)
+    cfg.mobilePopup = clampBool(el.getAttribute('data-mobile-popup'), mediaMatches);
     const anchor = el.getAttribute('data-active-anchor');
     if (typeof anchor === 'string') {
       const s = anchor.toLowerCase();
@@ -143,12 +140,10 @@
 
   // #region Outline Building
   function buildOutline() {
-    if (!state.headings.length) {
-      state.headings = collectHeadings();
-      buildRailAndPopup();
-      logOnce('indexed', `✅ indexed ${state.headings.length} headings`);
-      state.activeIndex = -1; // ensure initial active re-application
-    }
+    S.headings = collectHeadings();
+    buildRailAndPopup();
+    logOnce('indexed', `✅ indexed ${S.headings.length} headings`);
+    S.activeIndex = -1; // ensure initial active re-application
     updateActiveFromScroll(true);
   }
 
@@ -252,29 +247,29 @@
   function buildRailAndPopup() {
     buildOutlineContainers();
     // Guard: if rail already populated, we're done
-    if (state?.rail?.hasAttribute('data-rail-populated')) return;
+    if (S?.rail?.hasAttribute('data-rail-populated')) return;
 
-    const count = state.headings.length;
+    const count = S.headings.length;
 
     if (count < cfg.minItems) {
-      state.rail.classList.add('bullet-outline-hidden');
-      state.popup.classList.add('bullet-outline-hidden');
+      S.rail.classList.add('bullet-outline-hidden');
+      S.popup.classList.add('bullet-outline-hidden');
       return;
     } else {
-      state.rail.classList.remove('bullet-outline-hidden');
-      state.popup.classList.remove('bullet-outline-hidden');
+      S.rail.classList.remove('bullet-outline-hidden');
+      S.popup.classList.remove('bullet-outline-hidden');
     }
 
     // Bars (visual indicators) in the rail
-    state.headings.forEach((h, i) => {
+    S.headings.forEach((h, i) => {
       const bar = document.createElement('div');
       bar.className = `bullet-outline-bar level-${clampInt(h.level, 1, 3, 3)}`;
       bar.setAttribute('data-index', String(i));
-      state.barsWrap.appendChild(bar);
+      S.barsWrap.appendChild(bar);
     });
 
     // Popup list
-    state.headings.forEach((h, i) => {
+    S.headings.forEach((h, i) => {
       const a = document.createElement('a');
       a.className = `bullet-outline-item level-${clampInt(h.level, 1, 3, 3)}`;
       a.setAttribute('href', h.id ? '#' + encodeURIComponent(h.id) : '#');
@@ -302,20 +297,20 @@
           scrollToIndex(i);
           closePopup();
           // Return focus to document: focus the selected heading
-          const h = state.headings[i];
+          const h = S.headings[i];
           if (h && h.el) focusHeadingEl(h.el);
         }
       });
 
-      state.list.appendChild(a);
+      S.list.appendChild(a);
     });
 
     // Mark the rail as populated to use as a guard
-    state.rail.setAttribute('data-rail-populated', '1');
+    S.rail.setAttribute('data-rail-populated', '1');
 
     function buildOutlineContainers() {
-      // Guard: if rail already exists in DOM, we're done
-      if (state.rail && document.contains(state.rail)) return;
+      // Guard: if rail exists, we're done
+      if (S.rail) return;
 
       // Rail
       const rail = document.createElement('div');
@@ -362,16 +357,16 @@
       });
 
       // Hover/focus show/hide logic
-      state.railHover = false;
-      state.popupHover = false;
+      S.railHover = false;
+      S.popupHover = false;
 
-      rail.addEventListener('pointerenter', (e) => { if (e.pointerType === 'touch') return; state.railHover = true; schedulePopupShow(); });
-      rail.addEventListener('pointerleave', (e) => { if (e.pointerType === 'touch') return; state.railHover = false; schedulePopupHide(); });
-      popup.addEventListener('pointerenter', (e) => { if (e.pointerType === 'touch') return; state.popupHover = true; schedulePopupShow(); });
-      popup.addEventListener('pointerleave', (e) => { if (e.pointerType === 'touch') return; state.popupHover = false; schedulePopupHide(); });
+      rail.addEventListener('pointerenter', (e) => { if (e.pointerType === 'touch') return; S.railHover = true; schedulePopupShow(); });
+      rail.addEventListener('pointerleave', (e) => { if (e.pointerType === 'touch') return; S.railHover = false; schedulePopupHide(); });
+      popup.addEventListener('pointerenter', (e) => { if (e.pointerType === 'touch') return; S.popupHover = true; schedulePopupShow(); });
+      popup.addEventListener('pointerleave', (e) => { if (e.pointerType === 'touch') return; S.popupHover = false; schedulePopupHide(); });
       // Wheel: prevent page scroll when popup cannot scroll (overscroll-behavior covers chain when it can)
       popup.addEventListener('wheel', (e) => {
-        if (!state.popup.classList.contains('open')) return;
+        if (!S.popup.classList.contains('open')) return;
         const scroller = popup;
         const canScroll = scroller.scrollHeight > scroller.clientHeight + 1;
         if (!canScroll) {
@@ -390,10 +385,12 @@
       });
 
       // Keyboard behavior: open on focus within popup; basic arrow navigation
-      popup.addEventListener('focusin', () => { schedulePopupShow(); });
-      popup.addEventListener('focusout', () => { schedulePopupHide(); });
+      popup.addEventListener('focusin', schedulePopupShow);
+      // focusout event will also conveniently fire when tapping outside of the popup on touch devices.
+      // This helps avoid the need for a global listener to detect outside taps.
+      popup.addEventListener('focusout', schedulePopupHide);
       popup.addEventListener('keydown', (e) => {
-        const items = $all('.bullet-outline-item', popup);
+        const items = Array.from(S.list.children);
         if (!items.length) return;
         const active = document.activeElement;
         const idx = Math.max(0, items.indexOf(active));
@@ -418,10 +415,10 @@
       document.body.appendChild(popup);
 
       // Save refs
-      state.rail = rail;
-      state.barsWrap = barsWrap;
-      state.popup = popup;
-      state.list = list;
+      S.rail = rail;
+      S.barsWrap = barsWrap;
+      S.popup = popup;
+      S.list = list;
     }
 
   }
@@ -429,19 +426,19 @@
 
   // #region Behavior: Open/Close
   function openPopup(focusActive = false) {
-    clearTimeout(state.hideTimer);
-    clearTimeout(state.showTimer);
+    clearTimeout(S.hideTimer);
+    clearTimeout(S.showTimer);
     // Ensure the popup can receive focus and interactions
-    state.popup.removeAttribute('inert');
-    state.popup.classList.add('open');
+    S.popup.removeAttribute('inert');
+    S.popup.classList.add('open');
     // ARIA state
-    state.rail.setAttribute('aria-expanded', 'true');
-    state.popup.setAttribute('aria-hidden', 'false');
+    S.rail.setAttribute('aria-expanded', 'true');
+    S.popup.setAttribute('aria-hidden', 'false');
     // Lock popup visual position while open; rail continues to follow CSS var
     lockPopupPosition();
     // Focus active list item (or first) for keyboard navigation
     if (!focusActive) return;
-    const items = $all('.bullet-outline-item', state.popup);
+    const items = Array.from(S.list.children);
     const activeItem = items.find(it => it.classList.contains('active')) || items[0];
     if (activeItem) {
       activeItem.focus();
@@ -449,17 +446,17 @@
   }
 
   function closePopup() {
-    if (state.popup?.classList.contains('open')) {
+    if (S.popup?.classList.contains('open')) {
       // If focus is inside the popup, blur it to avoid aria-hidden-with-focus issues
       const ae = document.activeElement;
-      if (ae && state.popup?.contains(ae)) ae.blur();
+      if (ae && S.popup?.contains(ae)) ae.blur();
 
-      state.popup.classList.remove('open');
+      S.popup.classList.remove('open');
       // ARIA state
-      state.rail.setAttribute('aria-expanded', 'false');
-      state.popup.setAttribute('aria-hidden', 'true');
+      S.rail.setAttribute('aria-expanded', 'false');
+      S.popup.setAttribute('aria-hidden', 'true');
       // Make the popup inert while hidden to prevent accidental focus
-      state.popup.setAttribute('inert', '');
+      S.popup.setAttribute('inert', '');
       // Unlock position so it can snap to current CSS var next time
       unlockPopupPosition();
       updateActiveFromScroll(true);
@@ -468,22 +465,22 @@
 
   function closePopupAndFocusRail() {
     closePopup();
-    state.rail.focus();
+    S.rail.focus();
   }
 
   function schedulePopupShow() {
-    clearTimeout(state.hideTimer);
-    clearTimeout(state.showTimer);
-    state.showTimer = window.setTimeout(() => {
+    clearTimeout(S.hideTimer);
+    clearTimeout(S.showTimer);
+    S.showTimer = window.setTimeout(() => {
       openPopup();
     }, TIME.showMs);
   }
 
   function schedulePopupHide() {
-    clearTimeout(state.hideTimer);
-    clearTimeout(state.showTimer);
-    state.hideTimer = window.setTimeout(() => {
-      if (!state.railHover && !state.popupHover) closePopup();
+    clearTimeout(S.hideTimer);
+    clearTimeout(S.showTimer);
+    S.hideTimer = window.setTimeout(() => {
+      if (!S.railHover && !S.popupHover) closePopup();
     }, TIME.hideMs);
   }
   // #endregion Behavior: Open/Close
@@ -492,57 +489,51 @@
   function isPopupLockable() {
     // If there's no popup or on mobile — not lockable
     // On touch/coarse devices, CSS controls fullscreen layout so no locking needed
-    return !!(state.popup && !cfg.mobilePopup);
+    return !!(S.popup && !cfg.mobilePopup);
   }
 
   function lockPopupPosition() {
-    if (!isPopupLockable() || state.popupLocked) return;
-    const rect = state.popup.getBoundingClientRect();
+    if (!isPopupLockable() || S.popupLocked) return;
+    const rect = S.popup.getBoundingClientRect();
     // Lock current top so popup doesn't follow --outline-top while open
-    state.popup.style.top = `${Math.round(rect.top)}px`;
+    S.popup.style.top = `${Math.round(rect.top)}px`;
     // Also lock a stable height so dynamic changes to available space (from --outline-top updates)
     // don't cause the popup to grow/shrink while open. We'll clamp to current visible capacity.
-    state.popupLocked = true;
+    S.popupLocked = true;
     adjustLockedPopupHeight(rect);
   }
 
   function unlockPopupPosition() {
-    if (!isPopupLockable() || !state.popupLocked) return;
-    state.popup.style.removeProperty('top');
-    state.popup.style.removeProperty('height');
-    state.popup.style.removeProperty('max-height');
-    state.popupLocked = false;
+    if (!isPopupLockable() || !S.popupLocked) return;
+    S.popup.style.removeProperty('top');
+    S.popup.style.removeProperty('height');
+    S.popup.style.removeProperty('max-height');
+    S.popupLocked = false;
   }
 
   function adjustLockedPopupHeight(existingRect) {
-    if (!isPopupLockable() || !state.popupLocked) return;
-    const rect = existingRect || state.popup.getBoundingClientRect();
+    if (!isPopupLockable() || !S.popupLocked) return;
+    const rect = existingRect || S.popup.getBoundingClientRect();
     const top = rect.top;
     const viewportH = window.innerHeight || document.documentElement.clientHeight || 800;
     // Match the 12px bottom inset used in CSS max-height calc
     const maxAllowed = Math.max(0, viewportH - top - 12);
-    const contentH = Math.min(state.popup.scrollHeight, maxAllowed);
-    state.popup.style.height = `${contentH}px`;
-    state.popup.style.maxHeight = `${contentH}px`;
+    const contentH = Math.min(S.popup.scrollHeight, maxAllowed);
+    S.popup.style.height = `${contentH}px`;
+    S.popup.style.maxHeight = `${contentH}px`;
     // Height may have changed; ensure overflow matches actual scrollability
-    updatePopupOverflow();
-
-    // Decide whether the popup actually needs a scrollbar and set overflow accordingly.
     // Works around a quirk in Chromium-based browsers on Samsung tablets/phones
     // where they show a scrollbar even when not needed.
-    function updatePopupOverflow() {
-      // Small tolerance for subpixel rounding; we already observed exact equality on affected pages.
-      const EPS = 0.5;
-      const scrollable = (state.popup.scrollHeight - state.popup.clientHeight) > EPS;
-      // Inline style to override stylesheet default `overflow:auto` only when unnecessary.
-      state.popup.style.overflowY = scrollable ? 'auto' : 'hidden';
-    }
+    const EPS = 0.5; // Small tolerance for subpixel rounding
+    const scrollable = (S.popup.scrollHeight - S.popup.clientHeight) > EPS;
+    // Inline style to override stylesheet default `overflow:auto` only when unnecessary.
+    S.popup.style.overflowY = scrollable ? 'auto' : 'hidden';
   }
   // #endregion Behavior: Position Locking
 
   // #region Behavior: Scroll/Active Update
   function scrollToIndex(idx) {
-    const h = state.headings[idx];
+    const h = S.headings[idx];
     if (!h) return;
     const rawTarget = (h.el.getBoundingClientRect().top + window.scrollY) - cfg.scrollOffset;
     const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
@@ -550,7 +541,7 @@
     if (h.id) history.pushState(null, '', '#' + encodeURIComponent(h.id));
 
     // Abort any ongoing click override
-    if (state.clicked) cleanup();
+    if (S.clicked) cleanup();
 
     // If already near target (no smooth scroll effect), just set finalized highlight now
     if (Math.abs(window.scrollY - targetY) <= CLICK.settleDist) {
@@ -559,7 +550,7 @@
     }
 
     // Establish clicked intent; ensure final highlight after scroll settles.
-    state.clicked = {
+    S.clicked = {
       index: idx,
       targetY,
       dir: targetY - window.scrollY,
@@ -573,55 +564,55 @@
     let scrollOpts = { passive: true };
     document.addEventListener('scrollend', settle, settleOpts);
     document.addEventListener('scroll', tick, scrollOpts);
-    state.clicked.settle = setTimeout(settle, CLICK.settleMs);
-    state.clicked.to = setTimeout(cleanup, CLICK.timeoutMs);
+    S.clicked.settle = setTimeout(settle, CLICK.settleMs);
+    S.clicked.to = setTimeout(cleanup, CLICK.timeoutMs);
     window.scrollTo({ top: targetY, behavior: 'smooth' });
 
     function tick() {
-      if (!state.clicked) return cleanup(); // Guard: should not happen
+      if (!S.clicked) return cleanup(); // Guard: should not happen
 
       // Throttle ticks
       const now = performance.now();
-      if (now - state.clicked.lastTick < CLICK.tickMs) return;
+      if (now - S.clicked.lastTick < CLICK.tickMs) return;
 
       // Check scroll progress
       const curY = window.scrollY;
-      const change = curY - state.clicked.lastY;
+      const change = curY - S.clicked.lastY;
       if (Math.abs(change) <= CLICK.settleDist) return; // no meaningful change; let settle timer handle it
 
       // Check for aborted scroll
-      if (state.clicked.dir > 0 && (change < 0 || curY > state.clicked.targetY) ||
-        state.clicked.dir < 0 && (change > 0 || curY < state.clicked.targetY)) {
+      if (S.clicked.dir > 0 && (change < 0 || curY > S.clicked.targetY) ||
+        S.clicked.dir < 0 && (change > 0 || curY < S.clicked.targetY)) {
         return cleanup();
       }
 
       // Update clicked state
-      state.clicked.lastY = window.scrollY;
-      state.clicked.lastTick = now;
+      S.clicked.lastY = window.scrollY;
+      S.clicked.lastTick = now;
 
       // Rearm settle timer
-      if (state.clicked.settle) clearTimeout(state.clicked.settle);
-      state.clicked.settle = setTimeout(settle, CLICK.settleMs);
+      if (S.clicked.settle) clearTimeout(S.clicked.settle);
+      S.clicked.settle = setTimeout(settle, CLICK.settleMs);
     }
 
     function settle() {
-      if (!state.clicked) return cleanup(); // Guard: should not happen
+      if (!S.clicked) return cleanup(); // Guard: should not happen
 
       // Was there a meaningful scroll change since last tick?
-      if (Math.abs(window.scrollY - state.clicked.targetY) > CLICK.settleDist) return tick(); // process latest change
+      if (Math.abs(window.scrollY - S.clicked.targetY) > CLICK.settleDist) return tick(); // process latest change
 
       // Finalize highlight
-      updateActiveHeading(state.clicked.index);
+      updateActiveHeading(S.clicked.index);
       cleanup();
     }
 
     function cleanup() {
-      if (!state.clicked) return; // already cleaned up
-      if (state.clicked.settle) clearTimeout(state.clicked.settle);
-      if (state.clicked.to) clearTimeout(state.clicked.to);
+      if (!S.clicked) return; // already cleaned up
+      if (S.clicked.settle) clearTimeout(S.clicked.settle);
+      if (S.clicked.to) clearTimeout(S.clicked.to);
       document.removeEventListener('scrollend', settle, settleOpts);
       document.removeEventListener('scroll', tick, scrollOpts);
-      state.clicked = null;
+      S.clicked = null;
     }
   }
 
@@ -638,10 +629,10 @@
   }
 
   function updateActiveHeading(newIdx) {
-    state.activeIndex = newIdx;
-    if (!state.barsWrap || !state.list) return; // Guard: should not happen
-    const bars = $all('.bullet-outline-bar', state.barsWrap);
-    const items = $all('.bullet-outline-item', state.list);
+    S.activeIndex = newIdx;
+    if (!S.barsWrap || !S.list) return; // Guard: should not happen
+    const bars = Array.from(S.barsWrap.children);
+    const items = Array.from(S.list.children);
 
     bars.forEach((b, i) => {
       if (i === newIdx) b.classList.add('active');
@@ -656,9 +647,9 @@
   function updateActiveFromScroll(force = false) {
     // Throttle via rAF
     if (!force) {
-      if (state.scrollRAF) return;
-      state.scrollRAF = requestAnimationFrame(() => {
-        state.scrollRAF = null;
+      if (S.scrollRAF) return;
+      S.scrollRAF = requestAnimationFrame(() => {
+        S.scrollRAF = null;
         updateActiveAndTop();
       });
     } else
@@ -688,18 +679,18 @@
 
         // Apply via CSS var so both rail and popup are kept in sync
         document.documentElement.style.setProperty('--outline-top', `${topPx}px`);
-        state.outlineTopPx = topPx;
+        S.outlineTopPx = topPx;
       } catch {
         // In case something goes wrong, at least keep sticky default
         document.documentElement.style.setProperty('--outline-top', `${cfg.stickyTop}px`);
-        state.outlineTopPx = cfg.stickyTop;
+        S.outlineTopPx = cfg.stickyTop;
       }
       // Notify listeners (e.g., optional navigation popup) about new top
-      document.dispatchEvent(new CustomEvent('bullet-outline:top', { detail: { topPx: state.outlineTopPx } }));
+      document.dispatchEvent(new CustomEvent('bullet-outline:top', { detail: { topPx: S.outlineTopPx } }));
     }
 
     function updateActive() {
-      if (!state.headings.length) return;
+      if (!S.headings.length) return;
 
       // Compute focusY and compare heading document-top (y) directly to it.
       const winH = window.innerHeight || document.documentElement.clientHeight || 800;
@@ -712,8 +703,8 @@
 
       // Early-exit scan: choose the last heading whose top is at or above focusY.
       let best = 0;
-      for (let i = 0; i < state.headings.length; i++) {
-        const h = state.headings[i];
+      for (let i = 0; i < S.headings.length; i++) {
+        const h = S.headings[i];
         const rect = h.el.getBoundingClientRect();
         const y = rect.top + window.scrollY;
         if (y <= (focusY + EPS)) best = i;
@@ -723,10 +714,10 @@
       // If DOM was rebuilt (e.g., after resize), active classes may be missing even if index is unchanged.
       // In that case, apply the active classes unconditionally once.
       const hasActiveClass =
-        !!(state.barsWrap && state.barsWrap.querySelector && state.barsWrap.querySelector('.bullet-outline-bar.active')) ||
-        !!(state.list && state.list.querySelector && state.list.querySelector('.bullet-outline-item.active'));
+        !!($('.bullet-outline-bar.active', S?.barsWrap)) ||
+        !!($('.bullet-outline-item.active', S?.list));
       // Update active heading if changed or classes are missing
-      if (!hasActiveClass || best !== state.activeIndex) updateActiveHeading(best);
+      if (!hasActiveClass || best !== S.activeIndex) updateActiveHeading(best);
     }
   }
 
@@ -735,13 +726,13 @@
   // #region Init Logic
   function installListeners() {
     // Install scroll/resize only once
-    if (!state.listenersInstalled) {
+    if (!S.listenersInstalled) {
       window.addEventListener('scroll', () => updateActiveFromScroll(), { passive: true });
       window.addEventListener('resize', () => {
         updateActiveFromScroll(true);
         adjustLockedPopupHeight();  // in case viewport height changed
       });
-      state.listenersInstalled = true;
+      S.listenersInstalled = true;
     }
   }
 
@@ -752,7 +743,7 @@
     window.DSBulletOutline = {
       version: '1.0.0',
       getTop() {
-        const t = Number(state.outlineTopPx);
+        const t = Number(S.outlineTopPx);
         if (Number.isFinite(t) && t >= 0) return t;
         const cssTop = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--outline-top'), 10);
         return Number.isFinite(cssTop) ? cssTop : cfg.stickyTop;
@@ -768,7 +759,7 @@
     };
   }
 
-  function init() {
+  function start() {
     // Read optional config after DOM ready
     initConfig();
     buildOutline();
@@ -776,13 +767,13 @@
     exposeOutlineAPI();
     logOnce('init', '✅ initialized');
     // Signal that outline is ready for optional companion modules
-    document.dispatchEvent(new CustomEvent('bullet-outline:ready', { detail: { topPx: state.outlineTopPx } }));
+    document.dispatchEvent(new CustomEvent('bullet-outline:ready', { detail: { topPx: S.outlineTopPx } }));
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', start);
   } else {
-    init();
+    start();
   }
   // #endregion Init Logic
 
