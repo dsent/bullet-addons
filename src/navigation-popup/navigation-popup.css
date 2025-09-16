@@ -1,14 +1,14 @@
 /* SECTION: Left-side Navigation Popup */
 .bullet-nav-launcher-left {
   /* Geometry config for the launcher tab */
-  --nav-launcher-width: 32px;         /* full width of the paper tab */
-  --nav-launcher-height: 64px;        /* full height of the tab */
-  --nav-visible: 16px;                /* how much is visible when hidden */
+  --nav-launcher-width: 32px; /* full width of the paper tab */
+  --nav-launcher-height: 64px; /* full height of the tab */
+  --nav-visible: 16px; /* how much is visible when hidden */
   --nav-pull: calc(var(--nav-launcher-width) - var(--nav-visible));
 
   /* Visual tuning */
-  --nav-tab-radius: 4px;              /* match sample; adjust if you tweak the curve */
-  --nav-tab-border-w: 2px;            /* 1px is crisper than fractional widths */
+  --nav-tab-radius: 4px; /* match sample; adjust if you tweak the curve */
+  --nav-tab-border-w: 2px; /* 1px is crisper than fractional widths */
   --nav-border-color: color-mix(in oklab, currentColor 22%, transparent);
   --nav-line-color: color-mix(in oklab, currentColor 40%, transparent);
   --nav-paper-fill: color-mix(in oklab, currentColor 6%, transparent);
@@ -34,27 +34,17 @@
   border-bottom-right-radius: var(--nav-tab-radius);
 
   /* Draw the three horizontal “page lines” with layered gradients */
-  background-image:
-    linear-gradient(to right, var(--nav-line-color), var(--nav-line-color)),
+  background-image: linear-gradient(to right, var(--nav-line-color), var(--nav-line-color)),
     linear-gradient(to right, var(--nav-line-color), var(--nav-line-color)),
     linear-gradient(to right, var(--nav-line-color), var(--nav-line-color));
   background-repeat: no-repeat;
-  background-size:
-    16px 2px, /* top line */
-    14px 2px, /* middle line */
-    17px 2px; /* bottom line */
-  background-position:
-    6px 24px,
-    6px 29px,
-    6px 34px;
+  background-size: 16px 2px, /* top line */ 14px 2px, /* middle line */ 17px 2px; /* bottom line */
+  background-position: 6px 24px, 6px 29px, 6px 34px;
 
   cursor: pointer;
   z-index: var(--outline-z);
   padding: 0;
-  transition:
-    inset-inline-start 0.28s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.12s ease,
-    background-color 0.18s ease,
+  transition: inset-inline-start 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.12s ease, background-color 0.18s ease,
     border-color 0.18s ease;
   outline: none;
 }
@@ -75,19 +65,18 @@
 .bullet-nav-popup-left {
   position: fixed;
   z-index: calc(var(--outline-z) + 1);
-  inset-inline-start: 8px;  /* small nudge so left border/shadow are visible */
+  inset-inline-start: 8px; /* small nudge so left border/shadow are visible */
   top: var(--outline-top, var(--outline-sticky-top));
   width: var(--outline-popup-width);
   /* Ensure popup never extends below viewport: cap by remaining space below dynamic top */
-    max-height: min(var(--outline-popup-max-h),
-        calc(100vh - var(--outline-top, var(--outline-sticky-top)) - 12px));
+  max-height: min(var(--outline-popup-max-h), calc(100vh - var(--outline-top, var(--outline-sticky-top)) - 12px));
   background-color: var(--outline-bg);
   color: var(--outline-fg);
   border-radius: var(--outline-card-radius);
   box-shadow: var(--outline-shadow-1), var(--outline-shadow-2), var(--outline-border) 0 0 0 1px;
   overflow: auto;
   /* Prevent scroll chaining to page when reaching top/bottom */
-    overscroll-behavior: contain;
+  overscroll-behavior: contain;
   display: none;
   pointer-events: auto;
 
@@ -155,19 +144,24 @@
 
 .bullet-nav-item .icon {
   width: 1em;
-    height: 1em;
-  display: inline-flex;
-  justify-content: center;
+  height: 1em;
   margin-inline-end: 6px;
-  flex: 0 0 auto;
+}
+
+.bullet-nav-item .icon .notion-page-title-icon {
+  font-size: 16px;
 }
 
 /* Indentation by level (mirror outline spacing) */
 .bullet-nav-item.level-1 {
   margin-inline-start: 0;
 }
-.bullet-nav-item.level-2 { margin-inline-start: 12px; }
-.bullet-nav-item.level-3 { margin-inline-start: 24px; }
+.bullet-nav-item.level-2 {
+  margin-inline-start: 12px;
+}
+.bullet-nav-item.level-3 {
+  margin-inline-start: 24px;
+}
 
 /* Active/current page in popup */
 .bullet-nav-item.active {
@@ -235,12 +229,6 @@ body.dsbullet-mobile-popup {
     align-items: baseline;
   }
 
-  .bullet-nav-item .icon .notion-page-title-icon {
-    font-size: 1em;
-    height: 1em;
-    width: 1em;
-  }
-
   .bullet-nav-item .title {
     font-size: clamp(16px, 4.4vw, 18px);
     line-height: 1.4;
@@ -249,8 +237,7 @@ body.dsbullet-mobile-popup {
 
 @supports (height: 100dvh) {
   .bullet-nav-popup-left {
-    max-height: min(var(--outline-popup-max-h),
-        calc(100dvh - var(--outline-top, var(--outline-sticky-top)) - 12px));
+    max-height: min(var(--outline-popup-max-h), calc(100dvh - var(--outline-top, var(--outline-sticky-top)) - 12px));
   }
 
   body.dsbullet-mobile-popup .bullet-nav-popup-left.open {
