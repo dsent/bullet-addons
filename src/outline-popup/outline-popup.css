@@ -6,7 +6,6 @@
 :root {
   --outline-bg: #ffffff;
   --outline-fg: #73726e; /* item text (inactive) */
-  --outline-fg-strong: #32302c; /* item text (active) */
   --outline-accent: #2383e2; /* link/active accent */
   --outline-border: rgba(84, 72, 49, 0.08);
   --outline-rail-muted: rgba(84, 72, 49, 0.15);
@@ -14,48 +13,39 @@
   --outline-shadow-1: rgba(0, 0, 0, 0.1) 0 14px 28px -6px;
   --outline-shadow-2: rgba(0, 0, 0, 0.06) 0 2px 4px -1px;
   --outline-z: 999;
+  --outline-focus-width: 2px;
+  --outline-focus-outline: var(--outline-focus-width) solid var(--outline-accent);
   --outline-card-radius: 14px;
   --outline-popup-width: 260px;
   --outline-rail-width: 56px;
   --outline-rail-gap: 12px;
   --outline-rail-pad-right: 8px;
   --outline-rail-bar-height: 2px;
+  --outline-rail-bar-full-width: 16px;
   --outline-popup-pad-x: 12px;
   --outline-popup-pad-top: 12px;
+  --outline-popup-pad-bottom: 6px;
+  --outline-popup-pad-bottom-mobile: 12px;
   --outline-popup-max-h: min(80vh, 765px);
+  --outline-popup-gap: 1px;
+  --outline-popup-gap-mobile: 4px;
   --outline-popup-right-offset: 8px; /* nudge left so right border/shadow remain visible */
+  --outline-item-font-size: 13px;
+  --outline-item-border-radius: 8px;
+  --outline-item-padding: 4px;
+  --outline-item-padding-mobile: 10px 12px; /* larger tap target on mobile */
+  --outline-level-indent: 12px;
 
   --outline-hover-bg: rgba(55, 53, 47, 0.08);
   --outline-scrollbar-thumb: rgba(0, 0, 0, 0.2);
   --outline-scrollbar-thumb-hover: rgba(0, 0, 0, 0.28);
 
-  /* Right-rail launcher visual tokens (mirror left nav launcher) */
-  --outline-rail-visible: 44px;
-
-  /* how much is visible when at rest */
-  --outline-rail-pull: calc(
-    var(--outline-rail-width) - var(--outline-rail-visible)
-  );
   --outline-rail-tab-radius: 4px;
-
-  /* match navigation launcher curvature */
   --outline-rail-border-w: 2px;
-  --outline-rail-paper-fill: color-mix(in oklab, currentColor 6%, transparent);
-  --outline-rail-paper-fill-hover: color-mix(
-    in oklab,
-    currentColor 9%,
-    transparent
-  );
-  --outline-rail-border-color: color-mix(
-    in oklab,
-    currentColor 22%,
-    transparent
-  );
-  --outline-rail-border-color-hover: color-mix(
-    in oklab,
-    currentColor 28%,
-    transparent
-  );
+  --outline-rail-fill: transparent;
+  --outline-rail-fill-hover: color-mix(in oklab, currentColor 9%, transparent);
+  --outline-rail-border-color: transparent;
+  --outline-rail-border-color-hover: color-mix(in oklab, currentColor 28%, transparent);
 
   /* Vertical positioning defaults; JS sets --outline-top dynamically to follow title until sticky baseline */
   /* --outline-top is set dynamically at runtime; if absent, fall back to sticky top */
@@ -65,7 +55,6 @@
 .dark-mode {
   --outline-bg: #1f1f1f;
   --outline-fg: #a5a39e;
-  --outline-fg-strong: #e6e4df;
   --outline-accent: #6aa9ff;
   --outline-border: rgba(255, 255, 255, 0.12);
   --outline-rail-muted: rgba(255, 255, 255, 0.22);
@@ -89,6 +78,7 @@
   align-items: flex-end;
   transition: opacity 0.12s ease;
   pointer-events: auto; /* interactive */
+  background-color: var(--outline-rail-fill);
 }
 
 /* Remove any default focus ring around the rail container itself */
@@ -104,49 +94,41 @@
   flex-direction: column;
   gap: var(--outline-rail-gap);
   padding-inline-end: var(--outline-rail-pad-right);
-  padding-bottom: 12px;
+  padding-bottom: var(--outline-rail-gap);
   /* Pre-allocate space to avoid layout shift on hover and focus */
-  padding-top: 12px;
+  padding-top: var(--outline-rail-gap);
   /* match bottom */
-  padding-inline-start: 12px;
+  padding-inline-start: var(--outline-rail-gap);
   /* left padding in default state */
-  border-top: var(--outline-rail-border-w) solid transparent;
-  border-left: var(--outline-rail-border-w) solid transparent;
-  border-bottom: var(--outline-rail-border-w) solid transparent;
+  border-top: var(--outline-rail-border-w) solid var(--outline-rail-border-color);
+  border-left: var(--outline-rail-border-w) solid var(--outline-rail-border-color);
+  border-bottom: var(--outline-rail-border-w) solid var(--outline-rail-border-color);
   border-right: 0;
   border-top-left-radius: var(--outline-rail-tab-radius);
   border-bottom-left-radius: var(--outline-rail-tab-radius);
   transition: background-color 0.18s ease, border-color 0.18s ease;
 }
 
-/* Apply highlight, border and extra paddings only to the inner bars container on hover and focus */
-.bullet-outline-rail:hover .bullet-outline-rail-bars,
-.bullet-outline-rail:focus-within .bullet-outline-rail-bars {
-  background-color: var(--outline-rail-paper-fill-hover);
-  border-color: var(--outline-rail-border-color-hover);
-}
-
 .bullet-outline-bar {
   height: var(--outline-rail-bar-height);
   background-color: var(--outline-rail-muted);
-  border-radius: 2px;
+  border-radius: var(--outline-rail-bar-height);
   transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   transform-origin: right center;
-  /* stretch outward from viewport edge */
 }
 
 /* Width + indent by level (approximate Notion look) */
 .bullet-outline-bar.level-1 {
-  width: 16px;
+  width: var(--outline-rail-bar-full-width);
   margin-inline-start: 0;
 }
 .bullet-outline-bar.level-2 {
-  width: 12px;
-  margin-inline-start: 4px;
+  width: calc(var(--outline-rail-bar-full-width) * 0.75); /* default 12px */
+  margin-inline-start: calc(var(--outline-rail-bar-full-width) * 0.25); /* default 4px */
 }
 .bullet-outline-bar.level-3 {
-  width: 8px;
-  margin-inline-start: 8px;
+  width: calc(var(--outline-rail-bar-full-width) * 0.5); /* default 8px */
+  margin-inline-start: calc(var(--outline-rail-bar-full-width) * 0.5); /* default 8px */
 }
 
 /* Active bar emphasizes current section */
@@ -154,8 +136,12 @@
   background-color: var(--outline-rail-active);
 }
 
-/* On focus/hover of the rail, subtly lengthen bars to suggest “pull-out” */
-.bullet-outline-rail:hover .bullet-outline-bar,
+/* On rail focus, apply highlight and subtly lengthen bars to suggest “pull-out”. */
+.bullet-outline-rail:focus-within .bullet-outline-rail-bars {
+  background-color: var(--outline-rail-fill-hover);
+  border-color: var(--outline-rail-border-color-hover);
+}
+
 .bullet-outline-rail:focus-within .bullet-outline-bar {
   transform: scaleX(1.25);
 }
@@ -168,15 +154,11 @@
   top: var(--outline-top, var(--outline-sticky-top));
   width: var(--outline-popup-width);
   /* Ensure popup never extends below viewport: cap by remaining space below dynamic top */
-  max-height: min(
-    var(--outline-popup-max-h),
-    calc(100vh - var(--outline-top, var(--outline-sticky-top)) - 12px)
-  );
+  max-height: min(var(--outline-popup-max-h), calc(100vh - var(--outline-top, var(--outline-sticky-top)) - 12px));
   background-color: var(--outline-bg);
   color: var(--outline-fg);
   border-radius: var(--outline-card-radius);
-  box-shadow: var(--outline-shadow-1), var(--outline-shadow-2),
-    var(--outline-border) 0 0 0 1px;
+  box-shadow: var(--outline-shadow-1), var(--outline-shadow-2), var(--outline-border) 0 0 0 1px;
   overflow: auto;
   /* Prevent scroll chaining to page when reaching top/bottom */
   overscroll-behavior: contain;
@@ -188,17 +170,101 @@
   scrollbar-color: var(--outline-scrollbar-thumb) transparent;
 }
 
+/* Prefer dynamic viewport units when available */
+@supports (height: 100dvh) {
+  .bullet-outline-popup {
+    max-height: min(var(--outline-popup-max-h), calc(100dvh - var(--outline-top, var(--outline-sticky-top)) - 12px));
+  }
+}
+
 /* Visible when JS toggles it */
 .bullet-outline-popup.open {
   display: block;
 }
 
+/* When popup is open, fade the rail out (Notion-like) */
+.bullet-outline-rail:has(+ .bullet-outline-popup.open) {
+  opacity: 0;
+}
+
+/* Inner list */
+.bullet-outline-list {
+  padding: var(--outline-popup-pad-top) var(--outline-popup-pad-x) var(--outline-popup-pad-bottom)
+    var(--outline-popup-pad-x);
+  display: flex;
+  flex-direction: column;
+  gap: var(--outline-popup-gap);
+}
+
+/* Item link */
+.bullet-outline-item {
+  display: block;
+  color: var(--outline-fg);
+  text-decoration: none;
+  user-select: none;
+  cursor: pointer;
+  padding: var(--outline-item-padding);
+  transition: color 0.15s ease, background-color 0.15s ease;
+  border-radius: var(--outline-item-border-radius);
+}
+
+.bullet-outline-item .title {
+  line-height: 1.3;
+  font-size: var(--outline-item-font-size);
+  /* clamp to two lines */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+/* Indentation by level */
+.bullet-outline-item.level-1 {
+  margin-inline-start: 0;
+}
+.bullet-outline-item.level-2 {
+  margin-inline-start: var(--outline-level-indent);
+}
+.bullet-outline-item.level-3 {
+  margin-inline-start: calc(var(--outline-level-indent) * 2);
+}
+
+/* Active/current section in popup */
+.bullet-outline-item.active {
+  color: var(--outline-accent);
+  background-color: transparent;
+}
+
+/* Hover/focus (gray background; don't change text color) */
+.bullet-outline-item:hover,
+.bullet-outline-item:focus {
+  background-color: var(--outline-hover-bg);
+  outline: none;
+}
+
+/* Accessibility focus ring */
+.bullet-outline-item:focus-visible {
+  outline: var(--outline-focus-outline);
+  background: transparent;
+}
+
+/* Utility: hidden state if outline not applicable (e.g., too few headings) */
+.bullet-outline-hidden {
+  display: none !important;
+}
+/* Dark-mode specific active item styling in popup (Notion-like "pill") */
+.dark-mode .bullet-outline-item.active:hover,
+.dark-mode .bullet-outline-item.active:focus {
+  background-color: rgba(255, 255, 255, 0.14);
+}
+
+/* SUBSECTION: Fullscreen presentation for touch/coarse devices */
 /* Close button is hidden by default; shown only on touch/coarse media */
 .bullet-outline-close {
   display: none;
 }
 
-/* Fullscreen presentation for touch/coarse devices */
 body.dsbullet-mobile-popup {
   /* Expand popup to cover viewport; keep same DOM and behavior */
   .bullet-outline-popup.open {
@@ -226,22 +292,22 @@ body.dsbullet-mobile-popup {
     line-height: 1;
     width: 44px;
     height: 44px;
-    border-radius: 8px;
+    border-radius: var(--outline-item-border-radius);
     cursor: pointer;
   }
 
   .bullet-outline-close:focus-visible {
-    outline: 2px solid var(--outline-accent);
+    outline: var(--outline-focus-outline);
   }
 
   /* Make the list fill and scroll within fullscreen */
   .bullet-outline-list {
-    /* Slightly larger paddings for comfortable reading */
-    padding: 8px var(--outline-popup-pad-x) 12px var(--outline-popup-pad-x);
+    padding: var(--outline-popup-pad-top) var(--outline-popup-pad-x) var(--outline-popup-pad-bottom-mobile)
+      var(--outline-popup-pad-x);
     flex: 0 0 auto; /* don't sqish items, scroll instead */
     overflow: auto;
     /* Add a bit of separation between items for touch */
-    gap: 4px;
+    gap: var(--outline-popup-gap-mobile);
   }
 
   /* Hide the rail while modal list is open on touch devices */
@@ -252,7 +318,7 @@ body.dsbullet-mobile-popup {
 
   /* Larger, accessible tap targets in fullscreen */
   .bullet-outline-item {
-    padding: 10px 12px; /* ~44px target with title line-height below */
+    padding: var(--outline-item-padding-mobile);
     min-height: 44px; /* iOS HIG minimum */
   }
 
@@ -261,21 +327,12 @@ body.dsbullet-mobile-popup {
     font-size: clamp(16px, 4.4vw, 18px);
     line-height: 1.4;
   }
-}
 
-/* Prefer dynamic viewport units when available (accounts for mobile browser UI) */
-@supports (height: 100dvh) {
-  /* Non-fullscreen popup sizing should also respect dynamic viewport */
-  .bullet-outline-popup {
-    max-height: min(
-      var(--outline-popup-max-h),
-      calc(100dvh - var(--outline-top, var(--outline-sticky-top)) - 12px)
-    );
-  }
-
-  body.dsbullet-mobile-popup .bullet-outline-popup.open {
-    height: 100dvh;
-    max-height: 100dvh;
+  @supports (height: 100dvh) {
+    .bullet-outline-popup.open {
+      height: 100dvh;
+      max-height: 100dvh;
+    }
   }
 }
 
@@ -287,95 +344,16 @@ body.dsbullet-mobile-popup:has(.bullet-outline-popup.open) {
   touch-action: pinch-zoom;
 }
 
-/* When popup is open, fade the rail out (Notion-like) */
-.bullet-outline-rail:has(+ .bullet-outline-popup.open) {
-  opacity: 0;
-}
-
-/* Inner list */
-.bullet-outline-list {
-  padding: var(--outline-popup-pad-top) var(--outline-popup-pad-x) 6px
-    var(--outline-popup-pad-x);
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-/* Item link */
-.bullet-outline-item {
-  display: block;
-  color: var(--outline-fg);
-  text-decoration: none;
-  user-select: none;
-  cursor: pointer;
-  padding: 4px;
-  transition: color 0.15s ease, background-color 0.15s ease;
-  border-radius: 8px;
-}
-
-/* clamp to two lines */
-.bullet-outline-item .title {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  line-height: 1.3;
-  font-size: 13px;
-}
-
-/* Indentation by level */
-.bullet-outline-item.level-1 {
-  margin-inline-start: 0;
-}
-.bullet-outline-item.level-2 {
-  margin-inline-start: 12px;
-}
-.bullet-outline-item.level-3 {
-  margin-inline-start: 24px;
-}
-
-/* Active/current section in popup */
-.bullet-outline-item.active {
-  color: var(--outline-accent);
-  background-color: transparent;
-}
-
-/* Hover/focus (gray background; don't change text color) */
-.bullet-outline-item:hover,
-.bullet-outline-item:focus {
-  background-color: var(--outline-hover-bg);
-  outline: none;
-}
-
-/* Accessibility focus ring */
-.bullet-outline-item:focus-visible {
-  outline: 2px solid var(--outline-accent);
-  background: transparent;
-}
-
-/* Allow on smallest viewports (no hiding by breakpoint).
-   If needed later, we can add a compact density mod. */
-
+/* SUBSECTION: Accessibility and Compatibility */
 /* Reduced motion considerations */
 @media (prefers-reduced-motion: reduce) {
   .bullet-outline-bar,
   .bullet-outline-item {
     transition: none;
   }
-  .bullet-outline-rail:is(:hover, :focus-within) .bullet-outline-bar {
+  .bullet-outline-rail:focus-within .bullet-outline-bar {
     transform: none;
   }
-}
-
-/* Utility: hidden state if outline not applicable (e.g., too few headings) */
-.bullet-outline-hidden {
-  display: none !important;
-}
-/* Dark-mode specific active item styling in popup (Notion-like "pill") */
-.dark-mode .bullet-outline-item.active:hover,
-.dark-mode .bullet-outline-item.active:focus {
-  background-color: rgba(255, 255, 255, 0.14);
 }
 
 /* WebKit scrollbar styling for the popup (theme-aware via CSS variables) */
@@ -388,7 +366,7 @@ body.dsbullet-mobile-popup:has(.bullet-outline-popup.open) {
 }
 .bullet-outline-popup::-webkit-scrollbar-thumb {
   background-color: var(--outline-scrollbar-thumb);
-  border-radius: 8px;
+  border-radius: var(--outline-item-border-radius);
   border: 2px solid transparent; /* creates padding for the thumb */
   background-clip: padding-box;
 }
