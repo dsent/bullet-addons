@@ -5,10 +5,11 @@
     "outDir": "dist",
     "js": {
         "sources": [
-            "bullet-addons/src/fading-scroll/fading-scroll.js",
-            "bullet-addons/src/lang-link/lang-link.js",
-            "bullet-addons/src/unwrap-views/unwrap-views.js",
-            "bullet-addons/src/outline-popup/outline-popup.js"
+            "src/fading-scroll/fading-scroll.js",
+            "src/lang-link/lang-link.js",
+            "src/unwrap-views/unwrap-views.js",
+            "src/outline-popup/outline-popup.js",
+            "src/navigation-popup/navigation-popup.js"
         ],
     "outFile": "bullet-custom-body.html",
         "transpile": true,
@@ -18,11 +19,12 @@
     },
     "css": {
         "sources": [
-            "bullet-addons/src/style-tweaks/style-tweaks.css",
-            "bullet-addons/src/database-display/database-display.css",
-            "bullet-addons/src/fading-scroll/fading-scroll.css",
-            "bullet-addons/src/lang-link/link-callouts.css",
-            "bullet-addons/src/outline-popup/outline-popup.css"
+            "src/style-tweaks/style-tweaks.css",
+            "src/database-display/database-display.css",
+            "src/fading-scroll/fading-scroll.css",
+            "src/lang-link/link-callouts.css",
+            "src/outline-popup/outline-popup.css",
+            "src/navigation-popup/navigation-popup.css"
         ],
         "outFile": "bullet-custom.css",
         "transpile": true,

@@ -11,14 +11,24 @@ You can register for Bullet using my referral link to support my work on these a
 
 - [General Style Tweaks](src/style-tweaks/style-tweaks-readme.md)
   Contains small, site-wide CSS improvements I use for my site, [dsent.me](https://dsent.me).  
-  Features include fixing branding focus outline and navbar spacing, making the site's navbar look consistent, Notion-like CTA buttons, embedded SVG icons for Telegram and WhatsApp, and a trigger (`.dsbullet-hide-title`) to hide the page title on any page.
+  Features include fixing branding focus outline and navbar spacing, making the site's navbar look consistent,
+  Notion-like CTA buttons, embedded SVG icons for Telegram and WhatsApp, and a trigger (`.dsbullet-hide-title`)
+  to hide the page title on any page.
 - [Database Views Display Enhancements](src/database-display/database-display-readme.md)
-  This stylesheet improves how Notion database views render in Bullet: turns view dropdowns into tabs, cleans up headers, and fixes a few list-view quirks. Some are configurable with HTML markers.
+  This stylesheet improves how Notion database views render in Bullet: turns view dropdowns into tabs, cleans up headers,
+  and fixes a few list-view quirks. Some are configurable with HTML markers.
 - [Fading Scroll Effect for the Viewport](src/fading-scroll/)
   Adds a subtle fading effect at the top and bottom of the viewport when scrolling long pages, eliminating the abrupt cut-off.
   This minimalistic script has no configuration options, but you can modify the CSS file to adjust the styling.
 - [Notion-like Floating Outline](src/outline-popup/outline-popup-readme.md)
-  This script builds a Notion-style outline for headings on Bullet-rendered pages: a compact right rail shows section bars revealing a clickable table of contents on hover/click/touch. Pretty awesome stuff.
+  This script builds a Notion-style outline for headings on Bullet-rendered pages: a compact right rail shows section bars
+  revealing a clickable table of contents on hover/click/touch. Pretty awesome stuff.
+- [Navigation Popup](src/navigation-popup/navigation-popup-readme.md)
+  This script converts a list view to a popup navigation menu, very similar to the outline popup, but on the left and
+  consisting of links to other pages instead of headings on the current page. It can be used to create a site-wide
+  navigation menu, or a local menu for a section of the site, or a list of related articles, extra resources, etc.
+  The script depends on the outline popup and can't function if the latter is not present. It also requires an HTML marker
+  specifying the database view to use as a popup source on every page that includes the navigation popup.
 - [Language Selector Links and Link Callouts](src/lang-link/lang-link-readme.md)
   This script improves the user experience for a multilingual site built on Notion and Bullet.
 

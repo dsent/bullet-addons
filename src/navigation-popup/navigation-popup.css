@@ -1,0 +1,231 @@
+/* SECTION: Left-side Navigation Popup */
+.bullet-nav-launcher-left {
+  position: fixed;
+  top: var(--outline-top, var(--outline-sticky-top));
+  display: inline-flex;
+  color: var(--fg-color);
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: var(--outline-z);
+  padding: 0 4px 2px;
+  transition: opacity 0.12s ease;
+}
+
+/* Use a transparent overlay in the shape of the launcher icon on hover
+This keeps the click target a bigger rectangle while being nice visually */
+.bullet-nav-launcher-left::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: color-mix(in oklab, currentColor 8%, transparent);
+  opacity: 0;
+  transition:opacity .15s ease;
+  pointer-events:none;
+
+  /* mask to the tab shape */
+  -webkit-mask: url("data:image/svg+xml;%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='48' aria-hidden='true' class='nav-handle'%3E%3Cpath fill='%23fff' d='M0 0h16.5q2.8 0 2.8 3.2v41.6q0 3.2-2.8 3.2h-5.2L10 44l-1.3 4H0Z'/%3E%3C/svg%3E") no-repeat center / 20px 48px;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='48' aria-hidden='true' class='nav-handle'%3E%3Cpath fill='%23fff' d='M0 0h16.5q2.8 0 2.8 3.2v41.6q0 3.2-2.8 3.2h-5.2L10 44l-1.3 4H0Z'/%3E%3C/svg%3E") no-repeat center / 20px 48px;
+}
+.bullet-nav-launcher-left:hover::before {
+  opacity: 1;
+}
+
+/* Hide the launcher when popup is open */
+.bullet-nav-launcher-left:has(+ .bullet-nav-popup-left.open) {
+  opacity: 0;
+}
+
+.bullet-nav-popup-left {
+  position: fixed;
+  z-index: calc(var(--outline-z) + 1);
+  inset-inline-start: 8px;  /* small nudge so left border/shadow are visible */
+  top: var(--outline-top, var(--outline-sticky-top));
+  width: var(--outline-popup-width);
+  /* Ensure popup never extends below viewport: cap by remaining space below dynamic top */
+    max-height: min(var(--outline-popup-max-h),
+        calc(100vh - var(--outline-top, var(--outline-sticky-top)) - 12px));
+  background-color: var(--outline-bg);
+  color: var(--outline-fg);
+  border-radius: var(--outline-card-radius);
+  box-shadow: var(--outline-shadow-1), var(--outline-shadow-2), var(--outline-border) 0 0 0 1px;
+  overflow: auto;
+  /* Prevent scroll chaining to page when reaching top/bottom */
+    overscroll-behavior: contain;
+  display: none;
+  pointer-events: auto;
+
+  /* Subtle, theme-aware scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--outline-scrollbar-thumb) transparent;
+}
+
+.bullet-nav-popup-left.open {
+  display: block;
+}
+
+/* Close button (hidden by default; shown in mobile fullscreen) */
+.bullet-nav-close {
+  display: none;
+}
+/* WebKit scrollbar styling (theme-aware via CSS variables) */
+.bullet-nav-popup-left::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.bullet-nav-popup-left::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.bullet-nav-popup-left::-webkit-scrollbar-thumb {
+  background-color: var(--outline-scrollbar-thumb);
+  border-radius: 8px;
+  border: 2px solid transparent; /* creates padding for the thumb */
+  background-clip: padding-box;
+}
+
+.bullet-nav-popup-left::-webkit-scrollbar-thumb:hover {
+  background-color: var(--outline-scrollbar-thumb-hover);
+}
+
+.bullet-nav-list {
+  padding: var(--outline-popup-pad-top) var(--outline-popup-pad-x) 6px var(--outline-popup-pad-x);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.bullet-nav-item {
+  display: flex;
+  color: var(--outline-fg);
+  text-decoration: none;
+  user-select: none;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.15s ease, background-color 0.15s ease;
+  border-radius: 8px;
+}
+
+.bullet-nav-item .title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  line-height: 1.3;
+  font-size: 13px;
+}
+
+.bullet-nav-item .icon {
+  width: 1em;
+    height: 1em;
+  display: inline-flex;
+  justify-content: center;
+  margin-inline-end: 6px;
+  flex: 0 0 auto;
+}
+
+/* Indentation by level (mirror outline spacing) */
+.bullet-nav-item.level-1 {
+  margin-inline-start: 0;
+}
+.bullet-nav-item.level-2 { margin-inline-start: 12px; }
+.bullet-nav-item.level-3 { margin-inline-start: 24px; }
+
+/* Active/current page in popup */
+.bullet-nav-item.active {
+  color: var(--outline-accent);
+  background-color: transparent;
+}
+/* Hover/focus */
+.bullet-nav-item:hover,
+.bullet-nav-item:focus {
+  background-color: var(--outline-hover-bg);
+  outline: none;
+}
+
+.bullet-nav-item:focus-visible {
+  outline: 2px solid var(--outline-accent);
+  background: transparent;
+}
+/* Fullscreen presentation for touch/coarse devices, aligned with outline */
+body.dsbullet-mobile-popup {
+  .bullet-nav-popup-left.open {
+    top: 0;
+    inset-inline: 0;
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bullet-nav-close {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-end;
+    border: none;
+    margin: 8px;
+    font-size: 26px;
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .bullet-nav-close:focus-visible {
+    outline: 2px solid var(--outline-accent);
+  }
+
+  .bullet-nav-list {
+    padding: 8px var(--outline-popup-pad-x) 12px var(--outline-popup-pad-x);
+    flex: 0 0 auto;
+    overflow: auto;
+    gap: 4px;
+  }
+
+  /* Hide the launcher while open on touch */
+  .bullet-nav-launcher-left:has(+ .bullet-nav-popup-left.open) {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .bullet-nav-item {
+    padding: 10px 12px;
+    min-height: 44px;
+    align-items: baseline;
+  }
+
+  .bullet-nav-item .icon .notion-page-title-icon {
+    font-size: 1em;
+    height: 1em;
+    width: 1em;
+  }
+
+  .bullet-nav-item .title {
+    font-size: clamp(16px, 4.4vw, 18px);
+    line-height: 1.4;
+  }
+}
+
+@supports (height: 100dvh) {
+  .bullet-nav-popup-left {
+    max-height: min(var(--outline-popup-max-h),
+        calc(100dvh - var(--outline-top, var(--outline-sticky-top)) - 12px));
+  }
+
+  body.dsbullet-mobile-popup .bullet-nav-popup-left.open {
+    height: 100dvh;
+    max-height: 100dvh;
+  }
+}
+
+/* Prevent background scroll when popup is open in mobile */
+html:has(body.dsbullet-mobile-popup .bullet-nav-popup-left.open),
+body.dsbullet-mobile-popup:has(.bullet-nav-popup-left.open) {
+  overflow: hidden;
+  touch-action: pinch-zoom;
+}
