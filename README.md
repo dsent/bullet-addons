@@ -11,18 +11,18 @@ You can register for Bullet using my referral link to support my work on these a
 
 - [General Style Tweaks](src/style-tweaks/style-tweaks-readme.md)
   Contains small, site-wide CSS improvements I use for my site, [dsent.me](https://dsent.me).  
-  Features include fixing branding focus outline and navbar spacing, making the site's navbar look consistent,
-  Notion-like CTA buttons, embedded SVG icons for Telegram and WhatsApp, and a trigger (`.dsbullet-hide-title`)
-  to hide the page title on any page.
+  Improves the navbar consistency, styles CTA buttons to look like Notion, add special icons for Telegram and WhatsApp, fixes some layout quirks.
+  Allows hiding the title on any page.
 - [Database Views Display Enhancements](src/database-display/database-display-readme.md)
-  This stylesheet improves how Notion database views render in Bullet: turns view dropdowns into tabs, cleans up headers,
-  and fixes a few list-view quirks. Some are configurable with HTML markers.
+  Improves database views rendering in Bullet: replaces view selection dropdowns with tabs, cleans up headers,
+  fixes layout issues, improves responsiveness, especially on smaller screens.
+  Adds configuration markers to disable tabs, hide headers, remove extra indentation for flat lists (lists with no nested items).
 - [Fading Scroll Effect for the Viewport](src/fading-scroll/)
   Adds a subtle fading effect at the top and bottom of the viewport when scrolling long pages, eliminating the abrupt cut-off.
   This minimalistic script has no configuration options, but you can modify the CSS file to adjust the styling.
 - [Notion-like Floating Outline](src/outline-popup/outline-popup-readme.md)
   This script builds a Notion-style outline for headings on Bullet-rendered pages: a compact right rail shows section bars
-  revealing a clickable table of contents on hover/click/touch. Pretty awesome stuff.
+  revealing a clickable table of contents on hover/click/touch. Pretty awesome stuff. Works better than Notion's own outline.
 - [Navigation Popup](src/navigation-popup/navigation-popup-readme.md)
   This script converts a list view to a popup navigation menu, very similar to the outline popup, but on the left and
   consisting of links to other pages instead of headings on the current page. It can be used to create a site-wide
@@ -89,7 +89,7 @@ Some scripts include configuration options, typically grouped at the top of the 
 
 You can also apply scripts to specific pages instead of globally by adding CSS and JavaScript to individual page code areas ("Pages" in the left sidebar → select page → "Code" → "Current Page").
 
-However, maintaining page-specific scripts is cumbersome. That's why most scripts support per-page configuration using special HTML markers, which is **the recommended approach**. You can add the script to your site globally and then add specific blocks to your source Notion pages to enable or disable features or change settings.
+However, maintaining page-specific scripts is cumbersome. That's why most scripts support **per-page configuration using special HTML markers**, which is **the recommended approach**. You can add the script to your site globally and then add specific blocks to your source Notion pages to enable or disable features or change settings.
 
 Add these markers using a code block with the caption `bullet:HTML` (see [Embed HTML inside Notion](https://bullet.so/docs/embed-html-inside-notion/) in Bullet documentation). For details, refer to each script's readme file and comments.
 
