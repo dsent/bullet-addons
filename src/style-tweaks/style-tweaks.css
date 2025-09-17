@@ -9,159 +9,160 @@
     .notion-page-content-inner /* root element that can contain the trigger */
     .dsbullet-hide-title /* the actual trigger */
     ) {
-    /* Hide the title */
-    h1.notion-title { display: none; }
+  /* Hide the title */
+  h1.notion-title {
+    display: none;
+  }
 }
 
 /* END OF: Miscellaneous Configurable Options */
 
 /* SUBSECTION: Small Visual Tweaks */
 /* Fix site branding keyboard focus outline */
-.navbar-brand>.navbar-item {
+.navbar-brand > .navbar-item {
   margin: var(--border-radius);
 }
 
 /* Smaller margins for headings */
 .notion-h2 {
-  margin-top:12px;
+  margin-top: 12px;
 }
 
 /* Wrong image height workaround (images are cropped in a wrong way, especially in columns) */
 .notion-asset-wrapper-image > div[style*="height"] {
-    height: unset !important;
+  height: unset !important;
 }
 /* END OF: Small Visual Tweaks */
 
 /* SUBSECTION: CTA Buttons */
 .notion-text {
-    .bullet-btn {
-        padding: 8px 12px;
-        border-radius: 3px;
-        border: 1px solid rgba(55, 53, 47, .16);
-        color: inherit;
-        font: 500 14px ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial;
-        line-height: 1.2;
-        white-space: nowrap;
-        opacity: 1;
-    }
+  .bullet-btn {
+    padding: 8px 12px;
+    border-radius: 3px;
+    border: 1px solid rgba(55, 53, 47, 0.16);
+    color: inherit;
+    font: 500 14px ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial;
+    line-height: 1.2;
+    white-space: nowrap;
+    opacity: 1;
+  }
 
-    .bullet-btn:is(:hover, :active, :focus-visible) {
-        background: #e1e1e1;
-        border-color: rgba(55, 53, 47, .16);
-    }
+  .bullet-btn:is(:hover, :active, :focus-visible) {
+    background: #e1e1e1;
+    border-color: rgba(55, 53, 47, 0.16);
+  }
 
-    /* Always provide a visible focus; then hide it when it’s not "focus-visible" */
-    .bullet-btn:focus {
-        outline: 2px solid #1485f5;
-        outline-offset: 2px;
-    }
-    .bullet-btn:focus:not(:focus-visible) {
-        outline: none;
-    }
+  /* Always provide a visible focus; then hide it when it’s not "focus-visible" */
+  .bullet-btn:focus {
+    outline: 2px solid #1485f5;
+    outline-offset: 2px;
+  }
+  .bullet-btn:focus:not(:focus-visible) {
+    outline: none;
+  }
 }
 
 /* Telegram icon */
-.nav-cta-btn[href^="https://t.me"] {
-    content: url("data:image/svg+xml,%3Csvg%20width='800px'%20height='800px'%20viewBox='0%200%2032%2032'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle%20cx='16'%20cy='16'%20r='14'%20fill='url(%23paint0_linear_87_7225)'/%3E%3Cpath%20d='M22.9866%2010.2088C23.1112%209.40332%2022.3454%208.76755%2021.6292%209.082L7.36482%2015.3448C6.85123%2015.5703%206.8888%2016.3483%207.42147%2016.5179L10.3631%2017.4547C10.9246%2017.6335%2011.5325%2017.541%2012.0228%2017.2023L18.655%2012.6203C18.855%2012.4821%2019.073%2012.7665%2018.9021%2012.9426L14.1281%2017.8646C13.665%2018.3421%2013.7569%2019.1512%2014.314%2019.5005L19.659%2022.8523C20.2585%2023.2282%2021.0297%2022.8506%2021.1418%2022.1261L22.9866%2010.2088Z'%20fill='white'/%3E%3Cdefs%3E%3ClinearGradient%20id='paint0_linear_87_7225'%20x1='16'%20y1='2'%20x2='16'%20y2='30'%20gradientUnits='userSpaceOnUse'%3E%3Cstop%20stop-color='%2337BBFE'/%3E%3Cstop%20offset='1'%20stop-color='%23007DBB'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E");
-    padding: 6px;
+.nav-cta-btn[href^="https://t.me"]
+{
+  content: url("data:image/svg+xml,%3Csvg%20width='800px'%20height='800px'%20viewBox='0%200%2032%2032'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle%20cx='16'%20cy='16'%20r='14'%20fill='url(%23paint0_linear_87_7225)'/%3E%3Cpath%20d='M22.9866%2010.2088C23.1112%209.40332%2022.3454%208.76755%2021.6292%209.082L7.36482%2015.3448C6.85123%2015.5703%206.8888%2016.3483%207.42147%2016.5179L10.3631%2017.4547C10.9246%2017.6335%2011.5325%2017.541%2012.0228%2017.2023L18.655%2012.6203C18.855%2012.4821%2019.073%2012.7665%2018.9021%2012.9426L14.1281%2017.8646C13.665%2018.3421%2013.7569%2019.1512%2014.314%2019.5005L19.659%2022.8523C20.2585%2023.2282%2021.0297%2022.8506%2021.1418%2022.1261L22.9866%2010.2088Z'%20fill='white'/%3E%3Cdefs%3E%3ClinearGradient%20id='paint0_linear_87_7225'%20x1='16'%20y1='2'%20x2='16'%20y2='30'%20gradientUnits='userSpaceOnUse'%3E%3Cstop%20stop-color='%2337BBFE'/%3E%3Cstop%20offset='1'%20stop-color='%23007DBB'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E");
+  padding: 6px;
 }
 
 /* WhatsApp icon */
-.nav-cta-btn[href^="https://wa.me/"] {
-    content: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2032%2032%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2226.5%22%20y1%3D%227%22%20x2%3D%224%22%20y2%3D%2228%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%235BD066%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2327B43E%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3C!--%20background%20circle%20--%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22url(%23g)%22%2F%3E%3C!--%20spur%20(exact%2045%C2%B0%20intersections%2C%20single%20straight%20edge)%20--%3E%3Cpath%20d%3D%22M25.8995%2025.8995L6.1005%206.1005L2%2030Z%22%20fill%3D%22url(%23g)%22%2F%3E%3C!--%20phone%20glyph%20--%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22M12.5%209.49989c-.3328-.66858-.8435-.60939-1.3593-.60939-.9219%200-2.35945%201.10428-2.35945%203.1595%200%201.6843.7422%203.528%203.24315%206.2861%202.4136%202.6618%205.585%204.0387%208.2178%203.9918%202.6328-.0468%203.1745-2.3125%203.1745-3.0776%200-.3391-.2105-.5083-.3554-.5543-.8972-.4306-2.552-1.2329-2.9285-1.3836-.3765-.1507-.5731.0532-.6953.1641-.3414.3253-1.0182%201.2843-1.25%201.5-.2317.2157-.5772.1065-.721.025-.5291-.2123-1.9636-.8504-3.107-1.9589-1.4142-1.3708-1.4972-1.8425-1.7636-2.2623-.2131-.3359-.0567-.5419.0213-.632.3047-.3515.7254-.8943.9141-1.164.1886-.2698.0389-.6793-.051-.9343-.3865-1.097-.714-2.0153-.9803-2.55011Z%22%2F%3E%3C%2Fsvg%3E");
-    padding: 6px;
+.nav-cta-btn[href^="https://wa.me/"]
+{
+  content: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2032%2032%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2226.5%22%20y1%3D%227%22%20x2%3D%224%22%20y2%3D%2228%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%235BD066%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2327B43E%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3C!--%20background%20circle%20--%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22url(%23g)%22%2F%3E%3C!--%20spur%20(exact%2045%C2%B0%20intersections%2C%20single%20straight%20edge)%20--%3E%3Cpath%20d%3D%22M25.8995%2025.8995L6.1005%206.1005L2%2030Z%22%20fill%3D%22url(%23g)%22%2F%3E%3C!--%20phone%20glyph%20--%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22M12.5%209.49989c-.3328-.66858-.8435-.60939-1.3593-.60939-.9219%200-2.35945%201.10428-2.35945%203.1595%200%201.6843.7422%203.528%203.24315%206.2861%202.4136%202.6618%205.585%204.0387%208.2178%203.9918%202.6328-.0468%203.1745-2.3125%203.1745-3.0776%200-.3391-.2105-.5083-.3554-.5543-.8972-.4306-2.552-1.2329-2.9285-1.3836-.3765-.1507-.5731.0532-.6953.1641-.3414.3253-1.0182%201.2843-1.25%201.5-.2317.2157-.5772.1065-.721.025-.5291-.2123-1.9636-.8504-3.107-1.9589-1.4142-1.3708-1.4972-1.8425-1.7636-2.2623-.2131-.3359-.0567-.5419.0213-.632.3047-.3515.7254-.8943.9141-1.164.1886-.2698.0389-.6793-.051-.9343-.3865-1.097-.714-2.0153-.9803-2.55011Z%22%2F%3E%3C%2Fsvg%3E");
+  padding: 6px;
 }
 /* END OF: CTA Buttons */
 
 /* SUBSECTION: Navbar Items Alignment Fix */
 
 :is(#navbarMenu, .navbar-mobile-search) {
-    > div {
-        display: flex;
-        align-items: center;
-    }
+  > div {
+    display: flex;
+    align-items: center;
+  }
 
-    > div:not(.bullet-navbar-mode, .bullet-toggle-container) {
-        padding: .5rem .75rem;
-    }
+  > div:not(.bullet-navbar-mode, .bullet-toggle-container) {
+    padding: 0.5rem 0.75rem;
+  }
 }
 
-.navbar-item,.navbar-link {
-    padding: 0;
+.navbar-item,
+.navbar-link {
+  padding: 0;
 }
 
 .desktop-nav-lang {
-    padding: 0;
+  padding: 0;
 }
 
 a.navbar-item {
-    padding: .5rem .75rem;
+  padding: 0.5rem 0.75rem;
 }
 
 .navbar-item .buttons:last-child {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 svg.globe-icon {
-    margin-right: 0;
+  margin-right: 0;
 }
 
 svg.dark-mode-toggle-icon {
-    height: 22px;
-    width: 22px;
+  height: 22px;
+  width: 22px;
 }
 
 div:is(.bullet-navbar-search, .navbar-mobile-search) .navbar-search svg {
-    width: 22px !important;
-    height: 22px !important;
+  width: 22px !important;
+  height: 22px !important;
 }
 
 button.dark-mode-toggle {
-    padding: 0;
-    display: flex;
-    height: 100%;
+  padding: 0;
+  display: flex;
+  height: 100%;
 }
 
 :is(.desktop-nav-lang, .mobile-nav-lang) .lang-icon {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .bullet-toggle-container {
-    padding: 0;
+  padding: 0;
 }
 
-
 a.button.nav-cta-btn {
-    margin: 0;
+  margin: 0;
 }
 
 @media (max-width: 1023px) {
+  .navbar-menu.is-active {
+    overflow-y: auto;
+  }
 
-    .navbar-menu.is-active {
-        overflow-y: auto;
+  #navbarMenu {
+    padding: 0;
+
+    .navbar-item:first-of-type {
+      padding-left: 0;
     }
 
-    #navbarMenu {
-        padding: 0;
-
-        .navbar-item:first-of-type {
-            padding-left: 0;
-        }
-
-        > .bullet-navbar-links {
-            justify-content: flex-start;
-        }
-        
-        > div:is(.desktop-nav-lang, .bullet-navbar-mode, .bullet-navbar-search) {
-            display: none;
-        }
-        
+    > .bullet-navbar-links {
+      justify-content: flex-start;
     }
-    
+
+    > div:is(.desktop-nav-lang, .bullet-navbar-mode, .bullet-navbar-search) {
+      display: none;
+    }
+  }
 }
 
 button.dark-mode-toggle {
-    padding: .5rem .5rem;
+  padding: 0.5rem 0.5rem;
 }
 
 /* END OF: Navbar Items Alignment Fix */

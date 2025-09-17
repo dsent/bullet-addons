@@ -247,7 +247,7 @@
       display: none;
     }
     .notion-page-title {
-        max-width: unset; /* Allow title to use full width */
+      max-width: unset; /* Allow title to use full width */
     }
   }
 }

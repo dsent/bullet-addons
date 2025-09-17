@@ -6,42 +6,41 @@
     Used by lang-link.js, but can be reused for other purposes. */
 
 .notion-custom-code:has(.links-callout) {
-    width: 100%;
+  width: 100%;
 }
 
 .links-callout {
-    .links-section, .links-section > * {
-        display: inline;
-        vertical-align: baseline;
-    }
+  .links-section,
+  .links-section > * {
+    display: inline;
+    vertical-align: baseline;
+  }
 
-    .links-list {
-        display: inline;
-        list-style: none;
-        margin-left: 0.4em;
-    }
+  .links-list {
+    display: inline;
+    list-style: none;
+    margin-left: 0.4em;
+  }
 
-    /* Hide items unless they contain an <a> with a proper href */
-    .links-list li {
-        display: none;
-    }
+  /* Hide items unless they contain an <a> with a proper href */
+  .links-list li {
+    display: none;
+  }
 
-    .links-list li:has( > a[href]:not([href=""]) ) {
-        display: inline;
-    }
+  .links-list li:has(> a[href]:not([href=""])) {
+    display: inline;
+  }
 
-    /* Add separator before any visible item that follows another visible item */
-    .links-list
-    li:has( > a[href]:not([href=""]) )
-    ~ li:has( > a[href]:not([href=""]) )::before {
-        content: "\2009\2022\202F";
-        color: #666;
-    }
+  /* Add separator before any visible item that follows another visible item */
+  .links-list li:has(> a[href]:not([href=""])) ~ li:has(> a[href]:not([href=""]))::before {
+    content: "\2009\2022\202F";
+    color: #666;
+  }
 }
 
 /* Hide the whole block if there isn't a single link with non-empty href */
-.links-callout:not(:has( a[href]:not([href=""]) )) {
-    display: none;
+.links-callout:not(:has(a[href]:not([href=""]))) {
+  display: none;
 }
 
 /* ------------------------------- */

@@ -2,39 +2,50 @@
 /* **** SECTION: Fading Scroll Effect for the Viewport **** */
 /* -------------------------------------------------------- */
 
-:root { --fade: 20px; } /* set --page-bg to your background */
+:root {
+  --fade: 20px;
+} /* set --page-bg to your background */
 
 body::before,
 body::after {
   content: "";
   position: fixed;
-  left: 0; right: 0;
+  left: 0;
+  right: 0;
   height: var(--fade);
-  pointer-events: none;     /* don’t block clicks/selection */
-  z-index: 500;             /* set your fixed UI above this */
+  pointer-events: none; /* don’t block clicks/selection */
+  z-index: 500; /* set your fixed UI above this */
   will-change: opacity;
-  transition: opacity .22s ease-out;
+  transition: opacity 0.22s ease-out;
 }
 
 /* top gradient */
 body::before {
   top: 60px;
-  background: linear-gradient(to bottom, var(--bg-color), rgba(255,255,255,0));
-  opacity: 1;               /* hidden when at top */
+  background: linear-gradient(to bottom, var(--bg-color), rgba(255, 255, 255, 0));
+  opacity: 1; /* hidden when at top */
 }
 
 /* bottom gradient */
 body::after {
   bottom: 0;
-  background: linear-gradient(to top, var(--bg-color), rgba(255,255,255,0));
+  background: linear-gradient(to top, var(--bg-color), rgba(255, 255, 255, 0));
   opacity: 1;
 }
 
 /* toggled on <html> by JS */
-html.at-top  body::before { opacity: 0; }
-html.not-top body::before { opacity: 1; }
-html.at-bottom  body::after { opacity: 0; }
-html.not-bottom body::after { opacity: 1; }
+html.at-top body::before {
+  opacity: 0;
+}
+html.not-top body::before {
+  opacity: 1;
+}
+html.at-bottom body::after {
+  opacity: 0;
+}
+html.not-bottom body::after {
+  opacity: 1;
+}
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
