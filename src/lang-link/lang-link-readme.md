@@ -10,6 +10,22 @@ You can see how it looks and works on my site: [dsent.me](https://dsent.me).
 
 ![A screenshot of the language selector outline. It shows the text "This page is also available in: Russian" and a translation icon.](lang-link-example.png)
 
-I'll be frank: this feature is quite complicated to explain and set up. It requires a very specific configuration in your Notion database to work properly. If anyone is actually interested in setting this up, please contact me so I know there's demand and invest the time in writing a detailed guide.
+I'll be frank: this feature is quite complicated to explain and set up. It requires a very specific configuration in your Notion database to work properly. If anyone is actually interested in setting this up, please open an issue on Github so I know there's demand and invest the time in writing a detailed guide.
 
 For now, I'll just put it out here for anyone curious enough to explore the code. This is a version I use on my own site, with no real configuration and a bunch of hardcoded assumptions. It may not work for your use cases, but feel free to contact me or fork the code.
+
+## Usage
+
+Read the repo's [README](../README.md) for general installation instructions.
+
+Experiment and figure out stuff. Feel free to open an issue if you need help.
+
+## License and Support
+
+This project is licensed under the MIT License (see the [LICENSE](../../LICENSE) file for details).
+
+Public repository: [dsent/bullet-addons](https://github.com/dsent/bullet-addons)
+
+For support, please [open an issue](https://github.com/dsent/bullet-addons/issues) on GitHub.
+
+© 2025 Danila Sentyabov ([dsent.me](https://dsent.me)

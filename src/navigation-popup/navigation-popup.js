@@ -1,6 +1,12 @@
-/* ----------------------------------- */
-/* SECTION: Left-side Navigation Popup */
-/* ----------------------------------- */
+/*----------------------------------------
+  BULLET ADDON: Left-side Navigation Popup
+  ----------------------------------------
+  See navigation-popup-readme.md for detailed documentation.
+  This project is licensed under the MIT License (see the LICENSE file for full text).
+  Public repository: https://github.com/dsent/bullet-addons
+  For support, please open an issue on Github: https://github.com/dsent/bullet-addons/issues
+  © 2025 Danila Sentyabov (dsent.me)
+  -----------------------------------*/
 
 (function navigationPopup() {
   'use strict';
@@ -474,6 +480,6 @@
     start();
 })();
 
-/* ---------------------------------- */
-/* END OF: Left-side Navigation Popup */
-/* ---------------------------------- */
+/*-----------------------------------------------
+  END OF BULLET ADDON: Left-side Navigation Popup
+  ---------------------------------------------*/

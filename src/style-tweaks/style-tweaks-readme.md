@@ -11,6 +11,8 @@
 
 ## Usage
 
+Read the repo's [README](../README.md) for general installation instructions.
+
 Drop `style-tweaks.css` into your Bullet injection area (site-wide or per-page). No JavaScript required.
 
 - To add Telegram and WhatsApp icons to your CTA buttons, just add any `https://t.me/` or `https://wa.me/` links to the CTA section of the navbar in Bullet's settings. They will be automatically displayed as buttons with icons:
@@ -23,3 +25,13 @@ Add this HTML element to your Notion page to hide the title (`h1.notion-title`) 
 ```html
 <span class="dsbullet-hide-title"></span>
 ```
+
+## License and Support
+
+This project is licensed under the MIT License (see the [LICENSE](../../LICENSE) file for details).
+
+Public repository: [dsent/bullet-addons](https://github.com/dsent/bullet-addons)
+
+For support, please [open an issue](https://github.com/dsent/bullet-addons/issues) on GitHub.
+
+© 2025 Danila Sentyabov ([dsent.me](https://dsent.me)

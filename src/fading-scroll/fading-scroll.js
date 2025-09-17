@@ -1,6 +1,12 @@
-/* -------------------------------------------------------- */
-/* **** SECTION: Fading Scroll Effect for the Viewport **** */
-/* -------------------------------------------------------- */
+/*---------------------------------------------------
+  BULLET ADDON: Fading Scroll Effect for the Viewport
+  ---------------------------------------------------
+  See project's README.md for detailed documentation.
+  This project is licensed under the MIT License (see the LICENSE file for full text).
+  Public repository: https://github.com/dsent/bullet-addons
+  For support, please open an issue on Github: https://github.com/dsent/bullet-addons/issues
+  © 2025 Danila Sentyabov (dsent.me)
+  -----------------------------------*/
 
 (function() {
   const root = document.documentElement;
@@ -17,6 +23,6 @@
   updateFades();
 })();
 
-/* ------------------------------------------------------- */
-/* **** END OF: Fading Scroll Effect for the Viewport **** */
-/* ------------------------------------------------------- */
+/*----------------------------------------------------------
+  END OF BULLET ADDON: Fading Scroll Effect for the Viewport
+  --------------------------------------------------------*/

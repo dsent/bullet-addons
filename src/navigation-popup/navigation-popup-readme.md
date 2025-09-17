@@ -21,6 +21,8 @@ extra resources, etc.
 
 ## Usage
 
+Read the repo's [README](../README.md) for general installation instructions.
+
 - Add the CSS and JS to your Bullet Code area (global recommended).
 - Add a mandatory HTML marker to each page that should include the navigation popup (see Configuration below).
 
@@ -54,6 +56,12 @@ Example config:
 - If no navigation appears, check that a `.notion-list-body` exists and that the page includes the Outline script or emits `bullet-outline:ready`.
 - Use devtools to inspect console logs starting with `navigation-popup:` for helpful diagnostics.
 
-## License
+## License and Support
 
-See the project's `LICENSE` file.
+This project is licensed under the MIT License (see the [LICENSE](../../LICENSE) file for details).
+
+Public repository: [dsent/bullet-addons](https://github.com/dsent/bullet-addons)
+
+For support, please [open an issue](https://github.com/dsent/bullet-addons/issues) on GitHub.
+
+© 2025 Danila Sentyabov ([dsent.me](https://dsent.me)

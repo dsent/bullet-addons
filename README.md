@@ -11,12 +11,13 @@ You can register for Bullet using my referral link to support my work on these a
 
 - [General Style Tweaks](src/style-tweaks/style-tweaks-readme.md)
   Contains small, site-wide CSS improvements I use for my site, [dsent.me](https://dsent.me).  
-  Improves the navbar consistency, styles CTA buttons to look like Notion, add special icons for Telegram and WhatsApp, fixes some layout quirks.
-  Allows hiding the title on any page.
+  Improves the navbar consistency, styles CTA buttons to look like Notion, add special icons for Telegram and WhatsApp,
+  fixes some layout quirks. Allows hiding the title on any page.
 - [Database Views Display Enhancements](src/database-display/database-display-readme.md)
   Improves database views rendering in Bullet: replaces view selection dropdowns with tabs, cleans up headers,
   fixes layout issues, improves responsiveness, especially on smaller screens.
-  Adds configuration markers to disable tabs, hide headers, remove extra indentation for flat lists (lists with no nested items).
+  Adds configuration markers to disable tabs, hide headers, remove extra indentation for flat lists
+  (lists with no nested items).
 - [Fading Scroll Effect for the Viewport](src/fading-scroll/)
   Adds a subtle fading effect at the top and bottom of the viewport when scrolling long pages, eliminating the abrupt cut-off.
   This minimalistic script has no configuration options, but you can modify the CSS file to adjust the styling.
@@ -32,17 +33,26 @@ You can register for Bullet using my referral link to support my work on these a
 - [Language Selector Links and Link Callouts](src/lang-link/lang-link-readme.md)
   This script improves the user experience for a multilingual site built on Notion and Bullet.
 
-  You designate some pages as translations of each other, and the system automatically generates a helpful outline, linking all translations of the current page on each page. Moreover, the standard Bullet language switcher in the header links to the correct localized version of each page instead of just linking to the home page of the selected language.
+  You designate some pages as translations of each other, and the system automatically generates a helpful outline,
+  linking all translations of the current page on each page. Moreover, the standard Bullet language switcher in the
+  header links to the correct localized version of each page instead of just linking to the home page of
+  the selected language.
 
   You can see how it looks and works on my site: [dsent.me](https://dsent.me).
 
-  The styles included with this script are also useful for other applications. For example, I reuse them to display a list of links to the current page's content posted on other platforms (e.g. Facebook, Twitter etc.). The same setup can be used for other purposes, such as linking to different versions of the same content (e.g. PDF, text, audio, video etc.).
+  The styles included with this script are also useful for other applications. For example, I reuse them to display
+  a list of links to the current page's content posted on other platforms (e.g. Facebook, Twitter etc.). The same
+  setup can be used for other purposes, such as linking to different versions of the same content
+  (e.g. PDF, text, audio, video etc.).
 - [Unwrap Views](src/unwrap-views/unwrap-views-readme.md)
-  This script enhances the user experience with multi-level Notion lists (lists with sub-items), enabling using them as navigation menus or for other purposes. It provides two main features:
+  This script enhances the user experience with multi-level Notion lists (lists with sub-items), enabling using
+  them as navigation menus or for other purposes. It provides two main features:
   - **Unwrap**: Removes a top-level item, promoting its sub-items to the top level.
-  - **Expand**: Expands all or some items in a list so their sub-items are visible without clicking on the parent item's handle.
+  - **Expand**: Expands all or some items in a list so their sub-items are visible without clicking
+    on the parent item's handle.
 - [Miscellaneous Tools](src/tools/)
-  This folder contains small, self-contained scripts I use to debug stuff. They are not intended for general or production use. I do not provide support or documentation for them, but they might be useful for some people.
+  This folder contains small, self-contained scripts I use to debug stuff. They are not intended for general
+  or production use. I do not provide support or documentation for them, but they might be useful for some people.
 
 ## Compatibility Notes
 
@@ -62,38 +72,55 @@ To install an addon:
 1. Open your [Bullet dashboard](https://app.bullet.so/dashboard), find your site, and click "Edit."
 2. Go to the "Code" tab in the left sidebar.
 3. Copy the CSS file contents into the "CSS" area.
-4. Copy the JavaScript output (Body HTML file) into the "Body" area. If you paste scripts manually, wrap them in `<script>...</script>` tags (the build output already includes this wrapper):
+4. Copy the JavaScript output (Body HTML file) into the "Body" area. If you paste scripts manually, wrap them
+   in `<script>...</script>` tags (the build output already includes this wrapper):
 
    ```html
    <script type="text/javascript" defer>
-    /* -------------------------------------------------------- */
-    /* **** SECTION: Fading Scroll Effect for the Viewport **** */
-    /* -------------------------------------------------------- */
+    /*-------------------------------------
+      BULLET ADDON: Database Display Tweaks
+      -------------------------------------
+      See database-display-readme.md for detailed documentation.
+      ...<links, license, author info>...
+      -----------------------------------*/
     ...
-    /* ------------------------------------------------------- */
-    /* **** END OF: Fading Scroll Effect for the Viewport **** */
-    /* ------------------------------------------------------- */
+    /*--------------------------------------------
+      END OF BULLET ADDON: Database Display Tweaks
+      ------------------------------------------*/
    </script>
    ```
 
 5. Save your changes (click "Save" at the top of the custom code area).
 6. Publish your site (click "Publish" at the top right of the dashboard).
 
-To use multiple addons, paste them one after another in the same CSS and JavaScript areas. Large header and footer comments make it easy to identify where each addon begins and ends for future updates or removal.
+To use multiple addons, paste them one after another in the same CSS and JavaScript areas. Large header and footer comments
+make it easier to identify where each addon begins and ends for future updates or removal. If you use multiple addons,
+I recommend using a build script to combine them (see [Build section](#build) below).
 
-Each script is self-contained. Dependencies, if any, are noted in the script's comments and README. When present, put dependencies first (this is not a strict requirement as the scripts will try to wait for the requirements to become available, but I still recommend it for clarity).
+Each script is self-contained. Dependencies, if any, are noted in the script's comments and README. When present, put
+dependencies first (this is not a strict requirement as the scripts will try to wait for the requirements to become available,
+but I still recommend it for clarity).
 
 ## Configuration and Customization
 
-Some scripts include configuration options, typically grouped at the top of the file. Edit these values to change the default behavior for your entire site.
+Some scripts include configuration options, typically grouped at the top of the file. Edit these values
+to change the default behavior for your entire site.
 
-You can also apply scripts to specific pages instead of globally by adding CSS and JavaScript to individual page code areas ("Pages" in the left sidebar → select page → "Code" → "Current Page").
+You can also apply scripts to specific pages instead of globally by adding CSS and JavaScript to individual
+page code areas ("Pages" in the left sidebar → select page → "Code" → "Current Page").
 
-However, maintaining page-specific scripts is cumbersome. That's why most scripts support **per-page configuration using special HTML markers**, which is **the recommended approach**. You can add the script to your site globally and then add specific blocks to your source Notion pages to enable or disable features or change settings.
+However, maintaining page-specific scripts is cumbersome. That's why most scripts support
+**per-page configuration using special HTML markers**, which is **the recommended approach**.
+You can add the script to your site globally and then add specific blocks to your source Notion pages
+to enable or disable features or change settings.
 
-Add these markers using a code block with the caption `bullet:HTML` (see [Embed HTML inside Notion](https://bullet.so/docs/embed-html-inside-notion/) in Bullet documentation). For details, refer to each script's readme file and comments.
+Add these markers using a code block with the caption `bullet:HTML`
+(see [Embed HTML inside Notion](https://bullet.so/docs/embed-html-inside-notion/) in Bullet documentation).
+For details, refer to each script's readme file and comments.
 
-**Tip:** Create synced blocks in Notion (e.g., in a template page) and copy-sync them where needed. Remember that editing a synced block changes all copies, so this only works for **identical** configurations. If you need a few different configurations, create separate synced blocks for each.
+**Tip:** Create synced blocks in Notion (e.g., in a template page) and copy-sync them where needed.
+Remember that editing a synced block changes all copies, so this only works for **identical** configurations.
+If you need a few different configurations, create separate synced blocks for each.
 
 Most marker blocks can be empty and invisible, so it's safe to place them anywhere on the page.
 
@@ -103,27 +130,35 @@ An example of a marker block on a Notion page:
 
 ![A screenshot of a Notion page with custom HTML marker before a list](img/sample-html-marker.png)
 
-This marker prevents the list below it from rendering as tabs and forces it to display as a default dropdown list. The marker doesn't affect other lists or other database views on the page.
+This marker prevents the list below it from rendering as tabs and forces it to display as a default dropdown list.
+The marker doesn't affect other lists or other database views on the page.
 
 ## Build
 
-To simplify updates, I use a [PowerShell build script](build/) that combines individual CSS and JS files into two outputs you can paste into Bullet's custom code areas: an HTML file for the Body area (with `<script>` wrapper) and a CSS file for the CSS area. The script also optionally transpiles the scripts and stylesheets for better compatibility with older browsers and minifies them for production use.
+To simplify updates, I use a [PowerShell build script](build/) that combines individual CSS and JS files into
+two outputs you can paste into Bullet's custom code areas: an HTML file for the Body area (with `<script>` wrapper)
+and a CSS file for the CSS area. The script also optionally transpiles the scripts and stylesheets for better
+compatibility with older browsers and minifies them for production use.
 
-The script reads configuration from `build.config.json`, which lists the source files and options. A sample configuration is included in this repo.
+The script reads configuration from `build.config.json`, which lists the source files and options. A sample
+configuration is included in this repo.
 
 A detailed readme for the build script is in [build/build-readme.md](build/build-readme.md).
 
-Note that Bullet itself minifies the code you paste into the custom code areas, so minification is not strictly necessary.
+Note that Bullet itself minifies the code you paste into the custom code areas, so minification is not strictly necessary
+and wouldn't make a noticeable difference.
 
 ## Licensing and Contributions
 
 - This repository is licensed under the [MIT license](LICENSE).
 - For different licensing options, please [contact me](#author-and-contact).
-- Contributions are welcome. Open issues or submit pull requests to the public repository. Site-specific or sensitive content will not be accepted.
+- Contributions are welcome. Open issues or submit pull requests to the public repository. Site-specific
+  or sensitive content will not be accepted.
 
 ## Security & Privacy
 
-- Do not commit secrets or site-specific credentials. This repository contains only static CSS and client-side scripts that require no server credentials.
+- Do not commit secrets or site-specific credentials. This repository contains only static CSS and client-side
+  scripts that require no server credentials.
 
 ## Roadmap / Next Steps
 

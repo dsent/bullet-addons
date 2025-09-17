@@ -1,6 +1,12 @@
-/* ------------------------------------------ */
-/* **** SECTION: Language Selector Links **** */
-/* ------------------------------------------ */
+/*-------------------------------------
+  BULLET ADDON: Language Selector Links
+  -------------------------------------
+  See lang-link-readme.md for detailed documentation.
+  This project is licensed under the MIT License (see the LICENSE file for full text).
+  Public repository: https://github.com/dsent/bullet-addons
+  For support, please open an issue on Github: https://github.com/dsent/bullet-addons/issues
+  © 2025 Danila Sentyabov (dsent.me)
+  -----------------------------------*/
 
 (function langlinkInit() {
     'use strict';
@@ -267,6 +273,6 @@
 
 })();
 
-/* ----------------------------------------- */
-/* **** END OF: Language Selector Links **** */
-/* ----------------------------------------- */
+/*--------------------------------------------
+  END OF BULLET ADDON: Language Selector Links
+  ------------------------------------------*/

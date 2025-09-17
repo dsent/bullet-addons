@@ -1,7 +1,12 @@
-/* ----------------------------------------------- */
-/* **** SECTION: Notion-like Floating Outline **** */
-/* ----------------------------------------------- */
-// See outline-popup-readme.md for usage instructions
+/*------------------------------------------
+  BULLET ADDON: Notion-like Floating Outline
+  ------------------------------------------
+  See outline-popup-readme.md for detailed documentation.
+  This project is licensed under the MIT License (see the LICENSE file for full text).
+  Public repository: https://github.com/dsent/bullet-addons
+  For support, please open an issue on Github: https://github.com/dsent/bullet-addons/issues
+  © 2025 Danila Sentyabov (dsent.me)
+  -----------------------------------*/
 
 (function outlinePopup() {
   'use strict';
@@ -779,6 +784,6 @@
 
 })();
 
-/* ---------------------------------------------- */
-/* **** END OF: Notion-like Floating Outline **** */
-/* ---------------------------------------------- */
+/*-------------------------------------------------
+  END OF BULLET ADDON: Notion-like Floating Outline
+  -----------------------------------------------*/

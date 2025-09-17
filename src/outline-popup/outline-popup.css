@@ -1,6 +1,12 @@
-/* ----------------------------------------------- */
-/* **** SECTION: Notion-like Floating Outline **** */
-/* ----------------------------------------------- */
+/*------------------------------------------
+  BULLET ADDON: Notion-like Floating Outline
+  ------------------------------------------
+  See outline-popup-readme.md for detailed documentation.
+  This project is licensed under the MIT License (see the LICENSE file for full text).
+  Public repository: https://github.com/dsent/bullet-addons
+  For support, please open an issue on Github: https://github.com/dsent/bullet-addons/issues
+  © 2025 Danila Sentyabov (dsent.me)
+  -----------------------------------*/
 
 /* Theme tokens */
 :root {
@@ -267,7 +273,7 @@
   display: none !important;
 }
 
-/* SUBSECTION: Fullscreen presentation for touch/coarse devices */
+/* SECTION: Fullscreen presentation for touch/coarse devices */
 /* Close button (hidden by default; shown in mobile fullscreen) */
 .bullet-outline-close {
   display: none;
@@ -384,6 +390,6 @@ body.dsbullet-mobile-popup:has(.bullet-outline-popup.open) {
   background-color: var(--outline-scrollbar-thumb-hover);
 }
 
-/* ---------------------------------------------- */
-/* **** END OF: Notion-like Floating Outline **** */
-/* ---------------------------------------------- */
+/*-------------------------------------------------
+  END OF BULLET ADDON: Notion-like Floating Outline
+  -----------------------------------------------*/

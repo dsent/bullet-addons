@@ -2,11 +2,6 @@
 
 This is a CSS solution that improves how Notion database views render in Bullet and adds a few customization options.
 
-## Usage
-
-- Copy the contents of `database-display.css` into your Bullet injection area (site-wide or per-page).
-- Customize appearance by overriding CSS variables and adding optional markers to your Notion pages.
-
 ## Features
 
 - Tabs for Database Views: converts the view dropdown into accessible, compact tabs when a database has multiple views.
@@ -14,6 +9,13 @@ This is a CSS solution that improves how Notion database views render in Bullet 
 - Always Hide Database Names: removes the inline database names from the headers. I hate them.
 - Single-View Title: when an inline database has only one view, its name is shown as a title.
 - List View Tweaks: fixes sub-item toggles and other quirks.
+
+## Usage
+
+Read the repo's [README](../README.md) for general installation instructions.
+
+- Copy the contents of `database-display.css` into your Bullet injection area (site-wide or per-page).
+- Customize appearance by overriding CSS variables and adding optional markers to your Notion pages.
 
 ## Tabs for Database Views
 
@@ -93,3 +95,13 @@ Override any of the CSS variables to match your brand. Apply them on `:root` for
 ```
 
 Note that some variables should be adjusted together. For example, if you change `--tab-height`, consider adjusting `--search-height` to match them visually.
+
+## License and Support
+
+This project is licensed under the MIT License (see the [LICENSE](../../LICENSE) file for details).
+
+Public repository: [dsent/bullet-addons](https://github.com/dsent/bullet-addons)
+
+For support, please [open an issue](https://github.com/dsent/bullet-addons/issues) on GitHub.
+
+© 2025 Danila Sentyabov ([dsent.me](https://dsent.me))

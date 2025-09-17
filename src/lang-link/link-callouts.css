@@ -1,6 +1,12 @@
-/* -------------------------------- */
-/* **** SECTION: Link Callouts **** */
-/* -------------------------------- */
+/*---------------------------
+  BULLET ADDON: Link Callouts
+  ---------------------------
+  See lang-link-readme.md for detailed documentation.
+  This project is licensed under the MIT License (see the LICENSE file for full text).
+  Public repository: https://github.com/dsent/bullet-addons
+  For support, please open an issue on Github: https://github.com/dsent/bullet-addons/issues
+  © 2025 Danila Sentyabov (dsent.me)
+  -----------------------------------*/
 
 /*  Style the special callouts for page translations and external links.
     Used by lang-link.js, but can be reused for other purposes. */
@@ -43,6 +49,6 @@
   display: none;
 }
 
-/* ------------------------------- */
-/* **** END OF: Link Callouts **** */
-/* ------------------------------- */
+/*----------------------------------
+  END OF BULLET ADDON: Link Callouts
+  --------------------------------*/

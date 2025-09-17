@@ -1,6 +1,12 @@
-/* ----------------------------------- */
-/* SECTION: Left-side Navigation Popup */
-/* ----------------------------------- */
+/*----------------------------------------
+  BULLET ADDON: Left-side Navigation Popup
+  ----------------------------------------
+  See navigation-popup-readme.md for detailed documentation.
+  This project is licensed under the MIT License (see the LICENSE file for full text).
+  Public repository: https://github.com/dsent/bullet-addons
+  For support, please open an issue on Github: https://github.com/dsent/bullet-addons/issues
+  © 2025 Danila Sentyabov (dsent.me)
+  -----------------------------------*/
 
 /* New: navigation-specific variables that default to the outline theme values.
    Consumers can override `--nav-*` independently of `--outline-*`. */
@@ -236,7 +242,7 @@
   background: transparent;
 }
 
-/* SUBSECTION: Fullscreen presentation for touch/coarse devices */
+/* SECTION: Fullscreen presentation for touch/coarse devices */
 /* Close button (hidden by default; shown in mobile fullscreen) */
 .bullet-nav-close {
   display: none;
@@ -312,7 +318,7 @@ body.dsbullet-mobile-popup:has(.bullet-nav-popup-left.open) {
   touch-action: pinch-zoom;
 }
 
-/* SUBSECTION: Accessibility and Compatibility */
+/* SECTION: Accessibility and Compatibility */
 /* Reduced motion considerations */
 @media (prefers-reduced-motion: reduce) {
   .bullet-nav-launcher-left,
@@ -342,6 +348,6 @@ body.dsbullet-mobile-popup:has(.bullet-nav-popup-left.open) {
   background-color: var(--nav-scrollbar-thumb-hover);
 }
 
-/* ---------------------------------- */
-/* END OF: Left-side Navigation Popup */
-/* ---------------------------------- */
+/*-----------------------------------------------
+  END OF BULLET ADDON: Left-side Navigation Popup
+  ---------------------------------------------*/

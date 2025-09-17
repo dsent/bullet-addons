@@ -1,23 +1,28 @@
-/* -------------------------------------------------- */
-/* **** SECTION: Unwrap List Views with Subitems **** */
-/* -------------------------------------------------- */
-// See unwrap-views-readme.md for usage instructions
+/*---------------------------------------------
+  BULLET ADDON: Unwrap List Views with Subitems
+  ---------------------------------------------
+  See unwrap-views-readme.md for detailed documentation.
+  This project is licensed under the MIT License (see the LICENSE file for full text).
+  Public repository: https://github.com/dsent/bullet-addons
+  For support, please open an issue on Github: https://github.com/dsent/bullet-addons/issues
+  © 2025 Danila Sentyabov (dsent.me)
+  -----------------------------------*/
 
 (function unwrapViews() {
-  'use strict';
-  const P = 'unwrap-views'; // feature prefix
+  "use strict";
+  const P = "unwrap-views"; // feature prefix
 
   // DOM guard to prevent double injection on the same page
   const GUARD_ATTR = `data-${P}-init`;
   const ROOT = document.documentElement;
   if (ROOT.hasAttribute(GUARD_ATTR)) return;
-  ROOT.setAttribute(GUARD_ATTR, '1');
+  ROOT.setAttribute(GUARD_ATTR, "1");
 
   // Centralized configuration
   const SEL = {
-    markerUnwrap: 'span[data-unwrap-view]',
-    markerExpand: 'span[data-expand-view]',
-    listBody: '.notion-list-body',
+    markerUnwrap: "span[data-unwrap-view]",
+    markerExpand: "span[data-expand-view]",
+    listBody: ".notion-list-body",
   };
 
   // Minimal once-only log guards
@@ -34,12 +39,13 @@
   function unwrapTopLevel(listBody, filterSelector) {
     if (!listBody) return { changed: false, removed: 0 };
 
-    const topDetails = Array.from(listBody.children)
-      .filter(el => el.matches('details.notion-list-sub-item') && !el.classList.contains('notion-list-no-sub-items'));
+    const topDetails = Array.from(listBody.children).filter(
+      (el) => el.matches("details.notion-list-sub-item") && !el.classList.contains("notion-list-no-sub-items")
+    );
 
     let removed = 0;
 
-    topDetails.forEach(wrapper => {
+    topDetails.forEach((wrapper) => {
       if (filterSelector) {
         try {
           if (!wrapper.querySelector(filterSelector)) return;
@@ -49,7 +55,7 @@
         }
       }
 
-      const indent = wrapper.querySelector(':scope > .notion-list-indent-block.depth-0');
+      const indent = wrapper.querySelector(":scope > .notion-list-indent-block.depth-0");
       if (!indent) return;
 
       while (indent.firstElementChild) {
@@ -70,7 +76,7 @@
     let matches;
 
     if (!filterSelector) {
-      matches = listBody.querySelectorAll('details');
+      matches = listBody.querySelectorAll("details");
     } else {
       try {
         matches = listBody.querySelectorAll(filterSelector);
@@ -82,7 +88,7 @@
 
     const toOpen = new Set();
 
-    matches.forEach(m => {
+    matches.forEach((m) => {
       if (!filterSelector) {
         toOpen.add(m);
         return;
@@ -91,14 +97,14 @@
       // If only a subset is matched, make sure to add its ancestors
       let node = m;
       while (node && node !== listBody) {
-        if (node.tagName?.toLowerCase() === 'details') {
+        if (node.tagName?.toLowerCase() === "details") {
           toOpen.add(node);
         }
         node = node.parentElement;
       }
     });
 
-    toOpen.forEach(d => {
+    toOpen.forEach((d) => {
       if (!d.open) {
         d.open = true;
         opened++;
@@ -110,12 +116,12 @@
 
   // Idempotent worker; return true when fully done, false when waiting on DOM/state
   function process() {
-    'use strict';
+    "use strict";
     const unwrapMarkers = document.querySelectorAll(SEL.markerUnwrap);
     const expandMarkers = document.querySelectorAll(SEL.markerExpand);
 
     if (unwrapMarkers.length === 0 && expandMarkers.length === 0) {
-      logOnce('noMarkers', `❌ No unwrap/expand markers found`);
+      logOnce("noMarkers", `❌ No unwrap/expand markers found`);
       return false;
     }
 
@@ -125,14 +131,20 @@
     function getBodyEntry(body) {
       let e = listBodies.get(body);
       if (!e) {
-        e = { unwrapFilters: [], expandFilters: [], wantsUnwrap: false, wantsExpand: false, key: body.id || 'list-body' };
+        e = {
+          unwrapFilters: [],
+          expandFilters: [],
+          wantsUnwrap: false,
+          wantsExpand: false,
+          key: body.id || "list-body",
+        };
         listBodies.set(body, e);
       }
       return e;
     }
 
     function addFromMarkers(nodeList, type) {
-      nodeList.forEach(marker => {
+      nodeList.forEach((marker) => {
         const viewSel = marker.getAttribute(`data-${type}-view`);
         if (!viewSel) return;
 
@@ -149,14 +161,16 @@
           return;
         }
 
-        const filterSelRaw = marker.getAttribute(`data-${type}-filter`) || '';
+        const filterSelRaw = marker.getAttribute(`data-${type}-filter`) || "";
         const hasFilter = !!filterSelRaw.trim();
 
-        targets.forEach(target => {
+        targets.forEach((target) => {
           let bodies = [];
-          if (target.matches(SEL.listBody)) {  // add a particular list body
+          if (target.matches(SEL.listBody)) {
+            // add a particular list body
             bodies = [target];
-          } else {  // add all descendant list bodies under the matched element
+          } else {
+            // add all descendant list bodies under the matched element
             bodies = Array.from(target.querySelectorAll(SEL.listBody));
           }
 
@@ -166,9 +180,9 @@
             return;
           }
 
-          bodies.forEach(body => {
+          bodies.forEach((body) => {
             const entry = getBodyEntry(body);
-            if (type === 'unwrap') {
+            if (type === "unwrap") {
               entry.wantsUnwrap = true;
               if (hasFilter) entry.unwrapFilters.push(filterSelRaw);
             } else {
@@ -180,22 +194,22 @@
       });
     }
 
-    addFromMarkers(unwrapMarkers, 'unwrap');
-    addFromMarkers(expandMarkers, 'expand');
+    addFromMarkers(unwrapMarkers, "unwrap");
+    addFromMarkers(expandMarkers, "expand");
 
     if (listBodies.size === 0) {
-      logOnce('noListBodies', `❌ No list bodies found`);
+      logOnce("noListBodies", `❌ No list bodies found`);
       return false;
     }
 
     listBodies.forEach((entry, body) => {
-      const unwrapFilter = entry.unwrapFilters.length ? entry.unwrapFilters.join(', ') : '';
-      const expandFilter = entry.expandFilters.length ? entry.expandFilters.join(', ') : '';
+      const unwrapFilter = entry.unwrapFilters.length ? entry.unwrapFilters.join(", ") : "";
+      const expandFilter = entry.expandFilters.length ? entry.expandFilters.join(", ") : "";
 
       if (entry.wantsUnwrap) {
         const { changed } = unwrapTopLevel(body, unwrapFilter);
         if (!changed) {
-          const key = body.id || 'list-body';
+          const key = body.id || "list-body";
           logOnce(`noWrappers(${key})`, `⚠️ No eligible wrapper <details> found in "${key}"`);
         }
       }
@@ -203,7 +217,7 @@
       if (entry.wantsExpand) {
         const { changed } = expandList(body, expandFilter);
         if (!changed) {
-          const key = body.id || 'list-body';
+          const key = body.id || "list-body";
           logOnce(`noExpanders(${key})`, `⚠️ No eligible expander <details> found in "${key}"`);
         }
       }
@@ -212,10 +226,10 @@
     return true;
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', process);
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", process);
   else process();
 })();
 
-/* ------------------------------------------------- */
-/* **** END OF: Unwrap List Views with Subitems **** */
-/* ------------------------------------------------- */
+/*----------------------------------------------------
+  END OF BULLET ADDON: Unwrap List Views with Subitems
+  --------------------------------------------------*/
