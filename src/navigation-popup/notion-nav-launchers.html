@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- This document explores different design patterns for pull-out navigation launchers. It's not a part
+    of the addon, but serves as a reference and an inspiration for implementing similar designs.
+    Licensed under the same MIT License as the rest of the Bullet Addons, so feel free to use and modify
+    under those terms. -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pull-Out Navigation Launchers</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            padding: 40px;
+            background: #f7f7f5;
+            color: #37352f;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .demo-section {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .live-demo {
+            height: 200px;
+            background: #fafafa;
+            border-radius: 4px;
+            position: relative;
+            overflow-x: hidden;
+            margin-bottom: 30px;
+        }
+        .live-demo.dark {
+            background: #2f3437;
+        }
+        
+        /* Navigation launcher styling */
+        :root {
+            --pull-out-distance: 20px; /* Adjust this value to test different lengths */
+        }
+        
+        .nav-launcher {
+            position: absolute;
+            left: calc(var(--pull-out-distance) * -1); /* Start partially hidden */
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #37352f;
+        }
+        
+        .nav-launcher:hover {
+            left: 0; /* Slide out on hover */
+        }
+        
+        .dark .nav-launcher {
+            color: #ffffff;
+        }
+        
+        h2 {
+            margin: 0 0 20px 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        h3 {
+            margin: 30px 0 12px 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        p {
+            margin: 0 0 20px 0;
+            font-size: 14px;
+            color: #787774;
+            line-height: 1.5;
+        }
+        code {
+            background: #f7f6f3;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 13px;
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+        }
+        .code-block {
+            background: #f7f6f3;
+            border-radius: 4px;
+            padding: 16px;
+            margin-top: 20px;
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+        .variant-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .note {
+            background: #fffbf3;
+            border-left: 3px solid #f0a020;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .note p {
+            margin: 0;
+            color: #37352f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pull-Out Navigation Launchers</h1>
+        <p style="margin-bottom: 40px; font-size: 16px;">Minimal bracket and open paper tab with pull-out animation. Hover to see them slide out from the left edge.</p>
+
+        <!-- Minimal Bracket -->
+        <div class="demo-section">
+            <h2>Minimal Bracket</h2>
+            <p>Extended bracket design that pulls out on hover to reveal more content.</p>
+            
+            <div class="live-demo">
+                <svg class="nav-launcher" width="32" height="64" viewBox="0 0 32 64">
+                    <!-- Extended bracket shape -->
+                    <path d="M0 16L22 16Q26 16 26 20L26 44Q26 48 22 48L0 48" 
+                          fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
+                    <!-- Dots -->
+                    <g fill="currentColor" fill-opacity="0.4">
+                        <circle cx="8" cy="28" r="1"/>
+                        <circle cx="8" cy="32" r="1"/>
+                        <circle cx="8" cy="36" r="1"/>
+                    </g>
+                    <!-- Extended lines -->
+                    <g stroke="currentColor" stroke-opacity="0.3" stroke-width="1" stroke-linecap="round">
+                        <line x1="14" y1="32" x2="20" y2="32"/>
+                    </g>
+                </svg>
+            </div>
+            
+            <h3>Dark Mode</h3>
+            <div class="live-demo dark" style="height: 150px;">
+                <svg class="nav-launcher" width="32" height="64" viewBox="0 0 32 64">
+                    <path d="M0 16L22 16Q26 16 26 20L26 44Q26 48 22 48L0 48" 
+                          fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
+                    <g fill="currentColor" fill-opacity="0.4">
+                        <circle cx="8" cy="28" r="1"/>
+                        <circle cx="8" cy="32" r="1"/>
+                        <circle cx="8" cy="36" r="1"/>
+                    </g>
+                    <g stroke="currentColor" stroke-opacity="0.3" stroke-width="1" stroke-linecap="round">
+                        <line x1="14" y1="32" x2="20" y2="32"/>
+                    </g>
+                </svg>
+            </div>
+            
+            <h3>SVG Code</h3>
+            <div class="code-block">&lt;svg width="32" height="64" viewBox="0 0 32 64"&gt;
+    &lt;!-- Extended bracket --&gt;
+    &lt;path d="M0 16L22 16Q26 16 26 20L26 44Q26 48 22 48L0 48" 
+          fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/&gt;
+    &lt;!-- Dots --&gt;
+    &lt;g fill="currentColor" fill-opacity="0.4"&gt;
+        &lt;circle cx="8" cy="28" r="1"/&gt;
+        &lt;circle cx="8" cy="32" r="1"/&gt;
+        &lt;circle cx="8" cy="36" r="1"/&gt;
+    &lt;/g&gt;
+    &lt;!-- Extended line --&gt;
+    &lt;g stroke="currentColor" stroke-opacity="0.3" stroke-width="1" stroke-linecap="round"&gt;
+        &lt;line x1="14" y1="32" x2="20" y2="32"/&gt;
+    &lt;/g&gt;
+&lt;/svg&gt;</div>
+        </div>
+
+        <!-- Open Paper Tab -->
+        <div class="demo-section">
+            <h2>Open Paper Tab</h2>
+            <p>Paper tab with no left edge, sharp corners, and extended horizontal lines.</p>
+            
+            <div class="live-demo">
+                <svg class="nav-launcher" width="32" height="64" viewBox="0 0 32 64">
+                    <!-- Open tab - no left edge, sharp corners at left -->
+                    <path d="M0 4L24 4Q28 4 28 8L28 56Q28 60 24 60L0 60" 
+                          fill="none" stroke="currentColor" stroke-opacity="0.15"/>
+                    <!-- Extended page lines -->
+                    <g stroke="currentColor" stroke-opacity="0.4" stroke-width="1" stroke-linecap="round">
+                        <line x1="6" y1="28" x2="22" y2="28"/>
+                        <line x1="6" y1="32" x2="20" y2="32"/>
+                        <line x1="6" y1="36" x2="23" y2="36"/>
+                    </g>
+                </svg>
+            </div>
+            
+            <h3>Dark Mode</h3>
+            <div class="live-demo dark" style="height: 150px;">
+                <svg class="nav-launcher" width="32" height="64" viewBox="0 0 32 64">
+                    <path d="M0 4L24 4Q28 4 28 8L28 56Q28 60 24 60L0 60" 
+                          fill="none" stroke="currentColor" stroke-opacity="0.15"/>
+                    <g stroke="currentColor" stroke-opacity="0.4" stroke-width="1" stroke-linecap="round">
+                        <line x1="6" y1="28" x2="22" y2="28"/>
+                        <line x1="6" y1="32" x2="20" y2="32"/>
+                        <line x1="6" y1="36" x2="23" y2="36"/>
+                    </g>
+                </svg>
+            </div>
+            
+            <h3>SVG Code</h3>
+            <div class="code-block">&lt;svg width="32" height="64" viewBox="0 0 32 64"&gt;
+    &lt;!-- Open tab with sharp left corners --&gt;
+    &lt;path d="M0 4L24 4Q28 4 28 8L28 56Q28 60 24 60L0 60" 
+          fill="none" stroke="currentColor" stroke-opacity="0.15"/&gt;
+    &lt;!-- Extended page lines --&gt;
+    &lt;g stroke="currentColor" stroke-opacity="0.4" stroke-width="1" stroke-linecap="round"&gt;
+        &lt;line x1="6" y1="28" x2="22" y2="28"/&gt;
+        &lt;line x1="6" y1="32" x2="20" y2="32"/&gt;
+        &lt;line x1="6" y1="36" x2="23" y2="36"/&gt;
+    &lt;/g&gt;
+&lt;/svg&gt;</div>
+        </div>
+
+        <!-- Side by Side Comparison -->
+        <div class="demo-section">
+            <h2>Side by Side Comparison</h2>
+            
+            <div class="variant-grid">
+                <div>
+                    <h3>Minimal Bracket</h3>
+                    <div class="live-demo" style="height: 150px;">
+                        <svg class="nav-launcher" width="32" height="64" viewBox="0 0 32 64" style="color: #37352f;">
+                            <path d="M0 16L22 16Q26 16 26 20L26 44Q26 48 22 48L0 48" 
+                                  fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
+                            <g fill="currentColor" fill-opacity="0.4">
+                                <circle cx="8" cy="28" r="1"/>
+                                <circle cx="8" cy="32" r="1"/>
+                                <circle cx="8" cy="36" r="1"/>
+                            </g>
+                            <g stroke="currentColor" stroke-opacity="0.3" stroke-width="1" stroke-linecap="round">
+                                <line x1="14" y1="32" x2="20" y2="32"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>Open Paper Tab</h3>
+                    <div class="live-demo" style="height: 150px;">
+                        <svg class="nav-launcher" width="32" height="64" viewBox="0 0 32 64" style="color: #37352f;">
+                            <path d="M0 4L24 4Q28 4 28 8L28 56Q28 60 24 60L0 60" 
+                                  fill="none" stroke="currentColor" stroke-opacity="0.15"/>
+                            <g stroke="currentColor" stroke-opacity="0.4" stroke-width="1" stroke-linecap="round">
+                                <line x1="6" y1="28" x2="22" y2="28"/>
+                                <line x1="6" y1="32" x2="20" y2="32"/>
+                                <line x1="6" y1="36" x2="23" y2="36"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Different Pull Distances -->
+        <div class="demo-section">
+            <h2>Test Different Pull-Out Distances</h2>
+            <p>Compare how different pull-out distances feel. Hover over each to see the animation.</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 30px;">
+                <div>
+                    <h3 style="font-size: 14px; margin-bottom: 8px;">10px pull</h3>
+                    <div class="live-demo" style="height: 100px; --pull-out-distance: 10px;">
+                        <svg class="nav-launcher" width="32" height="64" viewBox="0 0 32 64" style="color: #37352f;">
+                            <path d="M0 16L22 16Q26 16 26 20L26 44Q26 48 22 48L0 48" 
+                                  fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
+                            <g fill="currentColor" fill-opacity="0.4">
+                                <circle cx="8" cy="28" r="1"/>
+                                <circle cx="8" cy="32" r="1"/>
+                                <circle cx="8" cy="36" r="1"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="font-size: 14px; margin-bottom: 8px;">15px pull</h3>
+                    <div class="live-demo" style="height: 100px; --pull-out-distance: 15px;">
+                        <svg class="nav-launcher" width="32" height="64" viewBox="0 0 32 64" style="color: #37352f;">
+                            <path d="M0 16L22 16Q26 16 26 20L26 44Q26 48 22 48L0 48" 
+                                  fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
+                            <g fill="currentColor" fill-opacity="0.4">
+                                <circle cx="8" cy="28" r="1"/>
+                                <circle cx="8" cy="32" r="1"/>
+                                <circle cx="8" cy="36" r="1"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="font-size: 14px; margin-bottom: 8px;">20px pull (default)</h3>
+                    <div class="live-demo" style="height: 100px; --pull-out-distance: 20px;">
+                        <svg class="nav-launcher" width="32" height="64" viewBox="0 0 32 64" style="color: #37352f;">
+                            <path d="M0 16L22 16Q26 16 26 20L26 44Q26 48 22 48L0 48" 
+                                  fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
+                            <g fill="currentColor" fill-opacity="0.4">
+                                <circle cx="8" cy="28" r="1"/>
+                                <circle cx="8" cy="32" r="1"/>
+                                <circle cx="8" cy="36" r="1"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="font-size: 14px; margin-bottom: 8px;">25px pull</h3>
+                    <div class="live-demo" style="height: 100px; --pull-out-distance: 25px;">
+                        <svg class="nav-launcher" width="32" height="64" viewBox="0 0 32 64" style="color: #37352f;">
+                            <path d="M0 16L22 16Q26 16 26 20L26 44Q26 48 22 48L0 48" 
+                                  fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
+                            <g fill="currentColor" fill-opacity="0.4">
+                                <circle cx="8" cy="28" r="1"/>
+                                <circle cx="8" cy="32" r="1"/>
+                                <circle cx="8" cy="36" r="1"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Implementation Guide -->
+        <div class="demo-section">
+            <h2>Implementation Guide</h2>
+            
+            <h3>CSS for Pull-Out Animation</h3>
+            <div class="code-block">:root {
+    --pull-out-distance: 20px;  /* Easily adjust this value (try 10px, 15px, etc.) */
+}
+
+.nav-launcher {
+    position: fixed;
+    left: calc(var(--pull-out-distance) * -1);  /* Start partially hidden */
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+}
+
+.nav-launcher:hover {
+    left: 0;  /* Slide out fully on hover */
+}
+
+/* Optional: Add subtle shadow on hover */
+.nav-launcher:hover {
+    filter: drop-shadow(2px 0 4px rgba(0,0,0,0.1));
+}</div>
+
+            <div class="note">
+                <p><strong>Testing Different Lengths:</strong> Change <code>--pull-out-distance</code> to test different values:</p>
+                <ul style="margin: 8px 0 0 20px; padding: 0;">
+                    <li><code>10px</code> - More visible, subtle pull-out</li>
+                    <li><code>15px</code> - Balanced visibility and animation</li>
+                    <li><code>20px</code> - More dramatic pull-out effect</li>
+                    <li><code>25px</code> - Nearly hidden, maximum reveal on hover</li>
+                </ul>
+            </div>
+
+            <h3>Key Changes from Original</h3>
+            <ul style="margin: 20px 0; padding-left: 20px; line-height: 1.8;">
+                <li><strong>Extended horizontally:</strong> Both designs now extend to 32px width (was ~16px)</li>
+                <li><strong>Open Paper Tab:</strong> Left edge completely removed, corners are sharp (90°)</li>
+                <li><strong>Minimal Bracket:</strong> Extended horizontal line, maintains open left side</li>
+                <li><strong>Animation:</strong> Slides from <code>left: -20px</code> to <code>left: 0</code> on hover</li>
+            </ul>
+
+            <h3>Customization Options</h3>
+            <p>Fine-tune the behavior with these adjustments:</p>
+            <ul style="margin: 20px 0; padding-left: 20px; line-height: 1.8;">
+                <li><code>--pull-out-distance: 20px</code> → Try <code>10px</code>, <code>15px</code>, or <code>25px</code></li>
+                <li><code>transition: left 0.3s</code> → Adjust timing (try <code>0.2s</code> for snappier feel)</li>
+                <li>Add <code>opacity: 0.7</code> when inactive, <code>opacity: 1</code> on hover for additional feedback</li>
+                <li>Try <code>transition: left 0.4s ease-out</code> for a different easing feel</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
