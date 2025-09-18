@@ -11,10 +11,6 @@
 /*  Style the special callouts for page translations and external links.
     Used by lang-link.js, but can be reused for other purposes. */
 
-.notion-custom-code:has(.links-callout) {
-  width: 100%;
-}
-
 .links-callout {
   .links-section,
   .links-section > * {
@@ -47,6 +43,28 @@
 /* Hide the whole block if there isn't a single link with non-empty href */
 .links-callout:not(:has(a[href]:not([href=""]))) {
   display: none;
+}
+
+/* Align translation callouts to the right side of the page */
+.notion-custom-code:has(.links-callout) {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.links-translation {
+  display: flex;
+  width: unset;
+  flex-direction: row-reverse;
+  padding: 0.5em;
+  margin: 0.5em;
+
+  & > .notion-page-icon-inline {
+    margin-top: 2px;
+  }
+
+  .notion-callout-text {
+    margin-left: unset;
+  }
 }
 
 /*----------------------------------
