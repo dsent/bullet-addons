@@ -92,6 +92,12 @@ a.notion-link-mention {
   content: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2032%2032%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2226.5%22%20y1%3D%227%22%20x2%3D%224%22%20y2%3D%2228%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%235BD066%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2327B43E%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3C!--%20background%20circle%20--%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22url(%23g)%22%2F%3E%3C!--%20spur%20(exact%2045%C2%B0%20intersections%2C%20single%20straight%20edge)%20--%3E%3Cpath%20d%3D%22M25.8995%2025.8995L6.1005%206.1005L2%2030Z%22%20fill%3D%22url(%23g)%22%2F%3E%3C!--%20phone%20glyph%20--%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22M12.5%209.49989c-.3328-.66858-.8435-.60939-1.3593-.60939-.9219%200-2.35945%201.10428-2.35945%203.1595%200%201.6843.7422%203.528%203.24315%206.2861%202.4136%202.6618%205.585%204.0387%208.2178%203.9918%202.6328-.0468%203.1745-2.3125%203.1745-3.0776%200-.3391-.2105-.5083-.3554-.5543-.8972-.4306-2.552-1.2329-2.9285-1.3836-.3765-.1507-.5731.0532-.6953.1641-.3414.3253-1.0182%201.2843-1.25%201.5-.2317.2157-.5772.1065-.721.025-.5291-.2123-1.9636-.8504-3.107-1.9589-1.4142-1.3708-1.4972-1.8425-1.7636-2.2623-.2131-.3359-.0567-.5419.0213-.632.3047-.3515.7254-.8943.9141-1.164.1886-.2698.0389-.6793-.051-.9343-.3865-1.097-.714-2.0153-.9803-2.55011Z%22%2F%3E%3C%2Fsvg%3E");
   padding: 6px;
 }
+
+/* Email/Mailto icon */
+.nav-cta-btn[href^="mailto:"] {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='16' x2='16' y1='2' y2='30' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%238B5CF6'/%3E%3Cstop offset='1' stop-color='%233B82F6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='16' cy='16' r='14' fill='url(%23a)'/%3E%3Cpath fill='%23fff' d='M8 11c0-.8.7-1.5 1.5-1.5h13c.8 0 1.5.7 1.5 1.5v10c0 .8-.7 1.5-1.5 1.5h-13c-.8 0-1.5-.7-1.5-1.5V11z'/%3E%3Cpath fill='none' stroke='url(%23a)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m8 11 8 5.5 8-5.5'/%3E%3C/svg%3E");
+  padding: 6px;
+}
 /* END OF: CTA Buttons */
 
 /* SECTION: Navbar Items Alignment Fix */
