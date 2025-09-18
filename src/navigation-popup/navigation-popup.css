@@ -81,18 +81,17 @@
   --nav-sticky-top: var(--outline-sticky-top);
 }
 
-/* Dark mode adjustments (if any) */
-/* The outline theme variables already change in dark mode, so adjust only if you override the variables above. */
-/* .dark-mode {
-  --nav-bg: #1f1f1f;
-  --nav-fg: #a5a39e;
-  --nav-accent: #6aa9ff;
-  --nav-border: rgba(255, 255, 255, 0.12);
-  --nav-hover-bg: rgba(255, 255, 255, 0.08);
-  --nav-scrollbar-thumb: rgba(255, 255, 255, 0.18);
-  --nav-scrollbar-thumb-hover: rgba(255, 255, 255, 0.26);
-  --nav-item-active-bg: rgba(255, 255, 255, 0.14);
-} */
+/* Dark mode adjustments */
+.dark-mode {
+  --nav-bg: var(--outline-bg);
+  --nav-fg: var(--outline-fg);
+  --nav-accent: var(--outline-accent);
+  --nav-border: var(--outline-border);
+  --nav-hover-bg: var(--outline-hover-bg);
+  --nav-scrollbar-thumb: var(--outline-scrollbar-thumb);
+  --nav-scrollbar-thumb-hover: var(--outline-scrollbar-thumb-hover);
+  --nav-item-active-bg: var(--outline-item-active-bg);
+}
 
 .bullet-nav-launcher-left {
   position: fixed;

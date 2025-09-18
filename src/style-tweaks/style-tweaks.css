@@ -49,6 +49,20 @@ a.notion-link-mention {
   align-items: baseline;
 }
 
+/* Fix Navbar colors in dark mode */
+.navbar-link.is-active,
+.navbar-link:focus,
+.navbar-link:focus-within,
+a.navbar-item.is-active,
+a.navbar-item:focus,
+a.navbar-item:focus-within {
+  background-color: transparent;
+}
+
+.dark-mode {
+  --navbar-btn-bg-color: #fff;
+  --navbar-btn-fg-color: hsla(var(--brand-color-h), var(--brand-color-s), var(--brand-color-l), 1);
+}
 /* END OF: Small Visual Tweaks */
 
 /* SECTION: CTA Buttons */
