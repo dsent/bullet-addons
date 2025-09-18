@@ -38,6 +38,17 @@
 .notion-asset-wrapper-image > div[style*="height"] {
   height: unset !important;
 }
+
+/* Inlining mentions */
+.notion-link-mention-container {
+  display: inline-flex;
+  margin-inline: 0.25em;
+}
+
+a.notion-link-mention {
+  align-items: baseline;
+}
+
 /* END OF: Small Visual Tweaks */
 
 /* SECTION: CTA Buttons */
