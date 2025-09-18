@@ -58,7 +58,7 @@
 :is(
 .notion-collection:first-child, /* the first collection on the page */
 :not( /* or one that has a preceding block that's not: */
-    :is(div.notion-sync-block, details.notion-toggle, div.notion-custom-code  /* one of the blocks that can contain a disable trigger */
+    :is(div.notion-sync-block, div.notion-custom-code  /* one of the blocks that can contain a disable trigger */
     ):has(.dsbullet-disable-tabs)  /* and actually contain it */
 ) + .notion-collection /* a collection that directly follows such a block */
 ):has(.notion-collection-header>.dropdown) /* and actually has multiple views */ {
@@ -260,7 +260,7 @@
 
 /* SECTION: Miscellaneous Configurable Options */
 /* Mark collections that should hide headers */
-:is(div.notion-sync-block, details.notion-toggle, div.notion-custom-code  /* one of the blocks that can contain a disable trigger */
+:is(div.notion-sync-block, div.notion-custom-code  /* one of the blocks that can contain a disable trigger */
 ):has(.dsbullet-hide-header)  /* and actually contain it */
  + .notion-collection /* a collection that directly follows such a block */ {
   /* Hide header w/search button */
@@ -275,7 +275,7 @@
 }
 
 /* Mark list views that are flat and not expandable */
-:is(div.notion-sync-block, details.notion-toggle, div.notion-custom-code
+:is(div.notion-sync-block, div.notion-custom-code
 ):has(.dsbullet-flat-list) /* and actually contain it */
  + .notion-collection /* a collection that directly follows such a block */ {
   /* Remove toggle affordance */
