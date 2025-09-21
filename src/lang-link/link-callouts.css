@@ -46,17 +46,13 @@
 }
 
 /* Align translation callouts to the right side of the page */
-.notion-custom-code:has(.links-callout) {
-  display: flex;
-  flex-direction: row-reverse;
-}
-
 .links-translation {
   display: flex;
-  width: unset;
+  width: fit-content;
   flex-direction: row-reverse;
   padding: 0.5em;
   margin: 0.5em;
+  justify-self: flex-end;
 
   & > .notion-page-icon-inline {
     margin-top: 2px;
@@ -67,6 +63,15 @@
   }
 }
 
+/* Hide the related materials title if there are no materials */
+.related-links-heading:not(:has(+ ul.related-links-list > li)) {
+  display: none;
+}
+
+/* Return the default margin for headings */
+:is(.notion-custom-code, .notion-sync-block) > h2.notion-h1:first-child {
+  margin-top: revert-layer;
+}
 /*----------------------------------
   END OF BULLET ADDON: Link Callouts
   --------------------------------*/
