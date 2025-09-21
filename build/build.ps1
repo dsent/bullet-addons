@@ -143,10 +143,33 @@ if ($jsCfg) {
   # Wrap JS output in <script> tag and emit HTML alongside JS (no other behavior changed)
   try {
     $jsContent = Get-Content -Raw -Path $jsOut
+    # Collect optional raw HTML fragments to place before/after the <script> blob
+    $beforeHtml = ''
+    $afterHtml = ''
+
+    function Get-JoinedHtmlFromFiles([object]$arr) {
+      if (-not $arr) { return '' }
+      $parts = @()
+      foreach ($rel in $arr) {
+        $full = Join-Path $baseDir $rel
+        if (-not (Test-Path $full)) { Write-Err "HTML fragment not found: $rel ($full)"; exit 1 }
+        $parts += (Get-Content -Raw -Path $full)
+      }
+      return (($parts -join "`n") + "`n")
+    }
+
+    if ($jsCfg -and $jsCfg.PSObject.Properties.Name -contains 'beforeHtml') {
+      $beforeHtml = Get-JoinedHtmlFromFiles $jsCfg.beforeHtml
+    }
+    if ($jsCfg -and $jsCfg.PSObject.Properties.Name -contains 'afterHtml') {
+      $afterHtml = Get-JoinedHtmlFromFiles $jsCfg.afterHtml
+    }
+
     $wrapped = @"
-<script type="text/javascript" defer>
+$beforeHtml<script type="text/javascript" defer>
 $jsContent
 </script>
+$afterHtml
 "@
     $jsOutHtml = if ([IO.Path]::GetExtension($jsOut).ToLowerInvariant() -eq '.html') { $jsOut } else { [IO.Path]::ChangeExtension($jsOut, 'html') }
     Set-Content -Path $jsOutHtml -Value $wrapped -Encoding UTF8

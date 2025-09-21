@@ -11,11 +11,15 @@
             "src/outline-popup/outline-popup.js",
             "src/navigation-popup/navigation-popup.js"
         ],
-    "outFile": "bullet-custom-body.html",
+        "beforeHtml": [
+        ],
+        "afterHtml": [
+        ],
+        "outFile": "bullet-custom-body.html",
         "transpile": true,
         "minify": false,
         "target": "es2018",
-    "banner": "/* dsent.me Custom BODY build for Bullet */"
+        "banner": "/* Custom BODY build for Bullet */"
     },
     "css": {
         "sources": [

@@ -20,6 +20,31 @@ This build script combines your selected JS and CSS into an HTML file for Bullet
 
 Edit `build.config.json` to list your sources and options. Paths are relative to the repo root (`baseDir: ".."`).
 
+### Inject raw HTML before/after the script
+
+You can inject literal HTML blocks before and/or after the JS `<script>` blob in the final Body HTML. This is useful for static elements, button containers, or placeholders the JS will enhance. `beforeHtml` and `afterHtml` config keys under `js` take arrays of file paths, similar to `sources`:
+
+```json
+{
+  "js": {
+    "sources": [
+      // ... your JS files, in order ...
+    ],
+    "beforeHtml": [
+      "src/sample/raw-html-block.html"
+    ],
+    // ... other config ...
+  }
+}
+```
+
+Each file's raw contents are concatenated in order and inserted:
+
+- `beforeHtml` content is placed immediately before the `<script>` tag
+- `afterHtml` content is placed immediately after the `</script>` tag
+
+The files must exist; the build fails if a listed file is missing.
+
 ## Usage
 
 From the repo root or `Project` directory:
