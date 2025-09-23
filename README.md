@@ -160,7 +160,7 @@ and wouldn't make a noticeable difference.
 
 ## Roadmap / Next Steps
 
-- None published yet.
+- Simplify configuration, especially for outline-popup (targeting by database view name instead of CSS selector).
 
 ## Author and Contact
 
