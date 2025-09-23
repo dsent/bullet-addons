@@ -14,9 +14,9 @@ The script builds a Notion-style outline for headings on Bullet-rendered pages: 
 
 ## Usage
 
-Read the repo's [README](../README.md) for general installation instructions.
+Read the repo's [README](../../README.md) for general installation instructions.
 
-Add the CSS and JS to your Bullet's Code area, either globally (recommended) or per-page.
+Add the CSS and JS to Bullet's Code area site-wide (per-page is possible, but not recommended).
 Optionally add a config `<span>` to a `bullet:HTML` code block to tweak behavior.
 
 The outline will appear automatically if the page contains at least `data-min-items` (default is 3) headings.
@@ -46,7 +46,7 @@ Place an optional `<span id="dsbullet-outline-config">` marker to configure beha
 ## Technical Notes
 
 - The script exposes a minimal API that allows other scripts to reuse its scroll/resize event handling for a consistent experience.
-  I use this in another script, navigation-popup, that adds a similar popup to the left of the page for site navigation (not yet published).
+  I use this in the `navigation-popup` addon to add a similar left-side popup for site navigation.
 
 ## License and Support
 
@@ -56,4 +56,4 @@ Public repository: [dsent/bullet-addons](https://github.com/dsent/bullet-addons)
 
 For support, please [open an issue](https://github.com/dsent/bullet-addons/issues) on GitHub.
 
-© 2025 Danila Sentyabov ([dsent.me](https://dsent.me)
+© 2025 Danila Sentyabov ([dsent.me](https://dsent.me))

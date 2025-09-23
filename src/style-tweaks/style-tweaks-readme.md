@@ -11,9 +11,9 @@
 
 ## Usage
 
-Read the repo's [README](../README.md) for general installation instructions.
+Read the repo's [README](../../README.md) for general installation instructions.
 
-Drop `style-tweaks.css` into your Bullet injection area (site-wide or per-page). No JavaScript required.
+Drop `style-tweaks.css` into Bullet's Code area site-wide (per-page is possible, but not recommended).
 
 - To add Telegram and WhatsApp icons to your CTA buttons, just add any `https://t.me/` or `https://wa.me/` links to the CTA section of the navbar in Bullet's settings. They will be automatically displayed as buttons with icons:
     ![A screenshot of a navbar section with Telegram and WhatsApp icons as CTA buttons](wa-tg-icons-cta.png)
@@ -34,4 +34,4 @@ Public repository: [dsent/bullet-addons](https://github.com/dsent/bullet-addons)
 
 For support, please [open an issue](https://github.com/dsent/bullet-addons/issues) on GitHub.
 
-© 2025 Danila Sentyabov ([dsent.me](https://dsent.me)
+© 2025 Danila Sentyabov ([dsent.me](https://dsent.me))

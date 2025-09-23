@@ -98,21 +98,19 @@ make it easier to identify where each addon begins and ends for future updates o
 I recommend using a build script to combine them (see [Build section](#build) below).
 
 Each script is self-contained. Dependencies, if any, are noted in the script's comments and README. When present, put
-dependencies first (this is not a strict requirement as the scripts will try to wait for the requirements to become available,
-but I still recommend it for clarity).
+dependencies first (scripts typically wait for prerequisites, but ordering them earlier keeps things clear).
 
 ## Configuration and Customization
 
 Some scripts include configuration options, typically grouped at the top of the file. Edit these values
 to change the default behavior for your entire site.
 
-You can also apply scripts to specific pages instead of globally by adding CSS and JavaScript to individual
-page code areas ("Pages" in the left sidebar → select page → "Code" → "Current Page").
+For page-level behavior, use **per-page configuration using special HTML markers**.
+Add the script globally and then add specific blocks to your source Notion pages
+to enable/disable features or change settings.
 
-However, maintaining page-specific scripts is cumbersome. That's why most scripts support
-**per-page configuration using special HTML markers**, which is **the recommended approach**.
-You can add the script to your site globally and then add specific blocks to your source Notion pages
-to enable or disable features or change settings.
+You can also add scripts to specific pages instead of globally by adding CSS and JavaScript to individual
+page code areas ("Pages" in the left sidebar → select page → "Code" → "Current Page"). This is not recommended nor supported, so you're on your own.
 
 Add these markers using a code block with the caption `bullet:HTML`
 (see [Embed HTML inside Notion](https://bullet.so/docs/embed-html-inside-notion/) in Bullet documentation).

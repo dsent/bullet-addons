@@ -21,12 +21,12 @@ extra resources, etc.
 
 ## Usage
 
-Read the repo's [README](../README.md) for general installation instructions.
+Read the repo's [README](../../README.md) for general installation instructions.
 
-- Add the CSS and JS to your Bullet Code area (global recommended).
+- Add the CSS and JS to Bullet's Code area site-wide (per-page is possible, but not recommended).
 - Add a mandatory HTML marker to each page that should include the navigation popup (see Configuration below).
 
-The script will look for a Notion list view specified in the marker and use it as the source for the popup.
+The script will look for a Notion list view specified in the marker and use it as the source for the popup. Ensure the `outline-popup` addon is present; the navigation waits for it to become available before doing anything.
 
 After building the navigation, the list will be removed from the page by default. It makes sense to also add
 a style rule to hide the original list so it doesn't flash before being removed and doesn't stay visible
@@ -64,4 +64,4 @@ Public repository: [dsent/bullet-addons](https://github.com/dsent/bullet-addons)
 
 For support, please [open an issue](https://github.com/dsent/bullet-addons/issues) on GitHub.
 
-© 2025 Danila Sentyabov ([dsent.me](https://dsent.me)
+© 2025 Danila Sentyabov ([dsent.me](https://dsent.me))

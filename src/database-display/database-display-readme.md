@@ -12,9 +12,9 @@ This is a CSS solution that improves how Notion database views render in Bullet 
 
 ## Usage
 
-Read the repo's [README](../README.md) for general installation instructions.
+Read the repo's [README](../../README.md) for general installation instructions.
 
-- Copy the contents of `database-display.css` into your Bullet injection area (site-wide or per-page).
+- Copy the contents of `database-display.css` into Bullet's Code area site-wide (per-page is possible, but not recommended).
 - Customize appearance by overriding CSS variables and adding optional markers to your Notion pages.
 
 ## Tabs for Database Views

@@ -16,7 +16,7 @@ For now, I'll just put it out here for anyone curious enough to explore the code
 
 ## Usage
 
-Read the repo's [README](../README.md) for general installation instructions.
+Read the repo's [README](../../README.md) for general installation instructions.
 
 Experiment and figure out stuff. Feel free to open an issue if you need help.
 
@@ -28,4 +28,4 @@ Public repository: [dsent/bullet-addons](https://github.com/dsent/bullet-addons)
 
 For support, please [open an issue](https://github.com/dsent/bullet-addons/issues) on GitHub.
 
-© 2025 Danila Sentyabov ([dsent.me](https://dsent.me)
+© 2025 Danila Sentyabov ([dsent.me](https://dsent.me))

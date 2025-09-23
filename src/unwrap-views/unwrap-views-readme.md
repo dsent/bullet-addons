@@ -13,7 +13,7 @@ The script provides two main features:
 
 ## Usage
 
-Read the repo's [README](../README.md) for general installation instructions.
+Read the repo's [README](../../README.md) for general installation instructions.
 
 Place `<span>` markers with one of the attributes mentioned below anywhere within `<body>`. All attributes accept valid CSS selectors.
 
