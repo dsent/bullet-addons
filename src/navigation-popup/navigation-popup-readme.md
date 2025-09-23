@@ -14,7 +14,7 @@ extra resources, etc.
 - Nav items cloned from a Notion list view (collection/list) up to a configurable depth
   (note that the included stylesheets supports a maximum of 3 levels).
 - If list items have icons, they are copied.
-- Highlights the current page if it is present in the list.
+- Highlights the current page if it is present in the list or a best-matching ancestor if possible.
 - Accessible: ARIA roles, keyboard navigation (ArrowUp/ArrowDown, Enter, Space, Escape), focus management.
 - Mobile-friendly: shows a close button on coarse-pointer devices and supports touch interactions.
 - Lightweight and idempotent: initializes once and cleans up if no items are found.
@@ -39,6 +39,7 @@ Place a config element anywhere in the document to override defaults. The script
 
 - `data-nav-source` — CSS selector resolving to a `.notion-list-body` or a parent that contains one. When provided, the script will use this element as the nav source.
 - `data-nav-keep-source` — `true|false` (default `false`). If `false`, the original collection/list element will be removed from the page after the nav is built.
+- `data-nav-highlight-partial` — `true|false` (default `true`). If `true` and no exact match is found, the closest parent path in the list is highlighted.
 
 Example config:
 

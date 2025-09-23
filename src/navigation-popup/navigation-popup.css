@@ -224,7 +224,8 @@
 }
 
 /* Active/current page in popup */
-.bullet-nav-item.active {
+.bullet-nav-item.active,
+.bullet-nav-item.active-parent {
   color: var(--nav-accent);
   background-color: var(--nav-item-active-bg);
 }

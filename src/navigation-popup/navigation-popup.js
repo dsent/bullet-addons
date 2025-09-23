@@ -30,6 +30,7 @@
   const cfg = {
     navSource: '', // CSS selector resolving to a .notion-list-body or a container that includes one
     keepSource: false, // if true, do not remove source collection/list from DOM
+    highlightPartial: true, // if true, highlight best parent match when no exact match
   };
 
   // Timing
@@ -87,6 +88,7 @@
     if (!el) return;
     cfg.navSource = el.getAttribute('data-nav-source') || cfg.navSource;
     cfg.keepSource = clampBool(el.getAttribute('data-nav-keep-source'), cfg.keepSource);
+    cfg.highlightPartial = clampBool(el.getAttribute('data-nav-highlight-partial'), cfg.highlightPartial);
   }
   // #endregion Initialization
 
@@ -238,17 +240,36 @@
   function highlightCurrentDocument() {
     const cur = normalizeUrl(location.href);
     const items = $all('.bullet-nav-item', S.list);
+    let exactFound = false;
+    let best = null;
+    let bestLen = -1;
     items.forEach(a => {
       const href = a.getAttribute('href') || '';
       const target = normalizeUrl(href);
+
+      // Clear prior state for idempotency
+      a.classList.remove('active', 'active-parent');
+      a.removeAttribute('aria-current');
+
+      // Exact match wins
       if (cur === target) {
         a.classList.add('active');
         a.setAttribute('aria-current', 'page');
-      } else {
-        a.classList.remove('active');
-        a.removeAttribute('aria-current');
+        exactFound = true;
+        return; // no need to consider partial for this item
+      }
+
+      // Track best parent candidate
+      if (!target || target === '/') return; // skip empty and root
+      if (isParentPath(target, cur)) {
+        if (target.length > bestLen) { best = a; bestLen = target.length; }
       }
     });
+
+    // If no exact match and enabled, highlight the best parent (longest path-prefix match)
+    if (!exactFound && cfg.highlightPartial && best) {
+      best.classList.add('active-parent');
+    }
 
     function normalizeUrl(href) {
       try {
@@ -260,6 +281,15 @@
       } catch {
         return href || '';
       }
+    }
+
+    function isParentPath(parent, child) {
+      // true if `parent` is a path-segment prefix of `child` (and not equal)
+      if (!parent || !child || parent === child) return false;
+      if (!child.startsWith(parent)) return false;
+      // segment boundary: ensure next char in child is '/' (or parent is root handled earlier)
+      const next = child.charAt(parent.length);
+      return next === '/';
     }
   }
 
@@ -340,7 +370,9 @@
       popup.removeAttribute('inert');
       lockPopupPosition();
       if (focusFirst) {  // using the closed-over items list from above
-        const activeItem = items.find(it => it.classList.contains('active')) || items[0];
+        const activeItem = items.find(it => it.classList.contains('active'))
+          || items.find(it => it.classList.contains('active-parent'))
+          || items[0];
         activeItem?.focus?.();
       }
     }
