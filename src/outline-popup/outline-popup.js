@@ -165,12 +165,42 @@
 
     const nodes = $all(sel, root);
     const out = [];
+
+    // Single-pass Notion-like outline level computation
+    // currentByOutline[d-1] stores source level assigned to outline level d
+    const currentByOutline = [];
+
     nodes.forEach((el) => {
       const id = getAnchorId(el);
       const title = getHeadingTitle(el);
       const titleHTML = getHeadingTitleHtml(el);
-      const level = getLevelFromClass(el);
+      const sLevel = getSourceLevel(el); // source heading level (1..3)
       if (!title && !titleHTML) return;
+
+      // Determine outline level L for this heading based on Notion rules
+      let L;
+      if (currentByOutline.length === 0) {
+        // First heading becomes outline level 1 regardless of source depth
+        L = 1;
+        currentByOutline[0] = sLevel;
+      } else if (sLevel <= currentByOutline[0]) {
+        // New top-level section
+        L = 1;
+        currentByOutline.length = 1;
+        currentByOutline[0] = sLevel;
+      } else {
+        // Find deepest d with currentByOutline[d-1] < sLevel
+        let d = 1;
+        while (d <= currentByOutline.length && currentByOutline[d - 1] < sLevel) d++;
+        d -= 1; // step back to deepest valid
+        L = d + 1;
+        // Cap to cfg.maxLevel while keeping state consistent at capped depth
+        if (L > cfg.maxLevel) L = cfg.maxLevel;
+        currentByOutline[L - 1] = sLevel;
+        currentByOutline.length = L; // truncate shallower context beyond L
+      }
+
+      const level = L; // outline level to use for classes/indent
       out.push({ el, id, title: title || cfg.defaultTitle, titleHTML, level });
     });
     return out;
@@ -194,7 +224,7 @@
       return (headingEl.textContent || '').trim();
     }
 
-    function getLevelFromClass(el) {
+    function getSourceLevel(el) {
       // Notion headings include classes notion-h1 / notion-h2 / notion-h3
       if (!el || !el.classList) return 3;
       if (el.classList.contains('notion-h1')) return 1;
