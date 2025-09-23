@@ -178,14 +178,14 @@
       if (!title && !titleHTML) return;
 
       // Determine outline level L for this heading based on Notion rules
-      let L;
+      let level;
       if (currentByOutline.length === 0) {
         // First heading becomes outline level 1 regardless of source depth
-        L = 1;
+        level = 1;
         currentByOutline[0] = sLevel;
       } else if (sLevel <= currentByOutline[0]) {
         // New top-level section
-        L = 1;
+        level = 1;
         currentByOutline.length = 1;
         currentByOutline[0] = sLevel;
       } else {
@@ -193,14 +193,12 @@
         let d = 1;
         while (d <= currentByOutline.length && currentByOutline[d - 1] < sLevel) d++;
         d -= 1; // step back to deepest valid
-        L = d + 1;
+        level = d + 1;
         // Cap to cfg.maxLevel while keeping state consistent at capped depth
-        if (L > cfg.maxLevel) L = cfg.maxLevel;
-        currentByOutline[L - 1] = sLevel;
-        currentByOutline.length = L; // truncate shallower context beyond L
+        if (level > cfg.maxLevel) level = cfg.maxLevel;
+        currentByOutline[level - 1] = sLevel;
+        currentByOutline.length = level; // truncate shallower context beyond L
       }
-
-      const level = L; // outline level to use for classes/indent
       out.push({ el, id, title: title || cfg.defaultTitle, titleHTML, level });
     });
     return out;
