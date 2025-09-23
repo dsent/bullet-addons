@@ -85,10 +85,8 @@
   function readConfig() {
     const el = $(SEL.configEl);
     if (!el) return;
-    const src = el.getAttribute('data-nav-source');
-    const keep = el.getAttribute('data-nav-keep-source');
-    if (src) cfg.navSource = src;
-    cfg.keepSource = clampBool(keep, cfg.keepSource);
+    cfg.navSource = el.getAttribute('data-nav-source') || cfg.navSource;
+    cfg.keepSource = clampBool(el.getAttribute('data-nav-keep-source'), cfg.keepSource);
   }
   // #endregion Initialization
 
