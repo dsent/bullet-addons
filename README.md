@@ -166,3 +166,10 @@ and wouldn't make a noticeable difference.
 
 - Learn more about my work at [dsent.me](https://dsent.me).
 - For questions or sponsorship opportunities: [Telegram](https://t.me/dsent_zen) or [email](mailto:info@dsent.me).
+
+## Support My Work
+
+If you find these addons useful, please consider supporting my work. You can do so by:
+
+- Registering for Bullet using my referral link: [bullet.so](https://bullet.so/?ref=dsent)
+- Commissioning custom work or consulting: [Contact me](mailto:info@dsent.me)
