@@ -158,10 +158,10 @@
 
     // Notion heading nodes of interest (up to cfg.maxLevel)
     const selParts = [];
-    if (cfg.maxLevel >= 1) selParts.push('.notion-h.notion-h1');
-    if (cfg.maxLevel >= 2) selParts.push('.notion-h.notion-h2');
-    if (cfg.maxLevel >= 3) selParts.push('.notion-h.notion-h3');
-    const sel = selParts.join(', ');
+    if (cfg.maxLevel >= 1) selParts.push(".notion-h.notion-h1");
+    if (cfg.maxLevel >= 2) selParts.push(".notion-h.notion-h2");
+    if (cfg.maxLevel >= 3) selParts.push(".notion-h.notion-h3");
+    const sel = selParts.join(", ");
 
     const nodes = $all(sel, root);
     const out = [];
@@ -171,6 +171,8 @@
     const currentByOutline = [];
 
     nodes.forEach((el) => {
+      // Skip headings that are not actually visible on the page
+      if (!isHeadingVisible(el)) return;
       const id = getAnchorId(el);
       const title = getHeadingTitle(el);
       const titleHTML = getHeadingTitleHtml(el);
@@ -203,60 +205,67 @@
     });
     return out;
 
+    // Determine if a heading is visible (not hidden via CSS/attributes and laid out)
+    function isHeadingVisible(headingEl) {
+      // Elements not rendered (e.g., display:none or detached) have no client rects
+      return !!(headingEl && headingEl.isConnected && headingEl.getClientRects().length);
+    }
+
     function getAnchorId(headingEl) {
       // Prefer inner .notion-header-anchor[id], else fallback to the heading's own id
-      const anchor = $('.notion-header-anchor[id]', headingEl);
+      const anchor = $(".notion-header-anchor[id]", headingEl);
       if (anchor && anchor.id) return anchor.id;
-      const dataId = headingEl.getAttribute('data-id');
+      const dataId = headingEl.getAttribute("data-id");
       if (dataId) return dataId;
       // As a last resort, try deriving id from the heading's own id
-      if (headingEl.id) return headingEl.id.replace(/^block-/, '');
-      return '';
+      if (headingEl.id) return headingEl.id.replace(/^block-/, "");
+      return "";
     }
 
     function getHeadingTitle(headingEl) {
       // Expected structure: <span class="notion-h-title">Text</span>
-      const t = $('.notion-h-title', headingEl);
+      const t = $(".notion-h-title", headingEl);
       if (t && t.textContent) return t.textContent.trim();
       // Fallback to textContent
-      return (headingEl.textContent || '').trim();
+      return (headingEl.textContent || "").trim();
     }
 
     function getSourceLevel(el) {
       // Notion headings include classes notion-h1 / notion-h2 / notion-h3
       if (!el || !el.classList) return 3;
-      if (el.classList.contains('notion-h1')) return 1;
-      if (el.classList.contains('notion-h2')) return 2;
-      if (el.classList.contains('notion-h3')) return 3;
+      if (el.classList.contains("notion-h1")) return 1;
+      if (el.classList.contains("notion-h2")) return 2;
+      if (el.classList.contains("notion-h3")) return 3;
       return 3;
     }
 
     // Get sanitized HTML of the heading title preserving basic inline formatting
     function getHeadingTitleHtml(headingEl) {
-      const t = $('.notion-h-title', headingEl);
-      const raw = t ? t.innerHTML : (headingEl ? headingEl.innerHTML : '');
+      const t = $(".notion-h-title", headingEl);
+      const raw = t ? t.innerHTML : headingEl ? headingEl.innerHTML : "";
       return sanitizeInlineHtml(raw);
     }
 
     // Sanitize inline HTML to preserve only a safe subset of formatting tags
     // Allowed: b, strong, i, em, mark, small, del, ins, sub, sup, s
     function sanitizeInlineHtml(html) {
-      if (!html) return '';
+      if (!html) return "";
 
-      const container = document.createElement('div');
+      const container = document.createElement("div");
       container.innerHTML = html;
       const outFrag = document.createDocumentFragment();
 
-      Array.from(container.childNodes).forEach(n => outFrag.appendChild(clean(n)));
-      const tmp = document.createElement('div');
+      Array.from(container.childNodes).forEach((n) => outFrag.appendChild(clean(n)));
+      const tmp = document.createElement("div");
       tmp.appendChild(outFrag);
 
       return tmp.innerHTML.trim();
 
       function clean(node) {
-        const isElement = node.nodeType === 1, isTextNode = node.nodeType === 3;
+        const isElement = node.nodeType === 1,
+          isTextNode = node.nodeType === 3;
         if (!isElement) {
-          return document.createTextNode(isTextNode ? node.nodeValue || '' : '');
+          return document.createTextNode(isTextNode ? node.nodeValue || "" : "");
         }
         const tag = node.nodeName.toLowerCase();
         const children = Array.from(node.childNodes).map(clean);
@@ -264,16 +273,15 @@
         if (cfg.allowedTags.has(tag)) {
           const el = document.createElement(tag);
           // Drop all attributes for safety; keep only tag + text/children
-          children.forEach(ch => el.appendChild(ch));
+          children.forEach((ch) => el.appendChild(ch));
           return el;
         } else {
           // Unwrap disallowed elements but keep their (cleaned) children
           const frag = document.createDocumentFragment();
-          children.forEach(ch => frag.appendChild(ch));
+          children.forEach((ch) => frag.appendChild(ch));
           return frag;
         }
       }
-
     }
   }
 
