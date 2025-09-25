@@ -35,6 +35,15 @@
     }
   }
 
+  // Small helpers (from addon template)
+  function $(selector, root = document) {
+    return root.querySelector(selector);
+  }
+
+  function $all(selector, root = document) {
+    return Array.from(root.querySelectorAll(selector));
+  }
+
   // Unwrap the top-level <details> wrapper elements that actually have sub-items
   function unwrapTopLevel(listBody, filterSelector) {
     if (!listBody) return { changed: false, removed: 0 };
@@ -50,7 +59,7 @@
         try {
           if (!wrapper.querySelector(filterSelector)) return;
         } catch (e) {
-          logOnce(`invalidSelector(${filterSelector})`, `❌ Invalid selector for unwrap-filter: "${filterSelector}"`);
+          logOnce(`invalidSelector(${filterSelector})`, `⚠️ Invalid selector for unwrap-filter: "${filterSelector}"`);
           return;
         }
       }
@@ -76,10 +85,10 @@
     let matches;
 
     if (!filterSelector) {
-      matches = listBody.querySelectorAll("details");
+      matches = $all("details", listBody);
     } else {
       try {
-        matches = listBody.querySelectorAll(filterSelector);
+        matches = $all(filterSelector, listBody);
       } catch (e) {
         logOnce(`invalidSelector(${filterSelector})`, `⚠️ Invalid selector for expand-filter: "${filterSelector}"`);
         return { changed: false, opened: 0 };
@@ -117,8 +126,9 @@
   // Idempotent worker; return true when fully done, false when waiting on DOM/state
   function process() {
     "use strict";
-    const unwrapMarkers = document.querySelectorAll(SEL.markerUnwrap);
-    const expandMarkers = document.querySelectorAll(SEL.markerExpand);
+
+    const unwrapMarkers = $all(SEL.markerUnwrap);
+    const expandMarkers = $all(SEL.markerExpand);
 
     if (unwrapMarkers.length === 0 && expandMarkers.length === 0) {
       logOnce("noMarkers", `❌ No unwrap/expand markers found`);
@@ -150,7 +160,7 @@
 
         let targets;
         try {
-          targets = document.querySelectorAll(viewSel);
+          targets = $all(viewSel);
         } catch (e) {
           logOnce(`invalidSelector(${viewSel})`, `⚠️ Invalid selector in data-${type}-view: "${viewSel}"`);
           return;
@@ -171,7 +181,7 @@
             bodies = [target];
           } else {
             // add all descendant list bodies under the matched element
-            bodies = Array.from(target.querySelectorAll(SEL.listBody));
+            bodies = $all(SEL.listBody, target);
           }
 
           if (bodies.length === 0) {
@@ -185,7 +195,7 @@
             if (type === "unwrap") {
               entry.wantsUnwrap = true;
               if (hasFilter) entry.unwrapFilters.push(filterSelRaw);
-            } else {
+            } else if (type === "expand") {
               entry.wantsExpand = true;
               if (hasFilter) entry.expandFilters.push(filterSelRaw);
             }
