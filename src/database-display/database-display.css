@@ -278,6 +278,15 @@
 :is(div.notion-sync-block, div.notion-custom-code
 ):has(.dsbullet-flat-list) /* and actually contain it */
  + .notion-collection /* a collection that directly follows such a block */ {
+  /* Remove all parent items and child indentations */
+  /* Note that you'd need to unwrap the view with the unwrap-views addon for this to work properly; otherwise, the child items will be hidden */
+  summary.notion-list-sub-item-toggle:not(.notion-list-no-toggle) {
+      display: none;
+  }
+  
+  .notion-list-indent-block {
+      margin-left: 0 !important;
+  }
   /* Remove toggle affordance */
   .notion-list-sub-item-toggle.notion-list-no-toggle {
     padding-left: 0;
