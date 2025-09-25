@@ -20,10 +20,14 @@
     display: none;
   }
 }
-
 /* END OF: Miscellaneous Configurable Options */
 
 /* SECTION: Small Visual Tweaks */
+/* Fix quote font size */
+:root {
+  --quote-font-size: 1rem;
+}
+
 /* Fix site branding keyboard focus outline */
 .navbar-brand > .navbar-item {
   margin: var(--border-radius);
