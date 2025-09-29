@@ -1,4 +1,4 @@
-# Telegram Instant View Template (Notion → Telegram)
+# Telegram Instant View Template (Bullet → Telegram)
 
 This is a Telegram Instant View (TIV) template for a Bullet-powered site.
 I use it (with minor modifications) for my personal blog [dsent.me](https://dsent.me/).
@@ -13,7 +13,7 @@ a link to a Telegram channel (`<meta name="telegram:channel" content="@your_chan
 in the `<head>` section), it will also show the channel name and allow users to join it:
 ![A screenshot of a Telegram Instant View page with a channel link](telegram-iv-sample.png)
 
-It has a bit of site-specific logic, but can be adapted for other Bullet/Notion-powered
+It has a bit of site-specific logic, but can be adapted for other Bullet-powered
 sites with similar structure.
 
 I'm sharing it here for reference so you can make the experience better for your
@@ -60,7 +60,7 @@ The `rhash` parameter is the unique identifier of your template. You can find ou
 
 ## Configuration
 
-Two optional per-page markers can be inserted using Bullet's `HTML` block (Notion custom code). These spans can appear anywhere inside the page content. Wrapping inside a synced block is also supported (template unwraps those).
+Two optional per-page markers can be inserted using [Bullet's custom code](https://bullet.so/docs/embed-html-inside-notion/) blocks (Notion code block with the language set to `HTML` and caption to `bullet:HTML`). These spans can appear anywhere inside the page content. Wrapping inside a synced block is also supported (template unwraps those).
 
 ### 1. Set a custom Telegram channel
 
