@@ -1,0 +1,156 @@
+# =========================================
+# Telegram Instant View template for dsent.me (Bullet / Notion static site)
+# =========================================
+
+~version: "2.1"
+
+# ---------- Scope ----------
+# Apply to the whole domain. Constrain if needed.
+# ?path: ^/(ru|en)/
+
+# ---------- Site name ----------
+site_name: "dsent.me"
+
+# ---------- Customization
+# Put a special marker on the page to set a custom channel for that page alone
+channel: //span[has-class("dsbullet-telegram-channel")]/@data-telegram-channel
+
+# Put a special marker on the page to disable instant view (e.g. if collections on the page contain important information and not just navigation)
+# We have to change the class to prevent the marker from being removed later
+@set_attr(class, "unsupported-marker"): //span[has-class("dsbullet-disable-tiv")]
+@unsupported: //span[has-class("unsupported-marker")]
+
+# ---------- Basic hygiene: remove site chrome ----------
+$b: /html/body
+@remove: $b/div[has-class("bullet-search-overlay")]
+@remove: $b/div[contains(@class, "bullet-nav-")]
+@remove: $b/div[contains(@class, "bullet-outline-")]
+@remove: $b/div[@id="bullet-toast-container"]
+@remove: $b/div[starts-with(@id, "bullet-custom-")]
+@remove: $b/nav
+@remove: $b/footer
+@remove: //script
+@remove: //style
+
+# ---------- Title ----------
+title: //div[has-class("notion-page")]/h1[1]
+title: //head/title
+
+# ---------- Cover ----------
+$page_cover: //img[has-class("notion-page-cover")]
+?exists: $page_cover
+cover: $page_cover
+image_url: $page_cover
+
+?true
+# ---------- Identify the article wrapper ----------
+$article: //article[has-class("notion-page-content-inner")][1]
+@prepend(<div>,id,"telegram-instant-view"): $b
+$content: $@
+@append_to($content): $article/*
+@remove: $b/main
+# @debug: //div[has-class("notion-text")]
+
+body: $content
+body: $article
+
+# Fallback to the document body if no wrapper resolved
+body: $b
+
+# ---------- Remove more navigation elements --------
+@remove: //div[has-class("notion-sync-block")][.//div[has-class("links-translation")]]
+@remove: //a[has-class("notion-hash-link")] | //div[has-class("notion-header-anchor")]
+@remove: //div[has-class("links-external")]
+@remove: //div[has-class("notion-blank")]
+
+# Collections are only navigational at the moment
+# May decide to actually parse them lager
+@remove: //div[has-class("notion-collection")]
+
+# ---------- Remove invisible elements
+@remove: //*[contains(@style,"display:none")]
+@remove: //div[has-class("notion-blank")]
+
+# ---------- Remove layout elements
+@remove: //div[has-class("notion-spacer")]
+
+# ---------- Remove configuration elements
+@remove: //span[contains(@class,"dsbullet-")]
+@remove: //span[starts-with(@id,"dsbullet-")]
+
+# ---------- Remove unsupported elements ----------
+@remove: $content//a//img
+
+# ---------- Move headings up
+<h1>: //h2[has-class("notion-h1")]
+<h2>: //h3[has-class("notion-h2")]
+<h3>: //h4[has-class("notion-h3")]
+
+# ---------- Unwrap custom code and sync blocks
+@before_el("./.."): //div[has-class("notion-custom-code")]/*
+@remove: //div[has-class("notion-custom-code")]
+@before_el("./.."): //div[has-class("notion-sync-block")]/*
+@remove: //div[has-class("notion-sync-block")]
+
+# ---------- Unwrap columns and rows
+@before_el("./.."): //div[has-class("notion-column")]/*
+@remove: //div[has-class("notion-column")]
+@before_el("./.."): //div[has-class("notion-row")]/*
+@remove: //div[has-class("notion-row")]
+
+# ---------- Combine lists
+@combine: //ul/following-sibling::*[1]/self::ul
+@combine: //ol/following-sibling::*[1]/self::ol
+
+# ---------- Unwrap mentions
+@before_el("./.."): //a[has-class("notion-link-mention")]
+@after(" "): //a[has-class("notion-link-mention")]
+@remove: //div[has-class("notion-link-mention-container")]
+
+# ---------- Unwrap inline icons
+@before_el("./.."): //div[has-class("notion-page-icon-inline")]/span[has-class("notion-page-icon")]
+@after(" "): //span[has-class("notion-page-icon")]
+@remove: //div[has-class("notion-page-icon-inline")]
+
+# ---------- Format callouts
+@remove: //span[has-class("notion-callout-title")][not(text())]
+@before_el("./.."): //div[has-class("notion-callout-text")]/span[has-class("notion-callout-title")]
+@after("<br>"): //span[has-class("notion-callout-title")]
+@before_el("./.."): //div[has-class("notion-callout-text")]/*
+@remove: //div[has-class("notion-callout-text")]
+@combine(<br>): //div[has-class("notion-callout")]/div/following-sibling::*[1]/self::div
+<span>: //div[has-class("notion-callout")]/div
+<blockquote>: //div[has-class("notion-callout")]
+
+# ---------- Highlight CTA button links
+@before(<br>): //a[has-class("notion-link")][has-class("bullet-btn")]
+
+# ---------- Spacing between paragraphs
+@combine(<br>,<br>): //div[has-class("notion-text")]/following-sibling::*[1]/self::div
+
+# ---------- Fix svg rendering
+@set_attr(src, "https://img.gs/zlpphkxqmv/2560,fit,format=png,quality=high/", ./@src): $content//img[ends-with(@src, "svg/public")]
+@set_attr(srcset, "https://img.gs/zlpphkxqmv/2560,fit,format=png,quality=high/", ./@srcset): $content//img[ends-with(@srcset, "svg/public")]
+
+# ---------- Remove related section if there are no links
+@remove: //h1[has-class("related-links-heading")][not(following-sibling::ul/li)]
+
+# ---------- Cleanup
+@set_attr(id, ): //*[@id]
+@set_attr(style, ): //*[@style]
+@set_attr(height, ): //*[@height]
+@set_attr(width, ): //*[@width]
+@set_attr(data-id, ): //*[@data-id]
+@set_attr(srcset, ): //*[@srcset]
+
+# Remove unnecessary nesting
+@simplify: //h1 | //h2 | //h3
+@simplify: //figure
+@simplify: //blockquote
+
+# Remove site section navigation if present
+# (collections are removed for now anyway)
+@remove: //h1[text()="Список публикаций раздела"]
+
+# Let's check the result!
+# @debug: //body
