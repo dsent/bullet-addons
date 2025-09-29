@@ -26,7 +26,7 @@ users if you also use Bullet for content publishing and share your articles on T
 1. Log into [Telegram Instant View Editor](https://instantview.telegram.org/my/).
 2. Enter a sample URL of a specific page suitable for instant view to create a new template
    (it must have article-like content, not a homepage, index, or interactive page).
-3. Paste the contents of `bullet-site.tgiv` into the `RULES` section of the editor.
+3. Paste the contents of [bullet-site.tgiv](./bullet-site.tgiv) into the `RULES` section of the editor.
 4. Adjust the site-specific rules for your site.
 5. Click `TRACK CHANGES` to validate and save.
 6. Add a few other sample URLs to test. You'll need at least 10 URLs tested valid to publish the template.
