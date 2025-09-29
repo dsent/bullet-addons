@@ -49,7 +49,7 @@ Example config:
 <style>.notion-collection:has(> .view-navigation-popup) { display: none; }</style>
 <span id="dsbullet-nav-config"
   data-nav-source=".notion-custom-code:has(#dsbullet-nav-config) + .notion-collection > .view-navigation-popup .notion-list-body"
-></span>
+/>
 ```
 
 ## Troubleshooting

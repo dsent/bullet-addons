@@ -23,7 +23,7 @@ Drop `style-tweaks.css` into Bullet's Code area site-wide (per-page is possible,
 Add this HTML element to your Notion page to hide the title (`h1.notion-title`) on that page:
 
 ```html
-<span class="dsbullet-hide-title"></span>
+<span class="dsbullet-hide-title" />
 ```
 
 ## License and Support

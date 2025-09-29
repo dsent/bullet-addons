@@ -20,9 +20,9 @@ Place `<span>` markers with one of the attributes mentioned below anywhere withi
 ### Unwrap Top-Level Wrapper Details
 
 ```html
-<span data-unwrap-view="#notion-list-123"></span>
-<span data-unwrap-view="#notion-view-123"></span>
-<span data-unwrap-view=".some-scope :is(#listA, #listB)"></span>
+<span data-unwrap-view="#notion-list-123" />
+<span data-unwrap-view="#notion-view-123" />
+<span data-unwrap-view=".some-scope :is(#listA, #listB)" />
 ```
 
 ### Unwrap Only Wrappers Containing Matches
@@ -32,8 +32,8 @@ Use `data-unwrap-filter` to target wrappers that contain specific elements (OR l
 ```html
 <span
     data-unwrap-view="#notion-list-123"
-    data-unwrap-filter='summary a[href="/ru/archive/"], summary a[href="/en/archive/"]'>
-</span>
+    data-unwrap-filter='summary a[href="/ru/archive/"], summary a[href="/en/archive/"]'
+/>
 ```
 
 ### Expand Details
@@ -41,9 +41,9 @@ Use `data-unwrap-filter` to target wrappers that contain specific elements (OR l
 Set the `open` attribute on details elements:
 
 ```html
-<span data-expand-view="#notion-list-123"></span>      <!-- expand all details in that list body -->
-<span data-expand-view="#notion-view-123"></span>      <!-- expand list body inside the target view -->
-<span data-expand-view="body"></span>                  <!-- expand all list bodies in the document -->
+<span data-expand-view="#notion-list-123" />      <!-- expand all details in that list body -->
+<span data-expand-view="#notion-view-123" />      <!-- expand list body inside the target view -->
+<span data-expand-view="body" />                  <!-- expand all list bodies in the document -->
 ```
 
 ### Expand with Filtering
@@ -53,8 +53,8 @@ Use `data-expand-filter` to expand only matching elements. This opens the matche
 ```html
 <span
     data-expand-view="#notion-list-123"
-    data-expand-filter='a[href*="/ru/"], a[href*="/ru/b/"]'>
-</span>
+    data-expand-filter='a[href*="/ru/"], a[href*="/ru/b/"]'
+/>
 ```
 
 ### Target Lists by Position
@@ -65,11 +65,11 @@ Target specific list views without knowing their IDs (rely on their position rel
 <!-- Target all list views in the database next to this marker -->
 <span id="list-marker-861624665"
   data-expand-view=".notion-custom-code:has(> #list-marker-861624665) + .notion-collection > .notion-collection-view .notion-list-body"
-></span>
+/>
 <!-- Advanced: target the *second* list view in the following database view -->
 <span id="list-marker-650184903"
   data-expand-view=".notion-custom-code:has(> #list-marker-650184903) + .notion-collection > :nth-child(1 of .notion-collection-view) .notion-list-body"
-></span>
+/>
 ```
 
 **Important:** The marker must be directly adjacent to the target element. Even a single empty line (which renders as `<p>` or `<div>`) will break the targeting.

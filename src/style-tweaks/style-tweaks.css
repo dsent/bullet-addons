@@ -10,7 +10,7 @@
 
 /* SECTION: Miscellaneous Configurable Options */
 
-/* Hide the page title with <span class="dsbullet-hide-title"></span> */
+/* Hide the page title with <span class="dsbullet-hide-title" /> */
 .notion-page:has( /* root element that holds the heading */
     .notion-page-content-inner /* root element that can contain the trigger */
     .dsbullet-hide-title /* the actual trigger */
@@ -45,7 +45,7 @@
 
 /* Inlining links and mentions */
 .notion-link {
-    display: inline;
+  display: inline;
 }
 
 .notion-link-mention-container {
@@ -63,12 +63,12 @@ a.notion-link-mention {
 
 /* Undo Bullet's max-width on mention titles for media >=1024px */
 span.notion-link-mention-title {
- display: inline;
- max-width: none;
- overflow: unset;
- text-overflow: unset;
- vertical-align: baseline;
- white-space: unset;
+  display: inline;
+  max-width: none;
+  overflow: unset;
+  text-overflow: unset;
+  vertical-align: baseline;
+  white-space: unset;
 }
 
 /* Fix Navbar colors in dark mode */

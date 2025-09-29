@@ -60,7 +60,7 @@ The `rhash` parameter is the unique identifier of your template. You can find ou
 
 ## Configuration
 
-Two optional per-page markers can be inserted using [Bullet's custom code](https://bullet.so/docs/embed-html-inside-notion/) blocks (Notion code block with the language set to `HTML` and caption to `bullet:HTML`). These spans can appear anywhere inside the page content. Wrapping inside a synced block is also supported (template unwraps those).
+Two optional per-page markers can be inserted using [Bullet's custom code](https://bullet.so/docs/embed-html-inside-notion/) blocks (Notion code block with the language set to `HTML` and caption to `bullet:HTML`). These spans can appear anywhere inside the page content.
 
 ### 1. Set a custom Telegram channel
 

@@ -39,8 +39,8 @@ Place an optional `<span id="dsbullet-outline-config">` marker to configure beha
       data-default-title="Untitled"
       data-active-anchor="center"
       data-mobile-media-query="(orientation: portrait) and (pointer: coarse) and (max-width: 768px)"
-      data-mobile-popup="auto">
-</span>
+      data-mobile-popup="auto"
+/>
 ```
 
 ## Technical Notes

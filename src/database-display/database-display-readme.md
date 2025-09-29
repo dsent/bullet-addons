@@ -40,19 +40,19 @@ Place a small marker inside a `bullet:HTML` code block directly before the targe
 - Disable tabs for views display for the next database:
 
 ```html
-<span class="dsbullet-disable-tabs"></span>
+<span class="dsbullet-disable-tabs" />
 ```
 
 - Hide the header (including search) for the next database (useful for navigation blocks and other cases where you want to display just the list/table/gallery):
 
 ```html
-<span class="dsbullet-hide-header"></span>
+<span class="dsbullet-hide-header" />
 ```
 
 - You can actually use both (but it doesn't make much sense as hiding the header also hides the views dropdown/tabs anyway):
 
 ```html
-<span class="dsbullet-disable-tabs dsbullet-hide-header"></span>
+<span class="dsbullet-disable-tabs dsbullet-hide-header" />
 ```
 
 ### Flat (non-expandable) list marker: `dsbullet-flat-list`
@@ -63,7 +63,7 @@ Use this marker when your Notion list view is a flat list of pages (no nested ch
 - What to add:
 
   ```html
-  <span class="dsbullet-flat-list"></span>
+  <span class="dsbullet-flat-list" />
   ```
 
 **Accessibility & notes:**
