@@ -6,11 +6,13 @@ I use it (with minor modifications) for my personal blog [dsent.me](https://dsen
 TIV is a way to create lightweight, fast-loading versions of web pages optimized for reading.
 If a page has a valid IV template, Telegram adds a special card to a posted link that
 allows users to open the IV version of the page:
+
 ![A screenshot of a Telegram message with a link preview card that has an "Instant View" button](telegram-iv-link-card.png)
 
 Clicking the button opens a simplified, text-focused version of the page. If the page has
 a link to a Telegram channel (`<meta name="telegram:channel" content="@your_channel_name">`
 in the `<head>` section), it will also show the channel name and allow users to join it:
+
 ![A screenshot of a Telegram Instant View page with a channel link](telegram-iv-sample.png)
 
 It has a bit of site-specific logic, but can be adapted for other Bullet-powered
