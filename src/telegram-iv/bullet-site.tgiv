@@ -1,0 +1,153 @@
+# ======================================================
+# Telegram Instant View template for a Bullet-based site
+# ======================================================
+
+~version: "2.1"
+
+# ---------- Site-specific rules ----------
+# Replace with your own site name and uncomment the line below
+# site_name: "yoursite.com"
+
+# ---------- Per-page overrides ----------
+# Put a special marker on the page to set a custom channel for that page alone
+channel: //span[has-class("dsbullet-telegram-channel")]/@data-telegram-channel
+
+# Put a special marker on the page to disable instant view (e.g. if collections
+# on the page contain important information and not just navigation).
+# We have to change the class to prevent the marker from being removed later
+@set_attr(class, "unsupported-marker"): //span[has-class("dsbullet-disable-tiv")]
+@unsupported: //span[has-class("unsupported-marker")]
+
+# ---------- Remove site chrome ----------
+$b: /html/body
+@remove: $b/nav
+@remove: $b/footer
+@remove: //script
+@remove: //style
+
+# ---------- Remove Bullet-specific elements ----------
+@remove: $b/div[has-class("bullet-search-overlay")]
+@remove: $b/div[@id="bullet-toast-container"]
+@remove: $b/div[starts-with(@id, "bullet-custom-")]
+@remove: //a[has-class("notion-hash-link")] | //div[has-class("notion-header-anchor")]
+# Collections are only navigational at the moment
+# May decide to actually parse them lager
+@remove: //div[has-class("notion-collection")]
+# Empty blocks
+@remove: //div[has-class("notion-blank")]
+# Spacers
+@remove: //div[has-class("notion-spacer")]
+
+# ---------- Remove dsent/bullet-addons-specific elements ----------
+@remove: $b/div[contains(@class, "bullet-nav-")]
+@remove: $b/div[contains(@class, "bullet-outline-")]
+@remove: //div[has-class("notion-sync-block")][.//div[has-class("links-translation")]]
+@remove: //div[has-class("links-external")]
+# Configuration elements
+@remove: //span[contains(@class,"dsbullet-")]
+@remove: //span[starts-with(@id,"dsbullet-")]
+
+# ---------- Remove invisible elements ----------
+@remove: //*[contains(@style,"display:none")]
+
+# ---------- Set Title ----------
+title: //div[has-class("notion-page")]/h1[1]
+# Fallback
+title: //head/title
+
+# ---------- Set Cover ----------
+$page_cover: //img[has-class("notion-page-cover")]
+?exists: $page_cover
+cover: $page_cover
+image_url: $page_cover
+# End the conditional section: always apply the rest of the rules
+?true
+
+# ---------- Set Body ----------
+# Identify the article wrapper
+$article: //article[has-class("notion-page-content-inner")][1]
+# Create a container for the sanitized content
+@prepend(<div>,id,"telegram-instant-view"): $b
+$content: $@
+# Move the article content into the container
+@append_to($content): $article/*
+
+# Remove the rest of the page
+@remove: $b/main
+
+# Set the body to the prepared content
+body: $content
+
+# ---------- Remove unsupported elements ----------
+@remove: $content//a//img
+
+# ---------- Combine lists ----------
+@combine: //ul/following-sibling::*[1]/self::ul
+@combine: //ol/following-sibling::*[1]/self::ol
+
+# ---------- Move headings up ----------
+<h1>: //h2[has-class("notion-h1")]
+<h2>: //h3[has-class("notion-h2")]
+<h3>: //h4[has-class("notion-h3")]
+
+# ---------- Unwrap custom code and sync blocks ----------
+@before_el("./.."): //div[has-class("notion-custom-code")]/*
+@remove: //div[has-class("notion-custom-code")]
+@before_el("./.."): //div[has-class("notion-sync-block")]/*
+@remove: //div[has-class("notion-sync-block")]
+
+# ---------- Unwrap columns and rows ----------
+@before_el("./.."): //div[has-class("notion-column")]/*
+@remove: //div[has-class("notion-column")]
+@before_el("./.."): //div[has-class("notion-row")]/*
+@remove: //div[has-class("notion-row")]
+
+# ---------- Unwrap mentions ----------
+@before_el("./.."): //a[has-class("notion-link-mention")]
+@after(" "): //a[has-class("notion-link-mention")]
+@remove: //div[has-class("notion-link-mention-container")]
+
+# ---------- Unwrap inline icons ----------
+@before_el("./.."): //div[has-class("notion-page-icon-inline")]/span[has-class("notion-page-icon")]
+@after(" "): //span[has-class("notion-page-icon")]
+@remove: //div[has-class("notion-page-icon-inline")]
+
+# ---------- Format callouts ----------
+@remove: //span[has-class("notion-callout-title")][not(text())]
+@before_el("./.."): //div[has-class("notion-callout-text")]/span[has-class("notion-callout-title")]
+@after("<br>"): //span[has-class("notion-callout-title")]
+@before_el("./.."): //div[has-class("notion-callout-text")]/*
+@remove: //div[has-class("notion-callout-text")]
+@combine(<br>): //div[has-class("notion-callout")]/div/following-sibling::*[1]/self::div
+<span>: //div[has-class("notion-callout")]/div
+<blockquote>: //div[has-class("notion-callout")]
+
+# ---------- Highlight CTA button links ----------
+@before(<br>): //a[has-class("notion-link")][has-class("bullet-btn")]
+
+# ---------- Spacing between paragraphs ----------
+@combine(<br>,<br>): //div[has-class("notion-text")]/following-sibling::*[1]/self::div
+
+# ---------- Fix svg rendering ----------
+# This is just a quick and dirty workaround: use an external service to convert all SVGs to PNGs
+# This requires you to sign up for an account on https://img.gs and get your own ID
+# Then you can uncomment the lines below, replacing <your_id> with your actual ID
+# This is a paid service; they allow a limited number of free conversions just to try it out, but I'm not sure how many
+# A more reliable solution would be to avoid using SVGs in the articles you want to be IV-compatible
+# @set_attr(src, "https://img.gs/<your_id>/2560,fit,format=png,quality=high/", ./@src): $content//img[ends-with(@src, "svg/public")]
+# @set_attr(srcset, "https://img.gs/<your_id>/2560,fit,format=png,quality=high/", ./@srcset): $content//img[ends-with(@srcset, "svg/public")]
+
+# ---------- Cleanup
+@set_attr(id, ): //*[@id]
+@set_attr(style, ): //*[@style]
+@set_attr(height, ): //*[@height]
+@set_attr(width, ): //*[@width]
+@set_attr(data-id, ): //*[@data-id]
+
+# Remove unnecessary nesting
+@simplify: //h1 | //h2 | //h3
+@simplify: //figure
+@simplify: //blockquote
+
+# Let's check the result!
+# @debug: //body

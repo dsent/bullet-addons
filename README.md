@@ -51,8 +51,9 @@ You can register for Bullet using my referral link to support my work on these a
   - **Expand**: Expands all or some items in a list so their sub-items are visible without clicking
     on the parent item's handle.
 - [Telegram Instant View Template](src/telegram-iv/telegram-iv-readme.md)
-  A Telegram Instant View (IV) template (.tgiv rules file) for my site ([dsent.me](https://dsent.me)) that can be easily adapted for any Bullet / Notion article pages so links you post
-  in Telegram chats get an "Instant View" button and open a fast, reader-friendly version. Includes optional per‑page
+  A Telegram Instant View (IV) template (.tgiv rules file) for Bullet-powered sites so links you post in Telegram
+  chats and channels get an "Instant View" button and open a fast, reader-friendly version.
+
   Useful if you share long-form content from your Bullet-powered site to Telegram and want consistent previews.
 - [Miscellaneous Tools](src/tools/)
   This folder contains small, self-contained scripts I use to debug stuff. They are not intended for general
