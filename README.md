@@ -10,7 +10,7 @@ You can register for Bullet using my referral link to support my work on these a
 ## List of Addons
 
 - [General Style Tweaks](src/style-tweaks/style-tweaks-readme.md)
-  Contains small, site-wide CSS improvements I use for my site, [dsent.me](https://dsent.me).  
+  Contains small, site-wide CSS improvements and a couple of small DOM tweaks I use for my site, [dsent.me](https://dsent.me).  
   Improves the navbar consistency, styles CTA buttons to look like Notion, add special icons for Telegram and WhatsApp,
   fixes some layout quirks. Allows hiding the title on any page.
 - [Database Views Display Enhancements](src/database-display/database-display-readme.md)

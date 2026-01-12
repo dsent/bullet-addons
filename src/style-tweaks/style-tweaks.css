@@ -44,7 +44,8 @@
 }
 
 /* Inlining links and mentions */
-.notion-link {
+/* Seems to be implemended in Bullet now, so disabling for now to be deprecated later */
+/* .notion-link {
   display: inline;
 }
 
@@ -59,17 +60,17 @@ a.notion-link-mention {
 
 .notion-link-mention-img {
   margin-right: 0;
-}
+} */
 
 /* Undo Bullet's max-width on mention titles for media >=1024px */
-span.notion-link-mention-title {
+/* span.notion-link-mention-title {
   display: inline;
   max-width: none;
   overflow: unset;
   text-overflow: unset;
   vertical-align: baseline;
   white-space: unset;
-}
+} */
 
 /* Fix Navbar colors in dark mode */
 .navbar-link.is-active,

@@ -7,6 +7,7 @@
         "sources": [
             "src/fading-scroll/fading-scroll.js",
             "src/lang-link/lang-link.js",
+            "src/style-tweaks/style-tweaks.js",
             "src/unwrap-views/unwrap-views.js",
             "src/outline-popup/outline-popup.js",
             "src/navigation-popup/navigation-popup.js"

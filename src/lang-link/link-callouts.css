@@ -80,6 +80,16 @@
   }
 }
 
+/* If there's a "published" property visible in a feed view, hide the extra box */
+.notion-collection-view-feed:has(.prop-published) .published-box {
+  display: none;
+}
+
+/* Add calendar emoji before default publication date */
+.notion-collection-view-feed .prop-published::before {
+    content: "📆";
+}
+
 /* Hide the related materials title if there are no materials */
 .related-links-heading:not(:has(+ ul.related-links-list > li)) {
   display: none;
