@@ -43,34 +43,13 @@
   height: unset !important;
 }
 
+/* Don't show empty captions for images */
+.notion-asset-caption:empty {
+  display: none;
+}
+
 /* Inlining links and mentions */
-/* Seems to be implemended in Bullet now, so disabling for now to be deprecated later */
-/* .notion-link {
-  display: inline;
-}
-
-.notion-link-mention-container {
-  display: inline;
-  margin-inline: 0.25em;
-}
-
-a.notion-link-mention {
-  display: inline;
-}
-
-.notion-link-mention-img {
-  margin-right: 0;
-} */
-
-/* Undo Bullet's max-width on mention titles for media >=1024px */
-/* span.notion-link-mention-title {
-  display: inline;
-  max-width: none;
-  overflow: unset;
-  text-overflow: unset;
-  vertical-align: baseline;
-  white-space: unset;
-} */
+/* Section is deprecated: seems to be implemended in Bullet natively now */
 
 /* Fix Navbar colors in dark mode */
 .navbar-link.is-active,

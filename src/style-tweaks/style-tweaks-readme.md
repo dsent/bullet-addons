@@ -9,7 +9,7 @@
 - Adjusts sizing and placement of various elements in the site's navbar (search, language selector, call to action buttons etc.) for consistency
 - Provides Notion-like CTA button styles and embedded SVG icons for Telegram and WhatsApp.
 - Includes page-title hide trigger (`.dsbullet-hide-title`)
-- Unwraps Notion link mention containers (`.notion-link-mention-container`), leaving only the inner link
+- Improves Notion link mention rendering: unwraps `.notion-link-mention-container`, fixes common missing spaces around mentions, and removes accidental leading space inside `.notion-link-mention-title`
 
 ## Usage
 
@@ -31,6 +31,7 @@ Add this HTML element to your Notion page to hide the title (`h1.notion-title`) 
 ```
 
 Add this element anywhere on the page to disable unwrapping `.notion-link-mention-container` elements on that page:
+This also disables the mention spacing/title normalization behavior.
 
 ```html
 <span class="dsbullet-keep-mention-containers" />
