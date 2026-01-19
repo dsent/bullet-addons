@@ -10,12 +10,37 @@ The script provides two main features:
 
 - **Unwrap**: Removes a top-level item, promoting its sub-items to the top level.
 - **Expand**: Automatically expands all `<details>` elements in a list body, or only those containing specific items.
+- **Table → Flat list**: Converts a Notion *table view* into a Bullet-styled *flat list* (useful when Notion sub-items would otherwise create unwanted parent rows in a list view and won't be sorted properly).
 
 ## Usage
 
 Read the repo's [README](../../README.md) for general installation instructions.
 
 Place `<span>` markers with one of the attributes mentioned below anywhere within `<body>`. All attributes accept valid CSS selectors.
+
+### Convert a Table View Into a Flat List
+
+This is a workaround for the lack of proper support for flattened lists in Bullet (if Notion database has sub-items enabled, Bullet's list views will always show them hierarchically from the top parent, even if you set sub-items to "disabled" in the view options):
+
+- Create a **table** view that already renders the rows flat.
+- Convert that table view into a **list** on the published Bullet page.
+
+```html
+<span data-table-to-list-view="#notion-view-123" />
+<span data-table-to-list-view=".some-scope :is(#notion-view-a, #notion-view-b)" />
+```
+
+What it does:
+
+- Finds `.notion-table-row` rows under the target view.
+- For each row, uses the page link in the Title column as the list item link.
+- Copies all `span.notion-property` values from the remaining columns into list “properties”.
+- Replaces the `.notion-table` DOM with a `.notion-list-collection` and switches the view’s `data-value` to `list`.
+
+Limitations:
+
+- Assumes the first column contains an `a.notion-page-link` (typical Title column).
+- The resulting list won't have search box and functionality.
 
 ### Unwrap Top-Level Wrapper Details
 

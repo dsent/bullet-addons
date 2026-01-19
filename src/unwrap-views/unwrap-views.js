@@ -22,7 +22,7 @@
   const SEL = {
     markerUnwrap: "span[data-unwrap-view]",
     markerExpand: "span[data-expand-view]",
-    listBody: ".notion-list-body",
+    markerTableToList: "span[data-table-to-list-view]",
   };
 
   // Minimal once-only log guards
@@ -42,6 +42,88 @@
 
   function $all(selector, root = document) {
     return Array.from(root.querySelectorAll(selector));
+  }
+
+  function convertTableViewToFlatList(view) {
+    if (!view) return { changed: false, items: 0 };
+    if (view.hasAttribute(`data-${P}-table-to-list`)) return { changed: false, items: 0 };
+
+    const tableRoot = $(".notion-table", view);
+    if (!tableRoot) return { changed: false, items: 0 };
+
+    const rows = $all(".notion-table-row", tableRoot);
+    if (rows.length === 0) return { changed: false, items: 0 };
+
+    const listCollection = document.createElement("div");
+    listCollection.className = "notion-list-collection";
+
+    const listView = document.createElement("div");
+    listView.className = "notion-list-view";
+    listCollection.append(listView);
+
+    const listBody = document.createElement("div");
+    listBody.className = "notion-list-body";
+
+    // If the view has an ID like notion-view-<uuid>, preserve that suffix to match Bullet's list IDs.
+    // (This is optional, but helps targeting / consistency.)
+    const viewId = view.id || "";
+    if (viewId.startsWith("notion-view-")) {
+      listBody.id = `notion-list-${viewId.slice("notion-view-".length)}`;
+    }
+    listView.append(listBody);
+
+    let items = 0;
+    rows.forEach((row) => {
+      const titleLink = row.querySelector("a.notion-page-link");
+      if (!titleLink) return;
+
+      const details = document.createElement("details");
+      details.className = "notion-list-sub-item notion-list-no-sub-items";
+      details.open = true;
+
+      const summary = document.createElement("summary");
+      summary.className = "notion-list-sub-item-toggle notion-list-no-toggle";
+
+      const a = document.createElement("a");
+      a.className = "notion-list-item search-title notion-page-link";
+      a.href = titleLink.getAttribute("href") || titleLink.href;
+
+      const titleWrap = document.createElement("div");
+      titleWrap.className = "notion-list-item-title";
+
+      const pageTitle = titleLink.querySelector(".notion-page-title");
+      if (pageTitle) titleWrap.append(pageTitle.cloneNode(true));
+
+      const bodyWrap = document.createElement("div");
+      bodyWrap.className = "notion-list-item-body";
+
+      const cells = Array.from(row.children).filter((el) => el.classList.contains("notion-table-cell"));
+      // first cell is title; remaining cells become list properties
+      cells.slice(1).forEach((cell) => {
+        const props = Array.from(cell.querySelectorAll("span.notion-property"));
+        props.forEach((p) => {
+          const propWrap = document.createElement("div");
+          propWrap.className = "notion-list-item-property";
+          propWrap.append(p.cloneNode(true));
+          bodyWrap.append(propWrap);
+        });
+      });
+
+      a.append(titleWrap);
+      a.append(bodyWrap);
+      summary.append(a);
+      details.append(summary);
+      listBody.append(details);
+      items++;
+    });
+
+    // Replace the table with the list markup.
+    tableRoot.replaceWith(listCollection);
+    view.setAttribute(`data-${P}-table-to-list`, "1");
+    // Switch the view type so the site CSS treats it as a list view when applicable.
+    view.setAttribute("data-value", "list");
+
+    return { changed: items > 0, items };
   }
 
   // Unwrap the top-level <details> wrapper elements that actually have sub-items
@@ -129,10 +211,57 @@
 
     const unwrapMarkers = $all(SEL.markerUnwrap);
     const expandMarkers = $all(SEL.markerExpand);
+    const tableToListMarkers = $all(SEL.markerTableToList);
+
+    if (unwrapMarkers.length === 0 && expandMarkers.length === 0 && tableToListMarkers.length === 0) {
+      logOnce("noMarkers", `❌ No unwrap/expand/table-to-list markers found`);
+      return false;
+    }
+
+    if (tableToListMarkers.length > 0) {
+      tableToListMarkers.forEach((marker) => {
+        const viewSel = marker.getAttribute("data-table-to-list-view");
+        if (!viewSel) return;
+
+        let targets;
+        try {
+          targets = $all(viewSel);
+        } catch (e) {
+          logOnce(`invalidSelector(${viewSel})`, `⚠️ Invalid selector in data-table-to-list-view: "${viewSel}"`);
+          return;
+        }
+
+        if (targets.length === 0) {
+          logOnce(`targetNoMatch(${viewSel})`, `⚠️ Target selector matched no elements: "${viewSel}"`);
+          return;
+        }
+
+        targets.forEach((target) => {
+          const views = target.matches(".notion-collection-view") ? [target] : $all(".notion-collection-view", target);
+          if (views.length === 0) {
+            const key = target.id || viewSel;
+            logOnce(`tableViewNotFound(${key})`, `⚠️ .notion-collection-view not found under target "${viewSel}"`);
+            return;
+          }
+
+          views.forEach((view) => {
+            const { changed, items } = convertTableViewToFlatList(view);
+            if (!changed) {
+              const key = view.id || viewSel;
+              logOnce(`tableToListNoChange(${key})`, `⚠️ No table-to-list changes for "${key}"`);
+              return;
+            }
+
+            const key = view.id || viewSel;
+            logOnce(`tableToListChanged(${key})`, `✅ Converted table to flat list in "${key}" (${items} items)`);
+          });
+        });
+      });
+    }
 
     if (unwrapMarkers.length === 0 && expandMarkers.length === 0) {
-      logOnce("noMarkers", `❌ No unwrap/expand markers found`);
-      return false;
+      // Table-to-list was requested, but no list modifications were requested.
+      return true;
     }
 
     // Element (.notion-list-body) -> { unwrapFilters:[], expandFilters:[], wantsUnwrap, wantsExpand, key }
@@ -176,12 +305,12 @@
 
         targets.forEach((target) => {
           let bodies = [];
-          if (target.matches(SEL.listBody)) {
+          if (target.matches(".notion-list-body")) {
             // add a particular list body
             bodies = [target];
           } else {
             // add all descendant list bodies under the matched element
-            bodies = $all(SEL.listBody, target);
+            bodies = $all(".notion-list-body", target);
           }
 
           if (bodies.length === 0) {
@@ -208,7 +337,7 @@
     addFromMarkers(expandMarkers, "expand");
 
     if (listBodies.size === 0) {
-      logOnce("noListBodies", `❌ No list bodies found`);
+      logOnce("noListTargets", `❌ No list bodies matched unwrap/expand markers`);
       return false;
     }
 
