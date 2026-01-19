@@ -108,26 +108,21 @@ dependencies first (scripts typically wait for prerequisites, but ordering them 
 ## Configuration and Customization
 
 Some scripts include configuration options, typically grouped at the top of the file. Edit these values
-to change the default behavior for your entire site.
+to change the default behavior **for your entire site**.
 
-For page-level behavior, use **per-page configuration using special HTML markers**.
-Add the script globally and then add specific blocks to your source Notion pages
-to enable/disable features or change settings.
+Many addons support **per-page configuration** via small “marker” elements that you place directly in your Notion page.
+Bullet renders these markers into the published site and addons detect them. These can enable or disable features
+on a per-page basis or provide extra configuration options (via `data-*` attributes).
 
-You can also add scripts to specific pages instead of globally by adding CSS and JavaScript to individual
-page code areas ("Pages" in the left sidebar → select page → "Code" → "Current Page"). This is not recommended nor supported, so you're on your own.
+> NB: You can also add scripts to specific pages instead of globally by adding CSS and JavaScript to individual
+> page code areas ("Pages" in the left sidebar → select page → "Code" → "Current Page").
+> **This is neither recommended nor supported, so you're on your own.**
 
-Add these markers using a code block with the caption `bullet:HTML`
-(see [Embed HTML inside Notion](https://bullet.so/docs/embed-html-inside-notion/) in Bullet documentation).
-For details, refer to each script's readme file and comments.
-
-**Tip:** Create synced blocks in Notion (e.g., in a template page) and copy-sync them where needed.
-Remember that editing a synced block changes all copies, so this only works for **identical** configurations.
-If you need a few different configurations, create separate synced blocks for each.
+Add these markers using a code block with the caption `bullet:HTML` ([Embed HTML inside Notion](https://bullet.so/docs/embed-html-inside-notion/) in Bullet documentation explains this in more detail).
 
 Most marker blocks can be empty and invisible, so it's safe to place them anywhere on the page.
 
-Some markers affect subsequent blocks or their parent block—check each script's documentation for details.
+Some markers affect subsequent blocks or their parent block - **check each script's documentation for details.**
 
 An example of a marker block on a Notion page:
 
@@ -135,6 +130,30 @@ An example of a marker block on a Notion page:
 
 This marker prevents the list below it from rendering as tabs and forces it to display as a default dropdown list.
 The marker doesn't affect other lists or other database views on the page.
+
+### Examples
+
+An “enable/disable” marker (presence-only):
+
+```html
+<span class="dsbullet-hide-title" />
+```
+
+A configurable marker (options via `data-*`):
+
+```html
+<span
+  id="dsbullet-nav-config"
+  data-nav-source=".notion-custom-code:has(#dsbullet-nav-config) + .notion-collection .notion-list-body"
+/>
+```
+
+### Tips
+
+- If you want to reuse the same marker on many pages, wrap the HTML block in a **Synced block** in Notion.
+  NB: Remember that editing a synced block changes all copies, so this only works for **identical** configurations.
+  If you need a few different configurations, create separate synced blocks for each.
+- If something doesn’t work, first verify that Bullet actually rendered your HTML by inspecting the live page in DevTools.
 
 ## Build
 
