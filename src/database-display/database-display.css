@@ -274,6 +274,16 @@
   }
 }
 
+/* Mark collections that should hide the view selector, but keep the header with search */
+:is(div.notion-sync-block, div.notion-custom-code  /* one of the blocks that can contain a disable trigger */
+):has(.dsbullet-hide-view-selector)  /* and actually contain it */
+ + .notion-collection /* a collection that directly follows such a block */ {
+  /* Hide view selector dropdown or a single view heading */
+  .notion-collection-header > :is(.dropdown, .notion-collection-single-view) {
+    display: none !important;
+  }
+}
+
 /* Mark list views that are flat and not expandable */
 :is(div.notion-sync-block, div.notion-custom-code
 ):has(.dsbullet-flat-list) /* and actually contain it */
